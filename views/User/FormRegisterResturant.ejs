@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="icon" type="image/x-icon" href="../stylesheetsUsers/img/logotitle-removebg-preview.png" />
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">        
+
+<!-- Css Styles -->
+<link rel="stylesheet" type="text/css" href="stylesheetsUsers/stylesheet/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/elegant-icons.css">
+<link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/nice-select.css">
+<link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/jquery-ui.min.css">
+<link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/owl.carousel.min.css">
+<link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/slicknav.min.css">
+<link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/style.css">
+
+<title>สมัครสมาชิกร้านอาหาร</title>
+</head>
+<body>
+
+  <div id="navbar-guest">
+    <%- include('../Navbar/navbar') %>
+  </div>
+
+  <% if(messages.error) {%>
+    <div role="alert"><%= messages.error%></div>
+  <% } %>
+  <% if(messages.success) {%>
+    <div role="alert"><%= messages.success%></div>
+  <% } %>
+  <% if(messages.message) {%>
+    <div role="alert"><%= messages.message%></div>
+  <% } %>
+
+  <!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" 
+data-setbg="../stylesheetsUsers/img/breadcrumb.jpg" 
+style="box-shadow: 0px 4px 9px 4px rgba(0, 0, 0, 0.25);
+       margin-top: 89px;">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+            <div class="breadcrumb__text">
+                <h2>สมัครสมาชิกร้านอาหาร</h2>
+                <div class="breadcrumb__option">
+                    <span>สะดวกจอง</span>
+                    <span>สมัครสมาชิกร้านอาหาร</span>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+    <!-- Form Register -->
+    <div class="container my-5" style=" box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);">
+      <div class="row">
+        <div class="col-md-6" style="padding-left: 0;">
+          <img src="../stylesheetsUsers/images/logo.png" 
+          alt="Form Image" 
+          class="form-image"
+          style="height: 1100px;"
+          >
+        </div>
+        <div class="col-md-6 p-0">
+          <div class="registration-form mt-5">
+            <center><h2>สมัครร้านอาหาร</h2></center>
+            <div class="card-body" style="padding-top: 0;">
+              <form action="/users/RegisResturant" method="POST" enctype="multipart/form-data">
+                <hr>
+                  <p style="color: black;"><b>ข้อมูลร้านอาหาร</b></p>
+                <div class="row">
+                    <div class="mb-3 col-md-6">
+                      <label>ชื่อร้านอาหาร</label>
+                      <input type="text" class="form-control w-100" name="res_name" placeholder="ชื่อร้านอาหาร" required>
+                    </div>
+                    <div class="mb-3 col-md-6">
+                      <label>อีเมลร้านอาหาร</label>
+                      <input type="email" class="form-control w-100" name="res_email" placeholder="อีเมลร้านอาหาร" required>
+                    </div>
+                    <div class="mb-3 col-md-6">
+                      <label>เบอร์โทรร้านอาหาร</label>
+                      <input type="tel" class="form-control w-100" name="res_phone" placeholder="เบอร์โทรร้านอาหาร" required>
+                    </div>
+                    <div class="mb-3 col-md-6">
+                      <label>ประเภทร้านอาหาร</label>
+                      <select name="res_status" id="res_status" class="form-control w-100" required>
+                        <option value="ร้านอาหารตามสั่ง">ร้านอาหารตามสั่ง</option>
+                        <option value="ร้านบุฟเฟต์">ร้านบุฟเฟต์</option>
+                        <option value="ร้านหมูกระทะ">ร้านหมูกระทะ</option>
+                        <option value="ร้านหมูจุ่ม">ร้านหมูจุ่ม</option>
+                      </select>
+                    </div>
+                    <div class="mb-3 col-md-6">
+                      <label>ที่อยู่ร้านอาหาร</label>
+                      <textarea name="res_address" class="form-control w-100" cols="30" rows="10" placeholder="เบอร์โทรร้านอาหาร" required></textarea>
+                    </div>
+                  </div>
+                  <hr>
+                  <p style="color: black;"><b>ข้อมูลเจ้าของร้านอาหาร</b></p>
+                  <div class="row">
+                    <div class="mb-3 col-md-6">
+                      <label>คำนำหน้า</label>
+                      <select name="owner_profile" id="owner_profile" class="form-control w-100" required>
+                        <option value="นาย">นาย</option>
+                        <option value="นาง">นาง</option>
+                        <option value="นางสาว">นางสาว</option>
+                      </select>
+                    </div>
+                    <div class="mb-3 col-md-6">
+                      <label>ชื่อเจ้าของร้าน</label>
+                      <input type="text" class="form-control w-100" name="owner_name" placeholder="ชื่อเจ้าของร้าน" required>
+                    </div>
+                    <div class="mb-3 col-md-6">
+                      <label>นามสกุลเจ้าของร้าน</label>
+                      <input type="text" class="form-control w-100" name="owner_lname" placeholder="นามสกุลเจ้าของร้าน" required>
+                    </div>
+                    <div class="mb-3 col-md-6">
+                      <label>อีเมลเจ้าของร้าน</label>
+                      <input type="email" class="form-control w-100" name="owner_email" placeholder="อีเมลเจ้าของร้าน" required>
+                    </div>
+                    <div class="mb-3 col-md-6">
+                      <label>เบอร์โทรเจ้าของร้าน</label>
+                      <input type="tel" class="form-control w-100" name="owner_phone" placeholder="เบอร์โทรเจ้าของร้าน" required>
+                    </div>
+                    <div class="mb-3 col-md-6">
+                      <label>ใบประกอบกิจการ</label>
+                      <input type="file"  name="image" class="mt-1" required>
+                    </div>
+                  </div>
+                  <div class="button">
+                    <center><button type="submit" class="btn btn-danger mt-5 w-100" ><b>ยืนยันสมัครร้านอาหาร</b></button></center>
+                  </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Form Register -->
+
+     <!-- Footer Start -->
+     <%- include('../footer') %>
+     <!-- Footer End -->
+
+<!-- Js Plugins -->
+<script src="../stylesheetsUsers/js/jquery-3.3.1.min.js"></script>
+<script src="../stylesheetsUsers/js/bootstrap.min.js"></script>
+<script src="../stylesheetsUsers/js/jquery.nice-select.min.js"></script>
+<script src="../stylesheetsUsers/js/jquery-ui.min.js"></script>
+<script src="../stylesheetsUsers/js/jquery.slicknav.js"></script>
+<script src="../stylesheetsUsers/js/mixitup.min.js"></script>
+<script src="../stylesheetsUsers/js/main.js"></script>
+
+</body>
+</html>

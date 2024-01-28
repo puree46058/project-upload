@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        td {
+            cursor: pointer;
+        }
+
+        .today {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .event {
+            background-color: #3498db;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center">November 2023</h2>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Sun</th>
+                    <th>Mon</th>
+                    <th>Tue</th>
+                    <th>Wed</th>
+                    <th>Thu</th>
+                    <th>Fri</th>
+                    <th>Sat</th>
+                </tr>
+            </thead>
+            <tbody id="calendar-body"></tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        function generateCalendar() {
+            var today = new Date();
+            var year = today.getFullYear();
+            var month = today.getMonth();
+
+            var firstDay = new Date(year, month, 1);
+            var lastDay = new Date(year, month + 1, 0);
+            var startDate = firstDay.getDay();
+
+            var calendarBody = document.getElementById("calendar-body");
+            calendarBody.innerHTML = "";
+
+            var date = 1;
+            for (var i = 0; i < 6; i++) {
+                var row = document.createElement("tr");
+                for (var j = 0; j < 7; j++) {
+                    var cell = document.createElement("td");
+                    if (i === 0 && j < startDate) {
+                        // Empty cells before the start date
+                        cell.innerHTML = "";
+                    } else if (date > lastDay.getDate()) {
+                        // Empty cells after the end date
+                        cell.innerHTML = "";
+                    } else {
+                        cell.innerHTML = date;
+                        if (date === today.getDate() && month === today.getMonth()) {
+                            cell.classList.add("today");
+                        }
+                    }
+                    row.appendChild(cell);
+                    date++;
+                }
+                calendarBody.appendChild(row);
+            }
+        }
+
+        // Call the function to generate the initial calendar
+        generateCalendar();
+    </script>
+</body>
+</html>

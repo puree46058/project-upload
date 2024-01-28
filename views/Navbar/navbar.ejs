@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ogani Template">
+    <meta name="keywords" content="Ogani, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>สะดวกจอง</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">        
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" type="text/css" href="../../stylesheetsUsers/stylesheet/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../../stylesheetsUsers/stylesheet/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../../stylesheetsUsers/stylesheet/elegant-icons.css">
+    <link rel="stylesheet" type="text/css" href="../../stylesheetsUsers/stylesheet/nice-select.css">
+    <link rel="stylesheet" type="text/css" href="../../stylesheetsUsers/stylesheet/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="../../stylesheetsUsers/stylesheet/owl.carousel.min.css">
+    <link rel="stylesheet" type="text/css" href="../../stylesheetsUsers/stylesheet/slicknav.min.css">
+    <link rel="stylesheet" type="text/css" href="../../stylesheetsUsers/stylesheet/style.css">
+</head>
+<body>
+
+    <!-- Humberger Begin -->
+    <div class="humberger__menu__overlay"></div>
+        <div class="humberger__menu__wrapper">
+        <div class="humberger__menu__logo">
+            <a href="#"><img src="../stylesheetsUsers/img/logo1.png" alt=""></a>
+        </div>
+        <div class="humberger__menu__widget">
+            <div class="header__top__right__auth">
+                <ul style="list-style-type: none;">
+                    <% if (img === 'NULL') {%>
+                        <img src="../images/profileNon.png" alt="Profile" class="profile-image" style="width: 150px; height: 150px;">
+                        <%}else{%>
+                            <img src="../stylesheetsUsers/img/<%= img %>" alt="Profile" class="profile-image" style="width: 150px; height: 150px;">
+                        <% } %>
+                    <li><a href="#" style="font-size: 16px; font-weight: 600; text-align: center;"><%= name %></a>
+                        <ul class="header__menu__dropdown" style="list-style-type: none;">
+                            <li><a href="/users/Profile">ข้อมูลส่วนตัว</a></li>
+                            <li><a href="/users/bookCoupon">ประวัติการจองคูปอง</a></li>
+                            <li><a href="/users/HistoryAddpoint">ประวัติการเติมแต้ม</a></li>
+                            <li><a href="/" style="margin: 0;">ออกจากระบบ</a></li>
+                        </ul>
+                    </li>
+                    <li style="margin-right: 0;"><a href="/users/formaddpoint">แต้ม: <%= point %></a></li>
+                </ul>
+            </div>
+        </div>
+        <nav class="humberger__menu__nav mobile-menu">
+            <ul>
+                <li><a href="/users">หน้าแรก</a></li>
+                <li><a href="/users/coupon-list-user">โปรโมชั่น</a></li>
+                <li><a href="/users/RegisResturant" style="margin-right: 1px;">สมัครร้านอาหาร</a></li>
+                <li><a href="/users/contact">ติดต่อเรา</a></li>
+            </ul>
+        </nav>
+        <div id="mobile-menu-wrap">
+        <div class="humberger__menu__contact">
+            <ul>
+                <li>ยินดีต้อนรับสู่เว็บจองคูปองส่วนลดสำหรับร้านอาหาร</li>
+            </ul>
+        </div>
+        </div>
+        
+    </div>
+    <!-- Humberger End -->
+
+    <!-- Header Section Begin -->
+    <nav class="header fixed-top" style="background-color: white;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-2 mt-2">
+                    <div class="header__logo">
+                        <a href="/users"><img src="../../stylesheetsUsers/img/logo1.png" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-6 m-0 p-0 text-center">
+                    <nav class="header__menu ">
+                        <ul>
+                            <li><a href="/users">หน้าแรก</a></li>
+                            <li><a href="/users/coupon-list-user">โปรโมชั่น</a></li>
+                            <li><a href="/users/RegisResturant" style="margin-right: 1px;">สมัครร้านอาหาร</a></li>
+                            <li><a href="/users/contact">ติดต่อเรา</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <div class="col-lg-4 p-0 m-0">
+                    <div class="header__cart">
+                        <ul>
+                            <li><a href="/users/cart"><i class="fa fa-shopping-bag" style="color: black;"></i> <span><%= Object.values(promotion).length || 0 %></span></a></li>
+                        </ul>
+                        <div class="header__cart__price">
+                        <ul>
+                            <li><a href="#" style="color: black; font-weight: 600; margin-right: 10px"><%= name %></a>
+                                <% if (img === 'NULL') {%>
+                                    <img src="/images/profileNon.png" alt="Profile" class="profile-image" style="width: 40px; height: 40px; border-radius: 50%;">
+                                    <%}else{%>
+                                        <img src="/uploads/profile/<%= img %>" alt="Profile" class="profile-image" style="width: 40px; height: 40px; border-radius: 50%;">
+                                    <% } %>
+                                <ul class="header__menu__dropdown">
+                                    <li><a href="/users/Profile">ข้อมูลส่วนตัว</a></li>
+                                    <li><a href="/users/bookCoupon">ประวัติการจองคูปอง</a></li>
+                                    <li><a href="/users/HistoryAddpoint">ประวัติการเติมแต้ม</a></li>
+                                    <li><a href="/" style="margin: 0;">ออกจากระบบ</a></li>
+                                </ul>
+                            </li>
+                            <li style="margin-right: 0;"><span style="color: black;">แต้ม: <%= point %></span></li>
+                            <a href="/users/formaddpoint"><i class="fa fa-plus-circle" style="color: black;"></i></a>
+                        </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="humberger__open">
+                <i class="fa fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Js Plugins -->
+    <script src="../../stylesheetsUsers/js/jquery-3.3.1.min.js"></script>
+    <script src="../../stylesheetsUsers/js/bootstrap.min.js"></script>
+    <script src="../../stylesheetsUsers/js/jquery.nice-select.min.js"></script>
+    <script src="../../stylesheetsUsers/js/jquery-ui.min.js"></script>
+    <script src="../../stylesheetsUsers/js/jquery.slicknav.js"></script>
+    <script src="../../stylesheetsUsers/js/mixitup.min.js"></script>
+    <script src="../../stylesheetsUsers/js/owl.carousel.min.js"></script>
+    <script src="../stylesheetsUsers/js/main.js"></script>
+    <script>
+        // tabnavbar 
+      function myFunction() {
+        var x = document.getElementById("myNavbar");
+        if (x.className === "navbar") {
+          x.className += " responsive";
+        } else {
+          x.className = "navbar";
+        }
+      }
+      </script>
+</body>
+</html>

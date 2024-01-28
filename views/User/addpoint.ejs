@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../images/icon.png">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">        
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/elegant-icons.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/nice-select.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/owl.carousel.min.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/slicknav.min.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/style.css">
+
+    <title>เติมแต้ม</title>
+</head>
+<body>
+
+
+  <div id="navbar-guest">
+    <%- include('../Navbar/navbar') %>
+  </div>
+
+
+<% if(messages.error) {%>
+  <div role="alert"><%= messages.error%></div>
+<% } %>
+<% if(messages.success) {%>
+  <div role="alert"><%= messages.success%></div>
+<% } %>
+<% if(messages.message) {%>
+  <div role="alert"><%= messages.message%></div>
+<% } %>
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg col-12" 
+data-setbg="../stylesheetsUsers/img/breadcrumb.jpg" 
+style="box-shadow: 0px 4px 9px 4px rgba(0, 0, 0, 0.25);
+       margin-top: 89px;">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+            <div class="breadcrumb__text">
+                <h2>เติมแต้ม</h2>
+                <div class="breadcrumb__option">
+                    <span>สะดวกจอง</span>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+  <!-- Basic Bootstrap Table -->
+  <div class="card mb-1 col-12">
+                
+    <h4 class="card-header text-center">รายละเอียดการเติมแต้ม</h4>
+    <div class="table-responsive text-nowrap">
+      <table class="table text-center">
+        <thead>
+          <tr>
+            <th style="padding-left: 15px;">ราคาที่จ่าย</th>
+            <th>แต้มที่จะได้</th>
+          </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+          <tr>
+            <td><i class="fab fa-bootstrap fa-lg text-primary"></i> <strong style="font-size: 20px;">50 บาท</strong></td>
+            <td>
+              <i class="fab fa-bootstrap fa-lg text-primary"></i> <strong style="font-size: 20px;">65 แต้ม</strong>
+            </td>
+          </tr>
+          <tr>
+            <td><i class="fab fa-bootstrap fa-lg text-primary"></i> <strong style="font-size: 20px;">100 บาท</strong></td>
+            <td>
+              <i class="fab fa-bootstrap fa-lg text-primary"></i> <strong style="font-size: 20px;">135 แต้ม</strong>
+            </td>
+          </tr>
+          <tr>
+            <td><i class="fab fa-bootstrap fa-lg text-primary"></i> <strong style="font-size: 20px;">300 บาท</strong></td>
+            <td>
+              <i class="fab fa-bootstrap fa-lg text-primary"></i> <strong style="font-size: 20px;">425 แต้ม</strong>
+            </td>
+          </tr>
+          <tr>
+            <td><i class="fab fa-bootstrap fa-lg text-primary"></i> <strong style="font-size: 20px;">500 บาท</strong></td>
+            <td>
+              <i class="fab fa-bootstrap fa-lg text-primary"></i> <strong style="font-size: 20px;">625 แต้ม</strong>
+            </td>
+          </tr>
+          <tr>
+            <td><i class="fab fa-bootstrap fa-lg text-primary"></i> <strong style="font-size: 20px;">1000 บาท</strong></td>
+            <td>
+              <i class="fab fa-bootstrap fa-lg text-primary"></i> <strong style="font-size: 20px;">1250 แต้ม</strong>
+            </td>
+          </tr>
+          <tr>
+            <td><i class="fab fa-bootstrap fa-lg text-primary"></i> <strong style="font-size: 20px;">2000 บาท</strong></td>
+            <td>
+              <i class="fab fa-bootstrap fa-lg text-primary"></i> <strong style="font-size: 20px;">2250 แต้ม</strong>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <hr class="my-0">
+    </div>
+  </div>
+  <!--/ Basic Bootstrap Table -->
+  <div class="container mt-4" 
+       style="border: 1px solid black;
+              border-radius: 50px;
+              padding: 35px 0 20px 0;
+              box-shadow: 5px 5px 8px 6px rgba(0, 0, 0, 0.13);">
+        <form action="/users/addpoint" method="POST" enctype="multipart/form-data">
+         
+      <!--เติมpoint-->
+          
+              <center><input type="text" class="form-control col-9 mb-3" style="width: 100%;" placeholder="ชื่อจริง" value="<%= name %>" readonly></center>
+              <center><input type="text" class="form-control col-9" style="width: 100%;" placeholder="อีเมล์" value="<%= email %>" readonly></center>
+            <div class="mt-4" style="margin-left: 105px;">
+              <label class="ml-5">เลือกราคาที่ต้องการ : </label>
+              <br>
+              <label class="ml-5">
+                <input type="radio" name="pointoption" value="65"> 50 บาท | 
+              </label>
+              <label>
+                <input type="radio" name="pointoption" value="135"> 100 บาท | 
+              </label>
+              <label>
+                <input type="radio" name="pointoption" value="425"> 300 บาท | 
+              </label>
+              <label>
+                <input type="radio" name="pointoption" value="625"> 500 บาท | 
+              </label>
+              <label>
+                <input type="radio" name="pointoption" value="1250"> 1000 บาท | 
+              </label>
+              <label>
+                <input type="radio" name="pointoption" value="2250"> 2000 บาท
+              </label>
+            </div>
+
+            <div class="mt-3" style="margin-left: 102px;">
+              <label class="ml-5">เลือกธนาคาร</label>
+              <br>
+              <select name="bank_name" id="bank_name" class="ml-5">
+                <option value="ธนาคารกรุงไทย">ธนาคารกรุงไทย</option>
+                <option value="ธนาคารกรุงเทพ">ธนาคารกรุงเทพ</option>
+                <option value="ธนาคารกสิกร">ธนาคารกสิกร</option>
+                <option value="ธนาคารไทยพาณิชย์">ธนาคารไทยพาณิชย์</option>
+                <option value="ธนาคารกรุงศรีอยุธยา">ธนาคารกรุงศรีอยุธยา</option>
+              </select>
+            </div>
+            
+            <div class="mt-3 " style="margin-left: 105px;">
+              <label class="ml-5">แนบหลักฐานการโอน : </label>
+              <br>
+              <input type="file"  name="point" style="width: 300px;" class="ml-5">
+            </div>
+            
+            <br>
+          </div>
+          <center><button type="submit" class="btn btn-danger my-5" style=" width: 50%; height: 50px;"><b>ยืนยันการเติมแต้ม</b></button></center>
+        </form>
+      
+  
+
+    <!-- Footer Start -->
+<%- include('../footer') %>
+<!-- Footer End -->
+
+    <!-- Js Plugins -->
+<script src="../stylesheetsUsers/js/jquery-3.3.1.min.js"></script>
+<script src="../stylesheetsUsers/js/bootstrap.min.js"></script>
+<script src="../stylesheetsUsers/js/jquery.nice-select.min.js"></script>
+<script src="../stylesheetsUsers/js/jquery-ui.min.js"></script>
+<script src="../stylesheetsUsers/js/jquery.slicknav.js"></script>
+<script src="../stylesheetsUsers/js/mixitup.min.js"></script>
+<script src="../stylesheetsUsers/js/main.js"></script>
+    
+</body>
+</html>
+
+<script>
+ function myFunction() {
+    var x = document.getElementById("myNavbar");
+    if (x.className === "navbar") {
+      x.className += " responsive";
+    } else {
+      x.className = "navbar";
+    }
+  }
+
+  // let status = false; 
+  // let navbarLoggedIn = document.getElementById('navbar-logged-in');
+  // let navbarGuest = document.getElementById('navbar-guest');
+
+  //   if (status) {
+  //       navbarLoggedIn.style.display = 'block';
+  //       navbarGuest.style.display = 'none';
+  //   } else {
+  //       navbarLoggedIn.style.display = 'none';
+  //       navbarGuest.style.display = 'block';
+  //   }
+
+   
+ 
+</script>

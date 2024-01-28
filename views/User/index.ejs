@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ogani Template">
+    <meta name="keywords" content="Ogani, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>สะดวกจอง</title>
+
+    <link rel="icon" type="image/x-icon" href="../stylesheetsUsers/img/logotitle-removebg-preview.png" />
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">        
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" type="text/css" href="stylesheetsUsers/stylesheet/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/elegant-icons.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/nice-select.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/owl.carousel.min.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/slicknav.min.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/style.css">
+</head>
+
+<body>
+  <% if(messages.error) {%>
+    <div role="alert"><%= messages.error%></div>
+  <% } %>
+  
+  <% if(messages.message) { %>
+    <div role="alert"><%= messages.message%></div>
+  <% } %>
+
+
+  <div id="navbar-guest">
+    <%- include('../Navbar/navbar') %>
+  </div>
+  
+ <!-- Hero Section Begin -->
+ <section class="hero" style="margin-top: 89px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="hero__item set-bg">
+                    <div class="hero__text">
+                        <h2 >ยินดีต้อนรับสู่เว็บจองคูปองส่วนลดสำหรับร้านอาหาร</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</section>
+<!-- Hero Section End -->
+
+<!-- Categories Section Begin -->
+<section class="categories">
+    <div class="container">
+        <div class="section-title" style="margin-top: 40px;">
+            <h2>คูปองแนะนำ <img src="../../images/fire.png" alt="" width="30px" style="margin-bottom: 10px;"></h2> 
+        </div>
+        <div class="row">
+                <div class="categories__slider owl-carousel">
+                    <% if(data.length) { %>
+                        <!-- Card 1 -->
+                      <% for(let i = 0; i < data.length; i++) { %>
+                    <div class="col-lg-3">
+                        <div class="categories__item set-bg" style="box-shadow: 6px -4px 5px 3px rgba(0, 0, 0, 0.14);" data-setbg="/uploads/resturantimg/<%= data[i].pro_image %> ">
+                            <h5><a href="/users/Detail_promotion/<%= data[i].id_pro %>"><%= data[i].pro_name %></a></h5>
+                        </div>
+                    </div>
+                      <% } %>
+                    <% } %>
+                    <% if(!data.length) { %>
+                        <p class="text-center">No Promotion found!</p>
+                    <% } %>
+                </div>
+        </div>
+        <hr>
+    </div>
+</section>
+<!-- Categories Section End -->
+
+<!-- Categories Section Begin -->
+<section class="categories">
+    <div class="container">
+        <div class="section-title" style="margin-top: 50px;">
+            <h2>คูปองที่กำลังจะมาเร็วๆนี้ <img src="../../images/coming.png" alt="" width="40px"></h2>
+        </div>
+        <div class="row">
+            <div class="categories__slider2 owl-carousel">
+            <% if(data.length) { %>
+                <!-- Card 1 -->
+              <% for(let i = 0; i < data.length; i++) { %>
+            <div class="col-lg-3">
+                <div class="categories__item set-bg" style="box-shadow: 6px -4px 5px 3px rgba(0, 0, 0, 0.14);" data-setbg="/uploads/resturantimg/<%= data[i].pro_image %> ">
+                    <h5><a href="/users/Detail_promotion/<%= data[i].id_pro %>"><%= data[i].pro_name %></a></h5>
+                </div>
+            </div>
+              <% } %>
+            <% } %>
+            <% if(!data.length) { %>
+                <p class="text-center">No Promotion found!</p>
+            <% } %>
+        </div>
+        </div>
+        <hr>
+    </div>
+</section>
+<!-- Categories Section End -->
+
+<!-- Categories Section Begin -->
+<section class="categories">
+    <div class="container">
+        <div class="section-title" style="margin-top: 50px;">
+            <h2>เลือกราคาที่ต้องการ</h2>
+        </div>
+        <div class="row">
+                <div class="col-lg-4">
+                    <div class="categories__item set-bg" style="box-shadow: 6px -4px 5px 3px rgba(0, 0, 0, 0.14); background-size: 290px; background-position: center;" data-setbg="../images/point.png">
+                        <h5><a href="/users/pointtwo" style="font-size: 25px;">200 แต้ม</a></h5>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="categories__item set-bg" style="box-shadow: 6px -4px 5px 3px rgba(0, 0, 0, 0.14); background-size: 290px; background-position: center;" data-setbg="../images/point.png">
+                        <h5><a href="/users/pointfive" style="font-size: 25px;">500 แต้ม</a></h5>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="categories__item set-bg" style="box-shadow: 6px -4px 5px 3px rgba(0, 0, 0, 0.14); background-size: 290px; background-position: center;" data-setbg="../images/point.png">
+                        <h5><a href="/users/pointone" style="font-size: 25px;">1000 แต้ม</a></h5>
+                    </div>
+                </div>
+        </div>
+        <hr>
+    </div>
+</section>
+<!-- Categories Section End -->
+
+<!-- Featured Section Begin -->
+<section class="featured spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <h2>คูปองที่มีอยู่ในปัจจุบัน <img src="../../images/conponeiei.png" alt="" width="40px"></h2>
+                </div>
+                <div class="featured__controls">
+                    <ul>
+                        <li class="active" data-filter="*">ทั้งหมด</li>
+                        <li data-filter=".ราคาพิเศษ">โปรโมชั่นราคาพิเศษ</li>
+                        <li data-filter=".กินฟรี">โปรโมชั่นกินฟรี</li>
+                        <li data-filter=".1แถม1">โปรโมชั่น 1 แถม 1 </li>
+                        <li data-filter=".แลกของฟรี">โปรโมชั่นแลกของฟรี</li>
+                        <li data-filter=".ส่วนลดพิเศษ">โปรโมชั่นส่วนลดพิเศษ</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row featured__filter">
+            <% if(data.length) { %>
+                <!-- Card 1 -->
+            <% for(let i = 0; i < data.length; i++) { %>
+            <div class="col-lg-3 col-md-4 col-sm-6 ราคาพิเศษ กินฟรี 1แถม1 แลกของฟรี ส่วนลดพิเศษ">
+                <div class="featured__item">
+                    <div class="featured__item__pic set-bg" data-setbg="/uploads/resturantimg/<%=data[i].pro_image%> " style="border-radius: 20px; box-shadow: 6px -4px 5px 3px rgba(0, 0, 0, 0.14);">
+                    </div>
+                    <div class="featured__item__text">
+                        <p style="margin-bottom: 10px;"><a href="/users/Detail_promotion/<%=data[i].id_pro%>" style=" color: black;"><%= data[i].pro_name %></a></p>
+                        <h5><%= data[i].pro_price%> พอยต์</h5>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+            <% } %>
+            <% if(!data.length) { %>
+                <p class="text-center">No Promotion found!</p>
+            <% } %>
+        </div>
+    </div>
+</section>
+<!-- Featured Section End -->
+
+<!-- Footer Start -->
+<%- include('../footer') %>
+<!-- Footer End -->
+
+<!-- Js Plugins -->
+<script src="../stylesheetsUsers/js/jquery-3.3.1.min.js"></script>
+<script src="../stylesheetsUsers/js/bootstrap.min.js"></script>
+<script src="../stylesheetsUsers/js/jquery.nice-select.min.js"></script>
+<script src="../stylesheetsUsers/js/jquery-ui.min.js"></script>
+<script src="../stylesheetsUsers/js/jquery.slicknav.js"></script>
+<script src="../stylesheetsUsers/js/mixitup.min.js"></script>
+<script src="../stylesheetsUsers/js/main.js"></script>
+
+
+</body>
+</html>
+
+
+
+

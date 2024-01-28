@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ogani Template">
+    <meta name="keywords" content="Ogani, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ข้อมูลส่วนตัว</title>
+
+    <link rel="icon" href="../stylesheetsUsers/img/logotitle-removebg-preview.png">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">        
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/elegant-icons.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/nice-select.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/owl.carousel.min.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/slicknav.min.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/style.css">
+    <link rel="stylesheet" type="text/css" href="../../stylesheetsUsers/stylesheet/formlogin.css">
+</head>
+
+<body>
+
+    <% if (messages.error) { %>
+        <div class="alert alert-danger" role="alert"><%= messages.error %></div>
+    <% } %>
+
+    <div id="navbar-guest">
+        <%- include('../Navbar/navbar') %>
+    </div>
+
+        <!-- Breadcrumb Section Begin -->
+        <section class="breadcrumb-section set-bg" 
+                 data-setbg="../stylesheetsUsers/img/breadcrumb.jpg" 
+                 style="box-shadow: 0px 4px 9px 4px rgba(0, 0, 0, 0.25);
+                 margin-top: 89px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <div class="breadcrumb__text">
+                            <h2>ข้อมูลส่วนตัว</h2>
+                            <div class="breadcrumb__option">
+                                <a href="#">สะดวกจอง</a>
+                                <a href="../users/Profile">ข้อมูลส่วนตัว</a>
+                                <span>แก้ไขข้อมูลส่วนตัว</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Breadcrumb Section End -->
+    <div class="container my-5" style=" box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.13);">
+        <div class="row d-flex justify-content-center">
+          <div class="col-md-6 p-0">
+            <div class="registration-form mt-5">
+              <center><h3>ข้อมูลส่วนตัว</h3></center>
+              <div class="card-body" style="padding-top: 0; ">
+                <form action="/users/update/" method = "post" enctype = "multipart/form-data">
+                  <% if (img === 'NULL') {%>
+                    <center><img src="../images/profileNon.png" alt="img" style="height: 150px; width: 150px; border-radius: 50%; margin-top: 40px;"></center>
+                    <%}else{%>
+                    <center><img src="/uploads/profile/<%= img %>" alt="img" style="height: 150px; width: 150px; border-radius: 50%; margin-top: 40px;"> </center>
+                    <% } %>
+                    <br>
+                    <center><input class="ml-5" type="file"  name="Profile" required></center>
+                  <hr>
+                  <div class="row">
+                      <div class="mb-3 col-md-6">
+                        <label for="">ชื่อจริง : </label>
+                        <input type="text" class="form-control w-100" name="name" placeholder="ชื่อจริง" value="<%= name %>" required>
+                      </div>
+                      <div class="mb-3 col-md-6">
+                        <label for="">นามสกุล : </label>
+                        <input type="text" class="form-control w-100" name="lastname" placeholder="นามสกุล" value="<%= Lname %>" required>
+                      </div>
+                      <div class="mb-3 col-md-6">
+                        <label for="">อีเมล : </label>
+                        <input type="email" class="form-control w-100" name="email" placeholder="อีเมล" value="<%= Email %>" required>
+                      </div>
+                      <div class="mb-3 col-md-6">
+                        <label for="">เบอร์โทรศัพท์ : </label>
+                        <input type="tel" class="form-control w-100" name="phonenumber" placeholder="เบอร์โทรศัพท์" value="<%= Phone %>" required>
+                      </div>
+                      <%if(address ==='NULL'){%>
+                        <div class="mb-3 col-md-12">
+                            <label for="">ที่อยู่ : </label>
+                            <textarea name="address" id="address" class="form-control w-100" cols="50" rows="10" style="width: 100%;" required>ไม่มีที่อยู่โปรดแก้ไข</textarea>
+                        </div>
+                      <%}else{%>
+                        <div class="mb-3 col-md-12">
+                            <label for="">ที่อยู่ : </label>
+                            <textarea name="address" id="address" class="form-control w-100" cols="50" rows="10" style="width: 100%;" required><%=address%></textarea>
+                        </div>
+                        <%}%>
+                    </div>
+                    <hr>
+                    <div class="profilebtn my-3 mt-4 text-center">
+                        <a href="../users/FormUpdateuUser"><button type="submit" class="btn btn-success mr-3">บันทึกข้อมูล</button></a>
+                        <a href="../users/Profile"><button type="button" class="btn btn-secondary">ย้อนกลับ</button></a>
+                    </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+<!-- Footer Start -->
+<%- include('../footer') %>
+<!-- Footer End -->
+
+<!-- Js Plugins -->
+<script src="../stylesheetsUsers/js/jquery-3.3.1.min.js"></script>
+<script src="../stylesheetsUsers/js/bootstrap.min.js"></script>
+<script src="../stylesheetsUsers/js/jquery.nice-select.min.js"></script>
+<script src="../stylesheetsUsers/js/jquery-ui.min.js"></script>
+<script src="../stylesheetsUsers/js/jquery.slicknav.js"></script>
+<script src="../stylesheetsUsers/js/mixitup.min.js"></script>
+<script src="../stylesheetsUsers/js/main.js"></script>
+
+ 
+
+</body>
+
+</html>

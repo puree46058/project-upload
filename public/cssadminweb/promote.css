@@ -1,0 +1,90 @@
+/* Custom styles for the top bar */
+.top-bar {
+    background-color: #CB0606;
+    color: #fff;
+    padding: 10px;
+    text-align: right;
+    display: flex;
+    justify-content: start;
+
+    & p {
+      margin-top: 1rem;
+      margin-left: 1rem;
+    }
+}
+
+.top-bar-logo {
+    max-width: 150px;
+    height: auto;
+}
+
+.profile-image {
+    max-width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.content {
+  margin-top: 10px;
+
+  & .infofood {
+    border: 1px solid black;
+    border-radius: 10px;
+    width: 100%;
+    display: flex;
+
+    & img {
+      width: 120px;
+      height: 80px;
+      margin-top: 40px;
+      margin-left: 20px;
+    }
+
+    & p {
+      margin-left: 10px;
+      margin-top: 10px;
+      font-size: 18px;
+      font-weight: 500;
+    }
+  }
+}
+
+/* Custom styles for the sidebar */
+.sidebar {
+    background-color: #CB0606;
+    color: #fff;
+    padding: 20px;
+    min-height: calc(100vh - 60px); /* 60px is the height of the footer */
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+  color: #fff;
+  font-size: 16px;
+}
+
+.sidebar-icon {
+    font-size: 30px;
+    margin-right: 10px;
+    margin: 0.5rem;
+}
+
+
+/* Custom styles for the footer */
+.footer {
+    background-color: #CB0606;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    /*position: fixed;*/
+    bottom: 0;
+    width: 100%;
+}

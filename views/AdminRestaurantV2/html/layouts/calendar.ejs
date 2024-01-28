@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+        }
+        .calendar {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .calendar th, .calendar td {
+            border: 1px solid #dee2e6;
+            padding: 8px;
+            text-align: center;
+        }
+        .calendar th {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .today {
+            background-color: #28a745 !important;
+            color: #fff;
+        }
+    </style>
+    <title>Dynamic Calendar</title>
+</head>
+<body>
+
+<div class="container">
+    <h2 class="text-center mb-4">Dynamic Calendar</h2>
+
+    <div class="text-center">
+        <button id="prevMonth" class="btn btn-primary mr-2">&lt; Previous Month</button>
+        <span id="currentMonthYear"></span>
+        <button id="nextMonth" class="btn btn-primary ml-2">Next Month &gt;</button>
+    </div>
+
+    <div id="calendarContainer"></div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+
+fetch('/resturant/Calendar', {method: 'GET'})
+        .then(function(response) {
+        if(response.ok) return response.json();
+        throw new Error('Request failed.');
+        })
+        .then(function(data) {
+        console.log(data);
+        var day=data[0]['current_date'];
+
+        console.log(day);
+        console.log(new Date(day));
+        })
+        .catch(function(error) {
+        console.log(error);
+        });
+
+        
+    document.addEventListener('DOMContentLoaded', function () {
+        const calendarContainer = document.getElementById('calendarContainer');
+        const currentMonthYearElement = document.getElementById('currentMonthYear');
+        const today = new Date();
+        let currentMonth = today.getMonth();
+        let currentYear = today.getFullYear();
+
+        function generateCalendar(month, year) {
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const firstDay = new Date(year, month, 1).getDay();
+
+            let html = '<table class="calendar"><thead><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead><tbody>';
+            let dayCount = 1;
+
+            for (let i = 0; i < 6; i++) {
+                html += '<tr>';
+                for (let j = 0; j < 7; j++) {
+                    if (i === 0 && j < firstDay) {
+                        html += '<td></td>';
+                    } else if (dayCount > daysInMonth) {
+                        break;
+                    } else {
+                        const isToday = dayCount === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+                        html += `<td class="${isToday ? 'today' : ''}">${dayCount}</td>`;
+                        dayCount++;
+                    }
+                }
+                html += '</tr>';
+            }
+
+            html += '</tbody></table>';
+            return html;
+        }
+
+        function updateCalendar() {
+            calendarContainer.innerHTML = generateCalendar(currentMonth, currentYear);
+            currentMonthYearElement.textContent = `${new Date(currentYear, currentMonth).toLocaleString('default', { month: 'long' })} ${currentYear}`;
+        }
+
+        function fetchDataFromDatabase() {
+            // ใช้ Fetch API เพื่อดึงข้อมูลจาก API endpoint
+            fetch('/resturant/Calendar')
+                .then(response => response.json())
+                .then(data => {
+                    const birthday = new Date(data[0].current_date);
+                    const day1 = birthday.getFullYear();
+                    const day2 = birthday.getMonth();
+                    console.log("ปี",day1);
+                    console.log("เดือน",day2);
+                    updateCalendar(day1, day2 - 1);
+                })
+                .catch(error => console.error('Error fetching data from the database:', error));
+        }
+
+        updateCalendar();
+
+        
+        // Previous month button
+        document.getElementById('prevMonth').addEventListener('click', function () {
+            currentMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+            currentYear = currentMonth === 11 ? currentYear - 1 : currentYear;
+            updateCalendar();
+        });
+
+        // Next month button
+        document.getElementById('nextMonth').addEventListener('click', function () {
+            currentMonth = currentMonth === 11 ? 0 : currentMonth + 1;
+            currentYear = currentMonth === 0 ? currentYear + 1 : currentYear;
+            updateCalendar();
+        });
+    });
+</script>
+
+</body>
+</html>

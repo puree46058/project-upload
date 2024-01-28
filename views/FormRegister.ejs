@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/x-icon" href="../stylesheetsUsers/img/logotitle-removebg-preview.png" />
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">        
+
+<!-- Css Styles -->
+<link rel="stylesheet" type="text/css" href="stylesheetsUsers/stylesheet/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/elegant-icons.css">
+<link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/nice-select.css">
+<link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/jquery-ui.min.css">
+<link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/owl.carousel.min.css">
+<link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/slicknav.min.css">
+<link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/style.css">
+<link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/formlogin.css">
+
+<title>สมัครสมาชิก</title>
+</head>
+<body>
+
+  <div id="navbar-guest">
+    <%- include('Navbar/navbar-guest') %>
+  </div>
+
+    <!-- Form Register -->
+    <div class="container my-5" style=" box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);">
+      <div class="row">
+        <div class="col-md-6" style="padding-left: 0;">
+          <img src="../stylesheetsUsers/images/logo.png" 
+          alt="Form Image" 
+          class="form-image"
+          style=" box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);"
+          >
+        </div>
+        <div class="col-md-6 p-0">
+          <div class="registration-form mt-5">
+            <h2 class="mb-4">สมัครสมาชิก</h2>
+            <form class="login-form" action="/Register" method="post">
+              <div class="form-group">
+                <label for="name">ชื่อจริง</label>
+                <input type="text" class="form-control" name="name" placeholder="กรุณาใส่ชื่อจริง" required>
+              </div>
+              <div class="form-group">
+                <label for="lastname">นามสกุล</label>
+                <input type="text" class="form-control" name="lastname" placeholder="กรุณาใส่นามสกุล" required>
+              </div>
+              <div class="form-group">
+                <label for="email">อีเมล์</label>
+                <input type="email" class="form-control" name="email" placeholder="กรุณาใส่อีเมล์" required>
+              </div>
+              <div class="form-group">
+                <label for="username">ชื่อผู้ใช้</label>
+                <input type="text" class="form-control" name="username" placeholder="กรุณาใส่ชื่อผู้ใช้" required>
+              </div>
+              <div class="form-group">
+                <label for="psw">รหัสผ่าน</label>
+                <input type="password" class="form-control" name="psw" placeholder="กรุณาใส่รหัสผ่าน" required>
+              </div>
+              <div class="form-group">
+                <label for="confpsw">ยืนยันรหัสผ่าน</label>
+                <input type="password" class="form-control" name="confpsw" placeholder="กรุณาใส่ยืนยันรหัสผ่าน" required>
+              </div>
+              <div class="form-group">
+                <label for="phonenumber">เบอร์โทรศัพท์</label>
+                <input type="text" class="form-control" name="phonenumber" placeholder="กรุณาใส่เบอร์โทรศัพท์" required>
+              </div>
+              <div class="accept my-3">
+                <input type="checkbox"required>
+                <label>ฉันยอมรับเงื่อนไขเว็บไซต์นี้แล้ว</label>
+              </div>
+              <div class="button ml-5">
+                <button type="submit" class="btn btn-success mr-4">ยืนยัน</button>
+                <button type="reset" class="btn btn-danger">ยกเลิก</button>
+              </div>
+            </form>
+            
+            <div class="footerlogin ml-5">
+              <p style="margin-left: 40px;">เว็บไซต์นี้ทำเพื่อเป็นชิ้นงานในวิชาโปรเจ็คจบเท่านั้น</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Form Register -->
+
+     <!-- Footer Section Begin -->
+     <%- include('footer') %>
+     <!-- Footer Section End -->
+
+    <!-- Js Plugins -->
+    <script src="../stylesheetsUsers/js/jquery-3.3.1.min.js"></script>
+    <script src="../stylesheetsUsers/js/bootstrap.min.js"></script>
+    <script src="../stylesheetsUsers/js/jquery.nice-select.min.js"></script>
+    <script src="../stylesheetsUsers/js/jquery-ui.min.js"></script>
+    <script src="../stylesheetsUsers/js/jquery.slicknav.js"></script>
+    <script src="../stylesheetsUsers/js/mixitup.min.js"></script>
+    <script src="../stylesheetsUsers/js/owl.carousel.min.js"></script>
+    <script src="../stylesheetsUsers/js/main.js"></script>
+
+</body>
+</html>

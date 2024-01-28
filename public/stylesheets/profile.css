@@ -1,0 +1,32 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+} 
+nav {
+    background-color: #a81c1c;  
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+
+    & .logo img {
+        height: 60px;
+        margin: 0 1rem;
+    }
+
+    & .menu {
+        list-style-type: none;
+
+        & a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 1rem;
+        }
+    }
+
+    @media (max-width: 490px) {
+        height: auto;
+        flex-direction: column;
+    }
+}

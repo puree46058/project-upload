@@ -1,0 +1,100 @@
+.navbar {
+    background-color: #CB0606;
+}
+.profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-dropdown {
+    position: relative;
+}
+.profile-dropdown p {
+    justify-content: space-between;
+    margin: 0.5rem;
+    float: right;
+    display: block;
+    color: #fff;
+}
+
+.sidebar {
+    height: 100%;
+    width: auto;
+    position: absolute;
+    top: 1;
+    left: 0;
+    z-index: 1;
+    background-color: #CB0606;
+    padding-bottom: 0;
+}
+
+.sidebar a {
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    display: block;
+}
+
+.sidebar a:hover {
+    background-color: black;
+}
+
+.content {
+    margin-left: 5rem;
+    padding: 20px;
+}
+ion-icon {
+    padding: 0.5rem 0;
+    font-size: 30px;
+}
+
+.footer {
+    background-color: #CB0606;
+    color: #fff;
+    position: fixed;
+    bottom: 0;
+    left: 3.75rem;
+    width: 100%;
+    height: 6rem;
+
+    & .iconface , .iconinsta {
+        padding: 1.7rem 0;
+    }
+}
+
+.footer img {
+    width: 4rem;
+    height: 4rem;
+    position: relative;
+    margin-left: 3rem;
+    margin-top: 1rem;
+    
+}
+
+.logo span {
+    margin-top: 2.5rem;
+    width: 9rem;
+    position: absolute;
+    margin-left: 1rem;
+}
+
+.social-media a {
+    color: #fff;
+    font-size: 5rem;
+    margin: 0.5rem;
+}
+
+.contentfooter {
+   height: 6rem;
+   margin-top: 1.2rem;
+   padding: 0;
+
+   & p {
+    margin: auto;
+    font-size: 20px;
+   }
+}
+
