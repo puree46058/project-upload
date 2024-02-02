@@ -216,7 +216,8 @@
                       <tr>
                         <th style="width: 150px;">ภาพโปรไฟล์ลูกค้า</th>
                         <th style="text-align: center;">ชื่อลูกค้า</th>
-                        <th style="text-align: center;">วันและเวลาการจอง</th>
+                        <th style="text-align: center;">วันที่จอง</th>
+                        <th style="text-align: center;">เวลาที่จอง</th>
                         <th style="text-align: center;">โปรโมชั่น</th>
                         
                         <th style="text-align: center;">สถานะ</th>
@@ -229,14 +230,15 @@
                           <% for(let i = 0; i < data.length; i++) { %>
                             <tr>
                             <% if (data[i].Profile === 'NULL') {%>
-                              <center><img src="../images/profileNon.png" alt="img" style=" width: 90px; border-radius: 50%;"></center>
+                              <td><img src="../images/profileNon.png" alt="img" style=" width: 90px; border-radius: 50%;"></td>
                               <%}else{%>
                                 <td><img src="../uploads/profile/<%=data[i].Profile %>" alt="" style="width: 90px; border-radius: 50px;"></td>
                               <% } %>
                               <td style="text-align: center;"><%=data[i].fname %></td>
                               <td style="text-align: center;">
-                                <%= new Intl.DateTimeFormat('th-TH', { year: 'numeric', month: 'long', day: '2-digit'}).format(data[i].current_date) %>
+                                <%= new Intl.DateTimeFormat('th-TH', { year: 'numeric', month: 'long', day: '2-digit'}).format(data[i].datebook) %>
                               </td>
+                              <td style="text-align: center;"><span><%=data[i].timebook%></span></td>
                               <td style="text-align: center;"><span><%=data[i].name_pro_coupon%></span></td>
                               
                               <td style="text-align: center;"><span class="badge bg-label-success me-1"><strong><%=data[i].status%></strong></span></td>

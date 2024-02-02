@@ -220,12 +220,11 @@
                         <th style="padding-left: 20px;">ชื่อคูปอง</th>
                         <th style="padding-left: 27px;">ชื่อลูกค้า</th>
                         <th>นามสกุลลูกค้า</th>
-                        <th>วันที่เริ่มคูปอง</th>
-                        <th>วันที่หมดอายุคูปอง</th>
-                        <th>เวลาที่เริ่ม</th>
-                        <th>หมดเวลา</th>
+                        <th>เบอร์โทรศัพท์</th>
+                        <th>วันที่จะมา</th>
+                        <th>เวลาที่จะมา</th>
                         <th>รหัสของลูกค้า</th>
-                        <th>การจัดการ</th>
+                        <th><center>การจัดการ</center></th>
                       </tr>
                     </thead>
                     
@@ -243,10 +242,9 @@
                         </td>
                         <td><%= dataUser[i].fname %></td>
                         <td><span><%= dataUser[i].lname %></span></td>
-                        <td><%= new Intl.DateTimeFormat('th-TH', { year: 'numeric', month: 'long', day: '2-digit'}).format(dataUser[i].date_start) %></td>
-                        <td><%= new Intl.DateTimeFormat('th-TH', { year: 'numeric', month: 'long', day: '2-digit'}).format( dataUser[i].date_end) %></td>
-                        <td><%= dataUser[i].time_start %></td>
-                        <td><%= dataUser[i].time_end %></td>
+                        <td><%= dataUser[i].phone %></td>
+                        <td><%= new Intl.DateTimeFormat('th-TH', { year: 'numeric', month: 'long', day: '2-digit'}).format(dataUser[i].datebook) %></td>                     
+                        <td><%= dataUser[i].timebook %></td>
                         <td><%= dataUser[i].cu_code %></td>
                         <td>
                             <div class="card-body" style="padding-left: 0;">
@@ -258,12 +256,12 @@
                           </td>
                       </tr>
                       <% } %>
+                    <% } else{ %>
+                      <td class="text-center" colspan="10">ไม่มีชื่อลูกค้าที่จะมา</td>
                     <% } %>
                     </tbody>
- 
-                    <% if(!dataUser.length) { %>
-                        <p class="text-center">ไม่มีชื่อลูกค้าที่จะมา</p>
-                    <% } %>
+                    
+                    
                   </table>
                 </div>
               </div>

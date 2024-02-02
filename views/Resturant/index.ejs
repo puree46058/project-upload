@@ -208,7 +208,7 @@
             <div class="container-xxl flex-grow-1 container-p-y">
               <!-- ร้านอาหาร -->
               <div class="card">
-                <a href="../resturant/ListCustomer"><h5 class="card-header flex-row">ลูกค้าที่มาจอง</h5></a>
+                <a href="../resturant/ListCustomer"><h5 class="card-header flex-row">ลูกค้าที่จะมา</h5></a>
                 <div class="table-responsive text-nowrap">
                   <table class="table">
                     <thead>
@@ -217,33 +217,35 @@
                         <th style="text-align: center;">ชื่อลูกค้า</th>
                         <th style="text-align: center;">เบอร์โทรศัพท์</th>
                         <th style="text-align: center;">โปรโมชั่น</th>
-                        <th style="text-align: center;">วันและเวลาการจอง</th>
+                        <th style="text-align: center;">วันที่จอง</th>
+                        <th style="text-align: center;">เวลาที่จอง</th>
                         <th style="text-align: center;">สถานะ</th>
                         <th style="text-align: center;">รหัสยืนยันการจอง</th>
                       </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
-                      
+                      <% if(data.length > 0) { %>
                           <% for(let i = 0; i < data.length; i++) { %>
                             <tr>
                             <% if (data[i].Profile === 'NULL') {%>
-                              <center><img src="../images/profileNon.png" alt="img" style=" width: 90px; border-radius: 50%;"></center>
+                              <td><img src="../images/profileNon.png" alt="img" style=" width: 90px; border-radius: 50%;"></td>
                               <%}else{%>
-                                <td><img src="../uploads/profile/<%=data[i].Profile %>" alt="" style="width: 90px; border-radius: 50px;"></td>
+                              <td><img src="../uploads/profile/<%=data[i].Profile %>" alt="" style="width: 90px; border-radius: 50px;"></td>
                               <% } %>
                               <td style="text-align: center;"><%=data[i].fname %></td>
                               <td style="text-align: center;"><%=data[i].phone%></td>
                               <td style="text-align: center;"><span><%=data[i].name_pro_coupon%></span></td>
                               <td style="text-align: center;">
-                                <%= new Intl.DateTimeFormat('th-TH', { year: 'numeric', month: 'long', day: '2-digit'}).format(data[i].current_date) %>
+                                <%= new Intl.DateTimeFormat('th-TH', { year: 'numeric', month: 'long', day: '2-digit'}).format(data[i].datebook) %>
                               </td>
+                              <td style="text-align: center;"><span><%=data[i].timebook %></span></td>
                               <td style="text-align: center;"><span class="badge bg-label-success me-1"><strong><%=data[i].status%></strong></span></td>
                               <td style="text-align: center;"><strong><%=data[i].cu_code%></strong></td>
                             </tr>
                             <% } %>
-                        
-                    
-                      
+                          <% } else {%>
+                            <td style="text-align: center;" colspan="8"><span>ไม่มีชื่อลูกค้าที่จะมา</span></td>
+                          <% } %>  
                     </tbody>
                   </table>
                 </div>
@@ -254,40 +256,42 @@
 
               <!-- ปฏิทินร้านอาหาร -->
               <div class="card">
-                <h5 class="card-header">วันที่ลูกค้าจอง</h5>
+                <a href="../resturant/calendar"><h5 class="card-header">วันที่ลูกค้าจอง</h5></a>
                 <div class="table-responsive text-nowrap">
                   <table class="table">
                     <thead>
                       <tr>
                         <th style="width: 150px;">ภาพโปรไฟล์ลูกค้า</th>
                         <th style="text-align: center;">ชื่อลูกค้า</th>
-                        <th style="text-align: center;">วันและเวลาการจอง</th>
+                        <th style="text-align: center;">วันที่จอง</th>
+                        <th style="text-align: center;">เวลาที่จอง</th>
                         <th style="text-align: center;">โปรโมชั่น</th>
-                        
                         <th style="text-align: center;">สถานะ</th>
                        
                       </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
                       
-                
+                      <% if(data.length > 0) { %>
                           <% for(let i = 0; i < data.length; i++) { %>
                             <tr>
                             <% if (data[i].Profile === 'NULL') {%>
-                              <center><img src="../images/profileNon.png" alt="img" style=" width: 90px; border-radius: 50%;"></center>
+                              <td><img src="../images/profileNon.png" alt="img" style=" width: 90px; border-radius: 50%;"></td>
                               <%}else{%>
                                 <td><img src="../uploads/profile/<%=data[i].Profile %>" alt="" style="width: 90px; border-radius: 50px;"></td>
                               <% } %>
                               <td style="text-align: center;"><%=data[i].fname %></td>
                               <td style="text-align: center;">
-                                <%= new Intl.DateTimeFormat('th-TH', { year: 'numeric', month: 'long', day: '2-digit'}).format(data[i].current_date) %>
+                                <%= new Intl.DateTimeFormat('th-TH', { year: 'numeric', month: 'long', day: '2-digit'}).format(data[i].datebook) %>
                               </td>
+                              <td style="text-align: center;"><span><%=data[i].timebook %></span></td>
                               <td style="text-align: center;"><span><%=data[i].name_pro_coupon%></span></td>
-                              
                               <td style="text-align: center;"><span class="badge bg-label-success me-1"><strong><%=data[i].status%></strong></span></td>
                             </tr>
                             <% } %>
-                       
+                            <% } else {%>
+                              <td style="text-align: center;" colspan="8"><span>ไม่มีชื่อลูกค้าที่จะมา</span></td>
+                            <% } %> 
                     
                     
                     </tbody>

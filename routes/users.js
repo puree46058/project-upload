@@ -715,14 +715,19 @@ router.get("/cart", isNotLogin, (req, res, next) => {
 });
 
 // รับ request ยืนยันตะกร้า
-router.get("/confirmCart", (req, res) => {
+router.get("/confirmCart",  (req, res, next) => {
   if (!req.session.promotion || req.session.promotion.length === 0) {
-    req.flash("error", "Session");
-    res.redirect("/users/back");
-    console.error("Session ไม่มี");
+    req.flash("error", "ไม่มีโปรโมชันที่ต้องยืนยันตะกร้า");
+    console.error("Session ตะกร้าไม่มี");
+    return res.redirect("/users/back");
+   
   } else {
     let promotion = req.session.promotion;
     let id = req.session.id_user;
+    let datebook = req.query.day;
+    let timebook = req.query.time;
+    console.log("วันที่จอง",datebook);
+    console.log("เวลาที่จอง",timebook);
 
     dbConnection.query(
       `SELECT * FROM coupon WHERE cu_id IN (${promotion.join(",")})`,
@@ -731,7 +736,9 @@ router.get("/confirmCart", (req, res) => {
         if (error) {
           console.error("Error querying cart products:", error);
           req.flash("error", error);
-          res.redirect("/users/back");
+          console.log("1");
+          return res.redirect("/users/back");
+         
         } else {
           // คำนวณราคา coupon ทั้งหมด
           let totalprice = 0;
@@ -743,11 +750,15 @@ router.get("/confirmCart", (req, res) => {
               let userPoint = rows[0].user_point;
               if (error) {
                 req.flash("error", error);
-                res.redirect("/users/back");
+                console.log("2");
+                return res.redirect("/users/back");
+               
               } else {
                 if (userPoint < totalprice) {
                   req.flash("message", "พอยต์ของผู้ใช้ไม่เพียงพอ");
-                  res.redirect("/users/back");
+                  console.log("3");
+                  return res.redirect("/users/back");
+                  
                 } else {
                   let currentPoint = userPoint - totalprice;
                   req.session.point=currentPoint;
@@ -759,7 +770,9 @@ router.get("/confirmCart", (req, res) => {
                     (error, rows2) => {
                       if (error) {
                         req.flash("error", error);
-                        res.redirect("/users/back");
+                        console.log("4");
+                        return res.redirect("/users/back");
+                        
                       } else {
                         console.log("แก้ไขพอยต์หลังจากซื้อสำเร็จ");
                         let idList = promotion.join(",");
@@ -768,47 +781,49 @@ router.get("/confirmCart", (req, res) => {
                         dbConnection.query(connectquery, (error, rows3) => {
                           if (error) {
                             req.flash("error", error);
-                            res.redirect("/users/back");
+                            console.log("5");
+                            return res.redirect("/users/back");
+                            
                           } else {
                             console.log("แก้ไขสถานะคูปองหลังจากซื้อสำเร็จ");
                             console.log("ID", id);
                             console.log("cart", promotion);
 
-                            if (
-                              req.session.promotion &&
-                              req.session.promotion.length === 1
-                            ) {
-                              const query = `INSERT INTO coupon_user (user_id, coupon_id,status) VALUES (${id}, ${promotion},'Book')`;
-
+                            if (req.session.promotion && req.session.promotion.length === 1) {
+                              console.log("วันที่จอง",datebook);
+                              console.log("เวลาที่จอง",timebook);
+                              const promotionint = parseInt(req.session.promotion);
+                              // const query1 = `INSERT INTO coupon_user (user_id, coupon_id,status,datebook,timebook) VALUES (${id}, ${promotion},'Book','${datebook}','${timebook}')`;
+                              const query1 = `INSERT INTO coupon_user (user_id, coupon_id, status, datebook, timebook) VALUES (?, ?, ?, ?, ?)`;
+                              const values = [id, promotionint, 'Book', datebook, timebook];
                               // ทำการ execute query
-                              dbConnection.query(
-                                query,
-                                (error, row4, fields) => {
+                              dbConnection.query(query1,values,(error, row4, fields) => {
                                   if (error) {
                                     req.flash("error", error);
-                                    res.redirect("/users/back");
+                                    console.log("จุด 1");
+                                    console.log(error);
+                                    return res.redirect("/users/back");
                                   } else {
                                     console.log("มีคูปองที่จองแล้ว 1 ");
-                                    req.flash(
-                                      "message",
-                                      "คูปองถูกจองเรียบร้อย"
-                                    );
+                                    req.flash("message","คูปองถูกจองเรียบร้อย");
                                     delete req.session.promotion;
                                   }
                                 }
                               );
+                              
                             } else {
+                              
                               promotion.forEach((couponId) => {
+                                const promotionint = parseInt(couponId);
                                 // สร้าง SQL query สำหรับการเพิ่มข้อมูล
-                                const query = `INSERT INTO coupon_user (user_id, coupon_id,status) VALUES (${id}, ${couponId}, 'Book')`;
-
+                                const query = `INSERT INTO coupon_user (user_id, coupon_id, status, datebook, timebook) VALUES (?, ?, ?, ?, ?)`;
+                                const values = [id, promotionint, 'Book', datebook, timebook];
                                 // ทำการ execute query
                                 dbConnection.query(
-                                  query,
-                                  (error, row5, fields) => {
+                                  query,values,(error, row5, fields) => {
                                     if (error) {
                                       req.flash("error", error);
-                                      res.redirect("/users/back");
+                                      return res.redirect("/users/back");
                                     } else {
                                       console.log("มีคูปองที่จองแล้วมากกว่า 1");
                                       req.flash(
@@ -819,7 +834,7 @@ router.get("/confirmCart", (req, res) => {
                                       if (
                                         promotion.length === row5.affectedRows
                                       ) {
-                                        res.redirect("/users/back");
+                                        return res.redirect("/users/back");
                                       }
                                     }
                                   }
@@ -831,31 +846,28 @@ router.get("/confirmCart", (req, res) => {
                             dbConnection.query('SELECT COUNT(*) AS total FROM coupon WHERE status != "Book" AND id_pro_coupon=?',[idpro],(error, CouponResults, fields) => {
                                 if (error) {
                                   req.flash("error", error);
-                                  res.redirect("/users/back");
-                                }
+                                  return res.redirect("/users/back");
+                                }else{
+                                  const total = CouponResults[0].total;
 
-                                const total = CouponResults[0].total;
-
-                                // ถ้าทุก record มี status เป็น "Book"
-                                if (total === 0) {
-                                  // อัปเดตข้อมูลในตาราง promotion เป็น "off"
-                                  dbConnection.query('UPDATE promotion SET status = "Off" WHERE id_pro=?',[idpro],(updateError,updateResults,updateFields
-                                    ) => {
-                                      if (updateError) {
-                                        req.flash("error", updateError);
-                                        res.redirect("/users/back");
+                                  // ถ้าทุก record มี status เป็น "Book"
+                                  if (total === 0) {
+                                    // อัปเดตข้อมูลในตาราง promotion เป็น "off"
+                                    dbConnection.query('UPDATE promotion SET status = "Off" WHERE id_pro=?',[idpro],(updateError,updateResults,updateFields) => {
+                                        if (updateError) {
+                                          req.flash("error", updateError);
+                                          return res.redirect("/users/back");
+                                        }
+                                        console.log('Updated promotion status to "off"');
+                                        return res.redirect("/users/back");
                                       }
-                                      console.log(
-                                        'Updated promotion status to "off"'
-                                      );
-                                      res.redirect("/users/back");
-                                    }
-                                  );
-                                } else {
-                                  res.redirect("/users/back");
-                                  console.log(
-                                    'Coupon status is not all "Book", no update needed.'
-                                  );
+                                    );
+                                  } else {
+                                    console.log(
+                                      'Coupon status is not all "Book", no update needed.'
+                                    );
+                                    return res.redirect("/users/back");
+                                  }
                                 }
                               }
                             );

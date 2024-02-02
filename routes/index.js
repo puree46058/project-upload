@@ -407,22 +407,29 @@ router.post('/Login', (req, res, next) => {
             }
           });
         } else if (role === 'R') {
-
+          let id = req.session.id_res;
+          
           let idUsertb = req.session.id_user;
           let idUser = req.session.id_user;
-          let query=`SELECT cu.coupon_id, cu.current_date, cu.status, u.fname, u.lname,u.Profile,u.phone, cp.cu_id, cp.name_pro_coupon,cp.cu_code
+          let query=`SELECT cu.coupon_id, cu.datebook, cu.timebook,cu.status, u.fname, u.lname,u.Profile,u.phone,pro.id_restb, cp.cu_id,cp.id_pro_coupon, cp.name_pro_coupon,cp.cu_code
           FROM coupon_user cu 
           INNER JOIN coupon cp ON cu.coupon_id = cp.cu_id 
-          INNER JOIN user u ON cu.user_id = u.id_user WHERE cu.status='Book'
+          INNER JOIN user u ON cu.user_id = u.id_user 
+          INNER JOIN promotion pro ON cp.id_pro_coupon = pro.id_pro 
+          WHERE cu.status='Book' AND pro.id_restb=?
           ORDER BY cu.id DESC`;
-          let querytime=`SELECT cu.coupon_id, cu.current_date, cu.status, u.fname, u.lname,u.Profile,u.phone, cp.cu_id, cp.name_pro_coupon,cp.cu_code
+          let querytime=`SELECT cu.coupon_id, cu.datebook, cu.timebook,cu.status, u.fname, u.lname,u.Profile,u.phone,pro.id_restb, cp.cu_id,cp.id_pro_coupon, cp.name_pro_coupon,cp.cu_code
           FROM coupon_user cu 
           INNER JOIN coupon cp ON cu.coupon_id = cp.cu_id 
-          INNER JOIN user u ON cu.user_id = u.id_user WHERE cu.status='Book'
-          ORDER BY cu.current_date ASC`;
+          INNER JOIN user u ON cu.user_id = u.id_user 
+          INNER JOIN promotion pro ON cp.id_pro_coupon = pro.id_pro 
+          WHERE cu.status='Book' AND pro.id_restb=?
+          ORDER BY cu.datebook ASC`;
 
-          dbConnection.query(querytime, (err, rowtime, fields) => {
-            dbConnection.query(query, (err, rows, fields) => {
+
+
+          dbConnection.query(querytime,[id], (err, rowtime, fields) => {
+            dbConnection.query(query,[id], (err, rows, fields) => {
               if (err) {
                 console.log(err);
               } else if (rows.length <= 0) {

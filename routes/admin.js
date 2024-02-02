@@ -1474,21 +1474,22 @@ router.get('/ReportPoint', function (req, res, next) {
                 console.log(error);
                 res.redirect('/admin/mainadmin');
               } else if (results.length <= 0) {
-                res.render('adminn/ReportPoint', { Reportpdf: '', totalPointEarn: '',img: req.session.profile, name: req.session.fname});
+                res.render('adminn/ReportPointPaper', { Reportpdf: '', totalPointEarn: '',img: req.session.profile, name: req.session.fname});
               } else {
           
                 let totalPointEarn = 0;
                 results.forEach((tran) => {
-                    totalPointEarn += tran.point_earn;
+                    totalPointEarn += parseFloat(tran.point_earn);
                 });//pont total
-    
+                const formattedTotal =totalPointEarn.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+
                 let startDateForpdf=moment(start).locale('th').format('D MMMM YYYY');
                 let endDateForpdf=moment(end).locale('th').format('D MMMM YYYY');
     
                 let data = results.map(row => ({ 
                   TranId: row.tran_id,
                   Username: row.username,
-                  Point: row.point_earn,
+                  Point: parseFloat(row.point_earn).toFixed(2),
                   Bank: row.bank_name,
                   Status:row.status,
                   Date: moment(row.tran_date).locale('th').format('D MMMM YYYY')
@@ -1512,7 +1513,7 @@ router.get('/ReportPoint', function (req, res, next) {
                 doc.setFontSize(12);
                 let dataTableForPDF = {
                   startY: 20,
-                  head: [['เลขการโอน', 'ชื่อผู้ใช้', 'ชื่อร้าน(ุถ้ามี)', 'พอยต์ที่เติม', 'ธนาคาร','สถานะการเติม', 'วันที่']],
+                  head: [['เลขการโอน', 'ชื่อผู้ใช้', 'พอยต์ที่เติม', 'ธนาคาร','สถานะการเติม', 'วันที่']],
                   body: data.map(row => [
                     row.TranId,
                     row.Username,
@@ -1526,12 +1527,12 @@ router.get('/ReportPoint', function (req, res, next) {
           
                 doc.autoTable(dataTableForPDF);
                 let totalPriceTextY = doc.autoTable.previous.finalY + 10; //ระยะห่างระหว่าง dataTable กับ ยอดรวม
-                doc.text("ยอดรวมสุทธิ : " + totalPointEarn, 190, totalPriceTextY, { align: 'right' });
+                doc.text("ยอดรวมสุทธิ : " + formattedTotal, 190, totalPriceTextY, { align: 'right' });
                 doc.setFontSize(10);
                 doc.text('© สะดวกจอง. All Rights Reserved. By มหาวิทยาลัยเทคโนโลยีราชมงคลล้านนา 128 ถ.ห้วยแก้ว ต.ช้างเผือก อ.เมือง จ.เชียงใหม่ 50300', 15, doc.internal.pageSize.getHeight() - 10, { align: 'left' }); //footer 
                 doc.setLineWidth(2);
                 doc.save("./public/pdf/ReportPoint.pdf");
-                res.render('adminn/ReportPointPaper',{Reportpdf:results, totalPointEarn: totalPointEarn,img: req.session.profile, name: req.session.fname});
+                res.render('adminn/ReportPointPaper',{Reportpdf:results, totalPointEarn: formattedTotal,img: req.session.profile, name: req.session.fname});
             }
         })
     });

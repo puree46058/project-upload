@@ -13,6 +13,8 @@ var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin');
 var resturantRouter = require('./routes/resturant');
 
+// const port=3000;
+
 var app = express();
 
 // view engine setup
@@ -57,5 +59,8 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+// app.listen(port, () => {
+//   console.log("Server is running on port : ${port}");
+// });
 
 module.exports = app;

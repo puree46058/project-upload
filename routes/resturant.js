@@ -22,21 +22,25 @@ function isNotLogin(req, res, next) { //check session
 
 
 router.get('/', isNotLogin, (req, res, next) => {
-  
-  let query=`SELECT cu.coupon_id, cu.current_date, cu.status, u.fname, u.lname,u.Profile,u.phone, cp.cu_id, cp.name_pro_coupon,cp.cu_code
+  let id = req.session.id_res;
+  console.log(id);
+  let query=`SELECT cu.coupon_id, cu.datebook, cu.timebook,cu.status, u.fname, u.lname,u.Profile,u.phone,pro.id_restb, cp.cu_id,cp.id_pro_coupon, cp.name_pro_coupon,cp.cu_code
   FROM coupon_user cu 
   INNER JOIN coupon cp ON cu.coupon_id = cp.cu_id 
-  INNER JOIN user u ON cu.user_id = u.id_user WHERE cu.status='Book'
+  INNER JOIN user u ON cu.user_id = u.id_user 
+  INNER JOIN promotion pro ON cp.id_pro_coupon = pro.id_pro 
+  WHERE cu.status='Book' AND pro.id_restb=?
   ORDER BY cu.id DESC`;
-
-  let querytime=`SELECT cu.coupon_id, cu.current_date, cu.status, u.fname, u.lname,u.Profile,u.phone, cp.cu_id, cp.name_pro_coupon,cp.cu_code
+  let querytime=`SELECT cu.coupon_id, cu.datebook, cu.timebook,cu.status, u.fname, u.lname,u.Profile,u.phone,pro.id_restb, cp.cu_id,cp.id_pro_coupon, cp.name_pro_coupon,cp.cu_code
   FROM coupon_user cu 
   INNER JOIN coupon cp ON cu.coupon_id = cp.cu_id 
-  INNER JOIN user u ON cu.user_id = u.id_user WHERE cu.status='Book'
-  ORDER BY cu.current_date ASC`;
+  INNER JOIN user u ON cu.user_id = u.id_user 
+  INNER JOIN promotion pro ON cp.id_pro_coupon = pro.id_pro 
+  WHERE cu.status='Book' AND pro.id_restb=?
+  ORDER BY cu.datebook ASC`;
 
-  dbConnection.query(querytime, (err, result2) => {
-    dbConnection.query(query, (err, result) => {
+  dbConnection.query(querytime,[id],(err, result2) => {
+    dbConnection.query(query,[id],(err, result) => {
       if (err) {
         req.flash('error', err);
         res.render('Resturant', { 
@@ -63,20 +67,25 @@ router.get('/', isNotLogin, (req, res, next) => {
 });
 // back profile
 router.get('/back', isNotLogin, (req, res, next) => {
-  let query=`SELECT cu.coupon_id, cu.current_date, cu.status, u.fname, u.lname,u.Profile,u.phone, cp.cu_id, cp.name_pro_coupon,cp.cu_code
+  let id = req.session.id_res;
+  console.log(id);
+  let query=`SELECT cu.coupon_id, cu.datebook, cu.timebook,cu.status, u.fname, u.lname,u.Profile,u.phone,pro.id_restb, cp.cu_id,cp.id_pro_coupon, cp.name_pro_coupon,cp.cu_code
   FROM coupon_user cu 
   INNER JOIN coupon cp ON cu.coupon_id = cp.cu_id 
-  INNER JOIN user u ON cu.user_id = u.id_user WHERE cu.status='Book'
+  INNER JOIN user u ON cu.user_id = u.id_user 
+  INNER JOIN promotion pro ON cp.id_pro_coupon = pro.id_pro 
+  WHERE cu.status='Book' AND pro.id_restb=?
   ORDER BY cu.id DESC`;
-
-  let querytime=`SELECT cu.coupon_id, cu.current_date, cu.status, u.fname, u.lname,u.Profile,u.phone, cp.cu_id, cp.name_pro_coupon,cp.cu_code
+  let querytime=`SELECT cu.coupon_id, cu.datebook, cu.timebook,cu.status, u.fname, u.lname,u.Profile,u.phone,pro.id_restb, cp.cu_id,cp.id_pro_coupon, cp.name_pro_coupon,cp.cu_code
   FROM coupon_user cu 
   INNER JOIN coupon cp ON cu.coupon_id = cp.cu_id 
-  INNER JOIN user u ON cu.user_id = u.id_user WHERE cu.status='Book'
-  ORDER BY cu.current_date ASC`;
+  INNER JOIN user u ON cu.user_id = u.id_user 
+  INNER JOIN promotion pro ON cp.id_pro_coupon = pro.id_pro 
+  WHERE cu.status='Book' AND pro.id_restb=?
+  ORDER BY cu.datebook ASC`;
 
-  dbConnection.query(querytime, (err, result2) => {
-    dbConnection.query(query, (err, result) => {
+  dbConnection.query(querytime,[id], (err, result2) => {
+    dbConnection.query(query, [id],(err, result) => {
       if (err) {
         req.flash('error', err);
         res.render('Resturant', { 
@@ -102,13 +111,13 @@ router.get('/back', isNotLogin, (req, res, next) => {
 });
 
 router.get('/calendar', isNotLogin, (req, res) => {
-  const query = `SELECT cu.coupon_id, cu.current_date, cu.status, u.fname, u.lname, u.Profile,cp.cu_id, cp.name_pro_coupon, cp.price_pro ,res.res_name 
+  const query = `SELECT cu.coupon_id, cu.datebook,cu.timebook, cu.status, u.fname, u.lname, u.Profile,cp.cu_id, cp.name_pro_coupon, cp.price_pro ,res.res_name 
   FROM coupon_user cu 
   INNER JOIN coupon cp ON cu.coupon_id = cp.cu_id 
   INNER JOIN user u ON cu.user_id = u.id_user 
   INNER JOIN restaurants res ON cp.id_res_coupon = res.id_res 
   WHERE cu.status='Book'
-  ORDER BY current_date DESC `;
+  ORDER BY datebook DESC `;
   dbConnection.query(query, (err, result) => {
     if(err){
       console.log(err);
@@ -962,7 +971,7 @@ router.post("/addpoint", uploadPoint.single("point"), (req, res, next) => {
 /*-------------------------------------------------------ListCustomer---------------------------------------------*/
 router.get('/ListCustomer', (req, res, next) => {
   let idRes= req.session.id_res;
-    dbConnection.query('SELECT coupon.*,user.* FROM coupon JOIN user ON coupon.id_user = user.id_user WHERE coupon.status = "Book" AND coupon.id_res_coupon =?',[idRes],(error,userdata) => {
+    dbConnection.query('SELECT coupon.*,user.*,coupon_user.* FROM coupon JOIN user ON coupon.id_user = user.id_user  JOIN coupon_user ON coupon.cu_id = coupon_user.coupon_id WHERE coupon.status = "Book" AND coupon.id_res_coupon =?',[idRes],(error,userdata) => {
       if (error) {
         req.flash("error", error);
         res.redirect('/resturant/back');
@@ -1057,12 +1066,12 @@ router.post("/report", (req, res, next) => {
   let start = req.body.startDate;
   let end = req.body.endDate;
   let query = `
-  SELECT cu.coupon_id, cu.current_date, cu.status, u.fname, u.lname, cp.cu_id, cp.name_pro_coupon, cp.price_pro ,res.res_name
+  SELECT cu.coupon_id, cu.datebook, cu.timebook,cu.status, u.fname, u.lname, cp.cu_id, cp.name_pro_coupon, cp.price_pro ,res.res_name
   FROM coupon_user cu
   INNER JOIN coupon cp ON cu.coupon_id = cp.cu_id
   INNER JOIN user u ON cu.user_id = u.id_user
   INNER JOIN restaurants res ON cp.id_res_coupon = res.id_res
-  WHERE cp.id_res_coupon='${idRes}' AND cu.current_date BETWEEN '${start}' AND '${end}'
+  WHERE cp.id_res_coupon='${idRes}' AND cu.datebook BETWEEN '${start}' AND '${end}'
 `;
 
   dbConnection.query(query, (error, results) => {
@@ -1084,18 +1093,20 @@ router.post("/report", (req, res, next) => {
 
       let totalprice = 0;
       results.forEach((coupon) => {
-        totalprice += coupon.price_pro;
+        totalprice += parseFloat(coupon.price_pro);
       });//pont total
+      const formattedTotal = totalprice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 
       let nameResturant= results[0].res_name;//name Resturant
 
       let data = results.map(row => ({ 
         IDCoupon: row.coupon_id,
         PromotionName: row.name_pro_coupon,
-        CouponPrice: row.price_pro,
+        CouponPrice: parseFloat(row.price_pro).toFixed(2),
         NameUser: row.fname,
         LastName: row.lname,
-        Date: moment(row.current_date).locale('th').format('D MMMM YYYY')
+        Date: moment(row.datebook).locale('th').format('D MMMM YYYY'),
+        Time:row.timebook
       })); // data To table
 
 
@@ -1114,25 +1125,27 @@ router.post("/report", (req, res, next) => {
       doc.text("รายงานคูปองของร้านอาหาร : "+nameResturant, width / 2, 10, { align: 'center' });
       let dataTableForPDF = {
         startY: 20,
-        head: [['รหัสคูปอง', 'ชื่อโปรโมชั่น', 'ราคาคูปอง', 'ชื่อลูกค้า', 'นามสกุล', 'วันที่']],
+        head: [['รหัสคูปอง', 'ชื่อโปรโมชั่น', 'ราคาคูปอง', 'ชื่อลูกค้า', 'นามสกุล', 'วันที่จอง', 'เวลาที่จอง']],
         body: data.map(row => [
           row.IDCoupon,
           row.PromotionName,
           row.CouponPrice,
           row.NameUser,
           row.LastName,
-          row.Date
+          row.Date,
+          row.Time
       ]),
         styles: { font: 'MyFont' }
       }
 
       doc.autoTable(dataTableForPDF);
       let totalPriceTextY = doc.autoTable.previous.finalY + 10; //ระยะห่างระหว่าง dataTable กับ ยอดรวม
-      doc.text("ยอดรวมสุทธิ : " + totalprice, 190, totalPriceTextY, { align: 'right' });
+      
+      doc.text("ยอดรวมสุทธิ : " + formattedTotal, 190, totalPriceTextY, { align: 'right' });
       doc.setFontSize(10);
       doc.text('© สะดวกจอง. All Rights Reserved. By มหาวิทยาลัยเทคโนโลยีราชมงคลล้านนา 128 ถ.ห้วยแก้ว ต.ช้างเผือก อ.เมือง จ.เชียงใหม่ 50300', 15, doc.internal.pageSize.getHeight() - 10, { align: 'left' }); //footer 
       doc.save("./public/pdf/Report.pdf");
-      res.render('Resturant/ReportPaper', { bookings: results, totalprice: totalprice,nameResturant:nameResturant,name: req.session.nameResturant,img: req.session.profileResturant,point:req.session.point });
+      res.render('Resturant/ReportPaper', { bookings: results, totalprice: formattedTotal,nameResturant:nameResturant,name: req.session.nameResturant,img: req.session.profileResturant,point:req.session.point });
     }
   })
 

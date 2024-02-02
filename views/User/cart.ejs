@@ -92,7 +92,7 @@
                                     </td>
                                   
                                     <td class="shoping__cart__item__close">
-                                        <span><a href="/users/remove/<%= coupons[i].cu_id %>" style="font-size: 25px; color: red; text-decoration: none;"><i class="bi bi-trash"></i></a></span>
+                                        <span><a href="/users/remove/<%= coupons[i].cu_id %>" style="font-size: 25px; color: red; text-decoration: none;"><i class="bi bi-trash">x</i></a></span>
                                     </td>
                                 </tr>
                                 <% }; %>
@@ -113,7 +113,15 @@
                             <li>แต้มที่ต้องชำระทั้งหมด <span style="font-size: 20px;"><%=totalprice%></span></li>
                         </ul>
                         <hr>
-                        <a href="/users/confirmCart" class="primary-btn">ชำระแต้ม</a>
+
+                        <label for="day">วันที่ต้องการ :</label>
+                        <input type="date" id="daybook" name="daybook">
+                        <br>
+                        <label for="time">เวลาที่ต้องการ :</label>
+                        <input type="time" id="timebook" name="timebook">
+                        
+                        <a href="#" onclick="goToPage2()"  class="primary-btn">ชำระแต้ม</a>
+                        <!-- <a href="/users/confirmCart" class="primary-btn">ชำระแต้ม</a> -->
                         <a href="/users/clear-cart" class="primary-btn my-3">ลบทั้งหมด</a>
                     </div>
                 </div>
@@ -127,6 +135,14 @@
     <!-- Footer End -->
 
 <!-- Js Plugins -->
+<script>
+    function goToPage2() {
+      const day = document.getElementById('daybook').value;
+      const time = document.getElementById('timebook').value;
+      const url = `/users/confirmCart?day=${encodeURIComponent(day)}&time=${encodeURIComponent(time)}`;
+      window.location.href = url;
+    }
+  </script>
 <script src="../stylesheetsUsers/js/jquery-3.3.1.min.js"></script>
 <script src="../stylesheetsUsers/js/bootstrap.min.js"></script>
 <script src="../stylesheetsUsers/js/jquery.nice-select.min.js"></script>

@@ -236,9 +236,11 @@
 
               <!-- Basic Bootstrap Table -->
               <div class="card">
-                <h5 class="card-header">รายงานการจองโปรโมชั่นของร้าน : <%=nameResturant%>
+                <h5 class="card-header">รายงานการจองโปรโมชั่นของร้าน : <%=nameResturant ? nameResturant: "ไม่มีชื่อร้าน" %>
                   <span>
-                    <a href="/resturant/pdf"><button type="submit" class="btn btn-danger mx-4" style="float: inline-end;">พิมพ์รายงาน</button></a>
+                    <% if (bookings.length > 0) { %>
+                      <a href="/resturant/pdf"><button type="submit" class="btn btn-danger mx-4" style="float: inline-end;">พิมพ์รายงาน</button></a>
+                    <% }%>
                   </span>
                 </h5>
                 <div class="table-responsive text-nowrap">
@@ -256,17 +258,23 @@
                       </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
-                      <% bookings.forEach(booking => { %>
-                      <tr>
-                        <td style="text-align: center;"><%= booking.coupon_id %></td>
-                        <td style="text-align: center;"><%= booking.name_pro_coupon %></td>
-                        <td style="text-align: center;"><%= booking.price_pro %></td>
-                        <td style="text-align: center;"><%= booking.status %></td>
-                        <td style="text-align: center;"><%= booking.fname %></td>
-                        <td style="text-align: center;"><%= booking.lname %></td>
-                        <td style="text-align: center;"> <%= new Intl.DateTimeFormat('th-TH', { year: 'numeric', month: 'long', day: '2-digit'}).format(booking.current_date) %></td>
-                      </tr>
-                      <% }); %>
+                      <% if (bookings.length > 0) { %>
+                        <% bookings.forEach(booking => { %>
+                          <tr>
+                            <td style="text-align: center;"><%= booking.coupon_id %></td>
+                            <td style="text-align: center;"><%= booking.name_pro_coupon %></td>
+                            <td style="text-align: center;"><%= parseFloat(booking.price_pro).toFixed(2)%></td>
+                            <td style="text-align: center;"><%= booking.status %></td>
+                            <td style="text-align: center;"><%= booking.fname %></td>
+                            <td style="text-align: center;"><%= booking.lname %></td>
+                            <td style="text-align: center;"><%= new Intl.DateTimeFormat('th-TH', { year: 'numeric', month: 'long', day: '2-digit'}).format(booking.current_date) %></td>
+                          </tr>
+                        <% }); %>
+                      <% } else { %>
+                        <tr>
+                          <td colspan="7" style="text-align: center;">ไม่มีข้อมูล</td>
+                        </tr>
+                      <% } %>
                     </tbody>
                   </table>
                 </div>
@@ -274,7 +282,15 @@
                 <nav aria-label="Page navigation">
                   
                   <ul class="pagination mx-5 p-0" style="display: inline-block;">
-                    <caption class="ms-4" style="align-items: center;"><b>รวมพอยต์ที่ได้ทั้งหมด : <%=totalprice%> แต้ม</b></caption>
+                    <caption class="ms-4" style="align-items: center;"><b>รวมพอยต์ที่ได้ทั้งหมด :   
+                      <% 
+                      const totalpriceWithoutComma = totalprice.replace(/,/g, '');
+                      const parsedPrice = parseFloat(totalpriceWithoutComma);
+                      const formattedPrice = isNaN(parsedPrice) ? "0000000.00" : parsedPrice.toFixed(2);
+                      const displayPrice = formattedPrice === "0000000.00" ? "0" : formattedPrice;
+                      %>
+                      <%= displayPrice%> แต้ม
+                    </b></caption>
                       
                   </ul>
                 </nav>

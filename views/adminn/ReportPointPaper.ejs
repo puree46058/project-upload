@@ -239,7 +239,9 @@
               <div class="card">
                 <h5 class="card-header">รายงานประวัติการเติมแต้ม
                   <span>
-                    <a href="/admin/pdf"><button type="submit" class="btn btn-danger mx-4" style="float: inline-end;">พิมพ์รายงาน</button></a>
+                    <% if (Reportpdf.length > 0) { %>
+                      <a href="/admin/pdf"><button type="submit" class="btn btn-danger mx-4" style="float: inline-end;">พิมพ์รายงาน</button></a>
+                    <% }  %>                
                   </span>
                 </h5>
                 <div class="table-responsive text-nowrap">
@@ -256,16 +258,22 @@
                       </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
-                      <% Reportpdf.forEach(pdf => { %>
+                      <% if (Reportpdf.length > 0) { %>
+                        <% Reportpdf.forEach(pdf => { %>
+                          <tr>
+                            <td style="text-align: center;"><%= pdf.tran_id %></td>
+                            <td style="text-align: center;"><%= pdf.username %></td>    
+                            <td style="text-align: center;"><%= parseFloat(pdf.point_earn).toFixed(2) %></td>
+                            <td style="text-align: center;"><%= pdf.bank_name %></td>
+                            <td style="text-align: center;"><%= pdf.status %></td>
+                            <td style="text-align: center;"> <%= new Intl.DateTimeFormat('th-TH', { year: 'numeric', month: 'long', day: '2-digit'}).format(pdf.tran_date) %></td>
+                          </tr>
+                        <% }); %>
+                      <% } else { %>
                         <tr>
-                          <td style="text-align: center;"><%= pdf.tran_id %></td>
-                          <td style="text-align: center;"><%= pdf.username %></td>    
-                          <td style="text-align: center;"><%= pdf.point_earn %></td>
-                          <td style="text-align: center;"><%= pdf.bank_name %></td>
-                          <td style="text-align: center;"><%= pdf.status %></td>
-                          <td style="text-align: center;"> <%= new Intl.DateTimeFormat('th-TH', { year: 'numeric', month: 'long', day: '2-digit'}).format(pdf.tran_date) %></td>
+                          <td colspan="7" style="text-align: center;">ไม่มีข้อมูล</td>
                         </tr>
-                      <% }); %>
+                      <% } %>
                     </tbody>
                   </table>
                 </div>
@@ -273,7 +281,14 @@
                 <nav aria-label="Page navigation">
                   
                   <ul class="pagination mx-5 p-0" style="display: inline-block;">
-                    <caption class="ms-4" style="align-items: center;"><b>รวมพอยต์ที่มีการเติมทั้งหมด : <%=totalPointEarn%> แต้ม</b></caption>
+                    <caption class="ms-4" style="align-items: center;"><b>รวมพอยต์ที่มีการเติมทั้งหมด : 
+                      <% 
+                      const PointEarnWithoutComma = totalPointEarn.replace(/,/g, '');
+                      const parsedPointEarn = parseFloat(PointEarnWithoutComma);
+                      const formattedPointEarn= isNaN(parsedPointEarn) ? "0000000.00" : parsedPointEarn.toFixed(2);
+                      const displayPointEarn= formattedPointEarn === "0000000.00" ? "0" : formattedPointEarn;
+                      %>
+                      <%= displayPointEarn%>  แต้ม</b></caption>
                       
                   </ul>
                 </nav>
