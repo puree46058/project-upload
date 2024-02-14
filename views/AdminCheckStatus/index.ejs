@@ -206,9 +206,24 @@
           <div class="content-wrapper">
             <!-- Content -->
             <div class="container-xxl flex-grow-1 container-p-y">
+              <% if(messages.error) {%>
+                <div role="alert" class="alert alert-danger text-center mt-3" style="font-size: 18px;">
+                  <%= messages.error%>
+                </div>
+            <% } %>
+            <% if(messages.success) {%>
+                <div role="alert" class="alert alert-success text-center mt-3" style="font-size: 18px;">
+                  <%= messages.success%>
+                </div>
+            <% } %>
+            <% if(messages.message) {%>
+                <div role="alert" class="alert alert-warning text-center mt-3" style="font-size: 18px;">
+                  <%= messages.message%>
+                </div>
+            <% } %>
               <!-- ร้านอาหาร -->
               <div class="card">
-                <a href="manage-restaurant.html" style="text-decoration: none;"><h5 class="card-header flex-row">สถานะร้านอาหารใหม่</h5></a>
+                <a href="/admin/AdminStatusResturant" style="text-decoration: none;"><h5 class="card-header flex-row">สถานะร้านอาหารใหม่</h5></a>
                 <div class="table-responsive text-nowrap">
                   <table class="table">
                     <thead>
@@ -288,7 +303,7 @@
                   </table>
                   
                   <% if(!data.length) { %>
-                    <p class="text-center mt-3">No Resturant found!</p>
+                    <p class="text-center mt-3">ไม่มีร้านอาหารที่สมัคร</p>
                   <% } %>
                 </div>
               </div>

@@ -226,7 +226,7 @@
                     </thead>
                     <tbody class="table-border-bottom-0">
                       
-                
+                      <% if(data.length > 0) { %>
                           <% for(let i = 0; i < data.length; i++) { %>
                             <tr>
                             <% if (data[i].Profile === 'NULL') {%>
@@ -243,8 +243,10 @@
                               
                               <td style="text-align: center;"><span class="badge bg-label-success me-1"><strong><%=data[i].status%></strong></span></td>
                             </tr>
-                            <% } %>
-                       
+                            <% } %>  
+                      <% } else {%>
+                              <td style="text-align: center;" colspan="8"><span>ไม่มีชื่อลูกค้าที่จะมา</span></td>
+                      <% } %>  
                     
                     
                     </tbody>

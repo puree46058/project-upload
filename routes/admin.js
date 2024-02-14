@@ -45,11 +45,12 @@ router.get('/', isNotLogin, (req, res, next) => {
 router.get('/HistoryWebsite', isNotLogin, (req, res, next) => {
     dbConnection.query('SELECT COUNT(*) AS visitCount FROM historyviews', (err, rows) => {
         if (err) {
+            req.flash("error", "ระบบผิดพลาดโปรดแจ้งผู้ดูแลระบบ");
             res.render('adminn/HistoryWebsite', { visitCount: ''.visitCount, img: req.session.profile, name: req.session.fname, data: '' });
         } else {
             dbConnection.query("SELECT * FROM point_transactions ",(error, results) => {
                 if(error){
-                  req.flash("error", error);
+                  req.flash("error", "ระบบผิดพลาดโปรดแจ้งผู้ดูแลระบบ");
                   res.redirect('/admin/mainadmin');
                 }else{
                     res.render('adminn/HistoryWebsite', { visitCount: rows[0].visitCount, img: req.session.profile, name: req.session.fname, data: results });
@@ -166,6 +167,7 @@ router.get('/confirmStatus/(:id_res)', isNotLogin, (req, res, next) => {
                     req.flash('error', err);
                     res.redirect('/admin/tableStatus');
                 } else {
+                    req.flash("success", "ยืนยันสถานะร้านอาหารสำเร็จ");
                     res.redirect('/admin/tableStatus');
                 }
             })
@@ -199,7 +201,7 @@ router.get('/cancleStatus/(:id_res)', isNotLogin, (req, res, next) => {
                             req.flash('error', err);
                             res.redirect('/admin/tableStatus');
                         } else {
-                            req.flash('success', 'ลบสำเร็จ !');
+                            req.flash('success', 'ไม่ผ่านสถานะร้านอาหาร !');
                             res.redirect('/admin/tableStatus');
 
                         }
@@ -217,7 +219,7 @@ router.get('/cancleStatus/(:id_res)', isNotLogin, (req, res, next) => {
                 res.redirect('/admin/tableStatus');
         } else {
             req.flash('success', 'ลบสำเร็จ !');
-
+            
         }
     })
 })
@@ -345,12 +347,13 @@ router.post('/add', (req, res, next) => {
                         name: req.session.fname
                     })
                 } else {
-                    req.flash('success', 'เพิ่มข้อมูล ');
+                    
                     dbConnection.query('SELECT * FROM user ORDER BY id ', (err, rows) => { // ส่งค่าข้อมูลที่เพิ่ม พร้อมยังใช้ session แรกที่เข้าสู่ระบบ
                         if (err) {
                             req.flash('error', err);
                             res.redirect('/admin/table');
                         } else {
+                            req.flash('success', 'เพิ่มข้อมูลผู้ใช้ ');
                             res.redirect('/admin/table');
                         }
                     })
@@ -371,7 +374,7 @@ router.get('/edit/(:id)', isNotLogin, (req, res, next) => {
     req.session.isLoggedIn = true;
     dbConnection.query('SELECT * FROM user WHERE id = ?',[id], (err, rows, fields) => {
         if (rows.length <= 0) {
-            req.flash('error', 'User not found with id = ' + id)
+            req.flash('error', 'หาผู้ใช้ไอดี= ' + id+'ไม่ได้');
             res.redirect('/AdminUser');
         } else {
             res.render('AdminUser/edit', {
@@ -489,6 +492,7 @@ router.post('/update/:id', uploadProfile.single('image'), (req, res, next) => {
         });
     } else {
         req.flash('success', 'แก้ไขข้อมูลไม่สำเร็จ ');
+        res.redirect('/admin/table');
     }
 });
 
@@ -506,12 +510,13 @@ router.get('/delete/(:id)', isNotLogin, (req, res, next) => {
                     name: req.session.fname
                  });
         } else {
-            req.flash('success', 'User Delete successfully! ID = ' + id);
+            
             dbConnection.query('SELECT * FROM user ORDER BY id ', (err, rows) => {
                 if (err) {
                     req.flash('error', err);
                     res.redirect('/admin/table');
                 } else {
+                    req.flash('success', 'ลบไอดีผู้ใช้ = ' + id+'สำเร็จ');
                     res.redirect('/admin/table');
                 }
             })
@@ -519,7 +524,7 @@ router.get('/delete/(:id)', isNotLogin, (req, res, next) => {
     })
 })
 
-/* เพิ่มพอยต์ให้ร้านอาหาร */
+/* เพิ่มพอยต์ให้ผู้ใช้ */
 router.post('/AddPointUser/(:id_user)', isNotLogin, (req, res, next) => {
     let id = req.params.id_user;
     let idUser = req.params.id_user;
@@ -539,6 +544,7 @@ router.post('/AddPointUser/(:id_user)', isNotLogin, (req, res, next) => {
                     console.log(err);
                     res.redirect('/admin/AdminUser');
                 } else {
+                    req.flash('success','เพิ่มพอยต์ให้ผู้ใช้สำเร็จ')
                     res.redirect('/admin/AdminUser');
                 }
             });
@@ -547,7 +553,7 @@ router.post('/AddPointUser/(:id_user)', isNotLogin, (req, res, next) => {
 
 })
 
-/* ลดพอยต์ให้ร้านอาหาร */
+/* ลดพอยต์ให้ผู้ใช้ */
 router.post('/MinusPointUser/(:id_user)', isNotLogin, (req, res, next) => {
     let id = req.params.id_user;
     let idRes = req.params.id_user;
@@ -571,6 +577,7 @@ router.post('/MinusPointUser/(:id_user)', isNotLogin, (req, res, next) => {
                     console.log(err);
                     res.redirect('/admin/AdminUser');
                 } else {
+                    req.flash('success','ลดพอยต์ให้ผู้ใช้สำเร็จ')
                     res.redirect('/admin/AdminUser');
                 }
             });
@@ -594,7 +601,7 @@ router.get('/ProfileResturant/(:id_res)', isNotLogin, (req, res, next) => {
     dbConnection.query('SELECT * FROM user WHERE id_restb = ?', [idUSer], (err, results, fields) => {
         let pointres = results[0].user_point;
         if (err) {
-            req.flash('error', 'User not found with id = ' + idUSer)
+            req.flash('error', 'หาผู้ใช้ไอดี' + idUSer+'ไม่พบ')
             res.redirect('mainadmin');
         } else {
             let idusername = results[0].username;
@@ -644,7 +651,7 @@ router.get('/editResturant/(:id_res)', isNotLogin, (req, res, next) => {
     req.session.isLoggedIn = true;
     dbConnection.query('SELECT * FROM restaurants WHERE id_res = ?' , [id], (err, rows, fields) => {
         if (rows.length <= 0) {
-            req.flash('error', 'User not found with id = ' + id)
+            req.flash('error', 'แก้ไขไอดีผู้ใช้ไม่สำเร็จ')
             res.redirect('/AdminResturant');
         } else {
             res.render('AdminResturant/editResturant', {
@@ -728,7 +735,7 @@ router.post('/updateResturant/:id_res', uploadProfileResturant.single('Profile')
     let id = req.params.id_res;
     dbConnection.query('UPDATE restaurants SET ? WHERE id_res = ?' , [updateProfileRes,id], (error, rows) => {
         if (error) {
-            req.flash('error', error);
+            req.flash('error', 'แก้ไขไม่สำเร็จ');
         } else {
             req.flash('success', 'แก้ไขสำเร็จ');
             res.redirect('/admin/tableResturant')
@@ -878,6 +885,7 @@ router.post('/add-points/(:id_res)', isNotLogin, (req, res, next) => {
                     console.log(err);
                     res.redirect('/admin/tableResturant');
                 } else {
+                    req.flash('success', 'เพิ่มพอยต์ให้ร้านอาหารสำเร็จ !');
                     res.redirect('/admin/tableResturant');
                 }
             });
@@ -910,6 +918,7 @@ router.post('/minus-points/(:id_res)', isNotLogin, (req, res, next) => {
                     console.log(err);
                     res.redirect('/admin/tableResturant');
                 } else {
+                    req.flash('success', 'ลดพอยต์ของร้านอาหารสำเร็จ !');
                     res.redirect('/admin/tableResturant');
                 }
             });
@@ -961,7 +970,7 @@ router.get('/editPromotion/(:id_pro)', isNotLogin, (req, res, next) => {
     dbConnection.query('SELECT * FROM promotion WHERE id_pro = ?',[id], (err, rows, fields) => {
         let id_res = rows[0].id_restb;
         if (rows.length <= 0) {
-            req.flash('error', 'Promotion not found with id_pro = ' + id)
+            req.flash('error', 'หาไอดีโปรโมชันไม่เจอ')
             console.log('Promotion not found with id_pro = ' + id)
             res.redirect('/backAadminPromotion', { id: id_res });
         } else {
@@ -1079,7 +1088,7 @@ router.post('/updatePromotion/:id_pro/:id_restb', uploadimgResturant.single('ima
         console.log('จำนวนแถว : ', totalrows);
         if (err) {
             console.log("หาจำนวนโปรโมชันเก่าไมเจอ");
-            req.flash('error', err);
+            req.flash('error', "หาจำนวนโปรโมชันเก่าไมเจอ");
             res.redirect('/admin/tableResturant');
 
         } else {
@@ -1682,7 +1691,119 @@ router.get('/AdminUser', (req, res) => {
       }
     });
   });
+//*-------------------------------------------------------------------ส่วนแอดมินโปรโมท-------------------------------------------------------------------*//
+router.get('/adminPromote/(:id_res)', isNotLogin, (req, res, next) => {
+    let id = req.params.id_res;
+    dbConnection.query('SELECT * FROM  promotion WHERE id_restb = ? AND boost=0 ORDER BY pro_id ASC ', [id], (err, rows) => {
+        
+        if (err) {
+            req.flash('error', err);
+            res.redirect('/admin/tableResturant');
+            
 
+        }if(!rows || rows.length === 0){
+            res.render('AdminPromote', { data: '', img: req.session.profile, name: req.session.fname, id: '' });
+        } else {
+            let id_pro = rows[0].id_pro;
+            res.render('AdminPromote', { data: rows, img: req.session.profile, name: req.session.fname, id: id_pro,idres:id });
+        }
+
+    })
+})
+
+router.get('/promoteSelect/(:id_pro)/(:id_res)', (req, res, next) => {
+    let idpro=req.params.id_pro;
+    let id = req.params.id_res;
+  
+  
+    dbConnection.query(' SELECT * FROM promotion WHERE id_pro= ? ' , [idpro], (err, rows, fields) => {
+      let idpro=rows[0].id_pro;
+      if (err) {
+        req.flash("error", "ไม่สามารถแสดงโปรโมชันทีต้องการโปรโมทได้");
+        console.log(err);
+        res.redirect('/admin/tableResturant');
+      } else {
+        res.render('AdminPromote/selectBoost', {
+          data: idpro,
+          img: req.session.profile, 
+          name: req.session.fname,
+          point:req.session.point,
+          idres:id
+        })
+      }
+    });
+  });
+
+
+  router.post('/boostpromote/(:id_pro)/(:id_res)', (req, res, next) => {
+    let idpro=req.params.id_pro;
+    let idres=req.params.id_res;
+    let daypromote=req.body.dayboost;//จำนวนวันที่เลือก
+    let pointboost=req.body.pointboost;
+    console.log(daypromote);
+    var date = new Date(Date.now());
+    var date2 = new Date();
+  
+    date2.setTime(date2.getTime() + daypromote * 24 * 60 * 60 * 1000);
+    
+    console.log(date);
+    console.log(date2);
+  
+    // Add ten days to specified date
+    var sum = date - date2;
+  
+    
+    
+    dbConnection.query(" SELECT * FROM user WHERE id_restb= ?", [idres], (err, rowsuser, fields) => {
+      let pointuser=rowsuser[0].user_point;
+      if(err){
+        req.flash("error", "ไม่สามารถโปรโมทได้");
+        res.redirect('/admin/tableResturant');
+      }else{
+        let cutpointtopromotion=pointuser/daypromote;
+  
+        let cutpointtoRes=pointuser-pointboost;
+  
+        req.session.point=cutpointtoRes;
+        let formpointtouser={
+          user_point:cutpointtoRes
+        }
+        dbConnection.query("UPDATE user SET ? WHERE id_restb= ?", [formpointtouser,idres], (err, rowsuser, fields) => {
+          if(err){
+            req.flash("error", "ไม่สามารถโปรโมทได้");
+            res.redirect('/admin/tableResturant');
+          }else{
+            let formboostpromote={
+              boost_id_pro:idpro,
+              boost_point:cutpointtopromotion,
+              boost_day:daypromote,
+              boost_start:date,
+              boost_end:date2
+            }
+            dbConnection.query('INSERT INTO boostpromote SET ? ',[formboostpromote],(error, rows) => {
+              if(err){
+                req.flash("error", "ไม่สามารถโปรโมทได้");
+                res.redirect('/admin/tableResturant');
+              }else{
+                let boostformpromotion={
+                  boost:cutpointtopromotion
+                }
+                dbConnection.query('UPDATE promotion SET ? WHERE id_pro= ?',[boostformpromotion,idpro],(error, rows) => {
+                  if(err){
+                    req.flash("error", "ไม่สามารถโปรโมทได้");
+                    res.redirect('/admin/tableResturant');
+                  }else{
+                    req.flash("message", "โปรโมทเรียบร้อย");
+                    res.redirect('/admin/tableResturant');
+                  }
+                });
+              }
+            });
+          }
+        })
+      }
+    });
+  });
 router.get('/logout', function (req, res, next) {
 
     req.session.destroy();

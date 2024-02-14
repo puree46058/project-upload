@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 23, 2024 at 09:18 PM
+-- Generation Time: Feb 14, 2024 at 11:19 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -94,7 +94,8 @@ CREATE TABLE `coupon_user` (
   `user_id` int(11) NOT NULL,
   `coupon_id` int(11) NOT NULL,
   `status` varchar(10) NOT NULL,
-  `current_date` date NOT NULL DEFAULT current_timestamp(),
+  `datebook` date NOT NULL,
+  `timebook` time NOT NULL,
   `date_time` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -114,14 +115,8 @@ CREATE TABLE `historyviews` (
 --
 
 INSERT INTO `historyviews` (`id`, `timestamp_towebsite`) VALUES
-(1, '2024-01-23 19:38:47'),
-(2, '2024-01-23 19:40:30'),
-(3, '2024-01-23 19:43:37'),
-(4, '2024-01-23 19:44:05'),
-(5, '2024-01-23 19:44:18'),
-(6, '2024-01-23 19:44:53'),
-(7, '2024-01-23 20:17:05'),
-(8, '2024-01-23 20:18:30');
+(1, '2024-02-14 22:15:51'),
+(2, '2024-02-14 22:18:33');
 
 -- --------------------------------------------------------
 
@@ -159,7 +154,7 @@ CREATE TABLE `point` (
 --
 
 INSERT INTO `point` (`id`, `point`, `update_point`) VALUES
-(1, 1030, '00:00:00');
+(1, 100000, '00:00:00');
 
 -- --------------------------------------------------------
 
@@ -237,7 +232,8 @@ CREATE TABLE `restaurants` (
 --
 
 INSERT INTO `restaurants` (`res_id`, `id_res`, `id_usertb`, `res_name`, `res_email`, `res_address`, `res_phone`, `res_status_resturant`, `res_owner_profile`, `res_owner_name`, `res_owner_lnam`, `res_owner_phone`, `res_owner_email`, `res_profile`, `res_certificate`, `status`, `time_current`, `time_update`) VALUES
-(1, 1, 3, 'กั๊ตจัง หมูกระทะ', 'gutjungres@gmail.com', '<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3777.8967218605944!2d99.00669377494786!3d18.758149661874562!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30da301f15f2efd5%3A0xc26d85bab858a381!2z4Lij4LmJ4Liy4LiZ4Lit4Liy4Lir4Liy4LijIOC4geC4seC5iuC4leC4iOC4seC4hyDguIrguLLguJrguLkg4Lir4Lih4Li54LiI4Li44LmI4LihICYg4Liq4Li44LiB4Li14LmJ!5e0!3m2!1sth!2sth!4v1706039359770!5m2!1sth!2sth\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>', '0953582236', 'ร้านบุฟเฟต์', 'นาง', 'กั๊ตจัง', 'อิอิ', '0953582234', 'gutjung01@gnail.com', 'NULL', 'image-1706041024909.jpg', 'success', '2024-01-23 20:17:04', '2024-01-23 20:18:21');
+(1, 1, 3, 'กั๊ตจัง หมูกระทะ', 'gutjungres@gmail.com', '<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3777.8967218605944!2d99.00669377494786!3d18.758149661874562!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30da301f15f2efd5%3A0xc26d85bab858a381!2z4Lij4LmJ4Liy4LiZ4Lit4Liy4Lir4Liy4LijIOC4geC4seC5iuC4leC4iOC4seC4hyDguIrguLLguJrguLkg4Lir4Lih4Li54LiI4Li44LmI4LihICYg4Liq4Li44LiB4Li14LmJ!5e0!3m2!1sth!2sth!4v1706039359770!5m2!1sth!2sth\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>', '0953582236', 'ร้านบุฟเฟต์', 'นาง', 'กั๊ตจัง', 'อิอิ', '0953582234', 'gutjung01@gnail.com', 'NULL', 'image-1706041024909.jpg', 'success', '2024-01-23 20:17:04', '2024-01-23 20:18:21'),
+(2, 2, 4, 'อิ่มดี อาหารตามสั่ง', 'eimdee@gmail.com', '<iframe src=\"https://www.google.com/maps/embed?pb=!3m2!1sth!2sth!4v1706041586244!5m2!1sth!2sth!6m8!1m7!1s5y3Z8dz1T7vSTyA0PKLqbQ!2m2!1d18.75310814939448!2d99.01659854600113!3f79.40173313798459!4f5.2713443604833685!5f0.7820865974627469\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>', '0979682017', 'ร้านอาหารตามสั่ง', 'นาง', 'พร', 'จำแลงรัตน์', '0953582234', 'porn@gmail.com', 'NULL', 'image-1706041668785.jpg', 'success', '2024-01-23 20:27:48', '2024-01-23 20:28:01');
 
 -- --------------------------------------------------------
 
@@ -270,8 +266,9 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `id_user`, `username`, `password`, `fname`, `lname`, `email`, `phone`, `level`, `status`, `Profile`, `address`, `user_point`, `id_restb`, `time_current`, `time_update`) VALUES
 (1, 1, 'admin', '$2b$12$HY.UtDhHI00weefvjn5FJO1jGWhugFRjsfr0X5VNjmy0EMjvsRt5.', 'admin', 'admin', 'admin@gmail.com', '0953582231', 'A', 'success', 'NULL', 'NULL', 0, 0, '2024-01-23 19:40:30', '2024-01-23 19:40:30'),
-(2, 2, 'test', '$2b$12$HcfoadB0JovH5K5JIMdIBesJmHIypo2oD8i9VwXleN8OUgnFdrdhK', 'test', 'test', 'test@gmail.com', '0958795531', 'U', 'success', 'NULL', 'NULL', 0, 0, '2024-01-23 19:44:05', '2024-01-23 19:44:05'),
-(3, 3, 'testresturant', '$2b$12$dqISJAbwtF8hNO.FwOIr7uLulDcdxHBXwjwr9a5/z6I1V9Wtj85Sy', 'testresturant', 'testresturant', 'testresturant@gmail.com', '0953582238', 'R', 'success', 'NULL', 'NULL', 0, 1, '2024-01-23 19:44:53', '2024-01-23 20:18:21');
+(2, 2, 'test', '$2b$12$LF.qrMimZOil8nNes0Svm.AVGotZsuXQVFdzQ.DsgW3gSI3Edo2Ma', 'test', 'test', 'test@gmail.com', '0958795531', 'U', 'success', 'Profile-1707863755044.jpg', 'อิอิ', 37276, 0, '2024-01-23 19:44:05', '2024-02-14 17:17:25'),
+(3, 3, 'testresturant', '$2b$12$dqISJAbwtF8hNO.FwOIr7uLulDcdxHBXwjwr9a5/z6I1V9Wtj85Sy', 'testresturant', 'testresturant', 'testresturant@gmail.com', '0953582238', 'R', 'success', 'NULL', 'NULL', 200, 1, '2024-01-23 19:44:53', '2024-02-14 22:08:58'),
+(4, 4, 'resturant', '$2b$12$1lyyNRq78RBB.9cfBq1rb.lFv2ovLa74mDj136nmZmhMyyQ.ThmVu', 'resturant', 'resturant', 'resturant@gmail.com', '0958974456', 'R', 'success', 'NULL', 'NULL', 0, 2, '2024-01-23 20:22:18', '2024-02-14 21:18:26');
 
 --
 -- Indexes for dumped tables
@@ -375,7 +372,7 @@ ALTER TABLE `coupon_user`
 -- AUTO_INCREMENT for table `historyviews`
 --
 ALTER TABLE `historyviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `logo`
@@ -405,13 +402,13 @@ ALTER TABLE `promotion`
 -- AUTO_INCREMENT for table `restaurants`
 --
 ALTER TABLE `restaurants`
-  MODIFY `res_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `res_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

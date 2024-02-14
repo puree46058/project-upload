@@ -552,7 +552,7 @@ router.post('/addPromotion', uploadimgResturant.single('imageFood'), (req, res, 
                 dbConnection.query('INSERT INTO coupon SET  ?  ', [cupondata], (error, rows) => {
 
                   if (error) {
-                    req.flash('error', 'เพิ่มคูปองสำเร็จ');
+                    req.flash('error', 'เพิ่มไม่สำเร็จคูปองสำเร็จ');
                     res.redirect('/resturant/tablePromotion');
                     console.log("บันทึกลงฐานข้อมูลคูปองไม่สำเร็จ");
                   } else {
@@ -1005,7 +1005,6 @@ router.get('/ListCustomer', (req, res, next) => {
           point:req.session.point
         });
       }else {
-        
         res.render('Resturant/ListCustomer',{
           dataUser:userdata,
           name: req.session.nameResturant,
@@ -1200,7 +1199,7 @@ router.get('/promote', (req, res, next) => {
   let idrestbPromotion = req.session.id_res;
 
 
-  dbConnection.query("SELECT * FROM promotion WHERE status='Order' AND id_restb= ?",[idrestbPromotion], (err, rows, fields) => {
+  dbConnection.query("SELECT * FROM promotion WHERE status='Order' AND id_restb= ? AND boost=0",[idrestbPromotion], (err, rows, fields) => {
     if (err) {
       req.flash("error", "ไม่สามารถไปหน้าโปรโมทได้");
       console.log(err);

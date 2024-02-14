@@ -490,7 +490,8 @@ router.get('/coupon-list-user', function (req, res, next) {
                 if (err) {
                   req.flash('error', "โปรดตรวจสอบวันที่ต้องการโปรโมท");
                   console.log("ERROR ตรวจสอบวัน boost"+ err);
-                } else {
+                } 
+                if (boost && boost[n] && boost[n].boost_end) {
                   let date = new Date(Date.now());
                   let date2 = boost[n].boost_end;
                   console.log("วันปัจจุบัน : ",date);
@@ -517,7 +518,10 @@ router.get('/coupon-list-user', function (req, res, next) {
                       }
                     });
                   }
+                } else {
+                  console.log("ไม่พบคุณสมบัติ boost_end หรือข้อมูล boost ในระบบ");
                 }
+
               });
           }
         }
@@ -1146,7 +1150,8 @@ router.get('/pointtwo', function (req, res, next) {
               (err, boost) => {
                 if (err) {
                   console.log("ERROR ตรวจสอบวัน boost"+ err);
-                } else {
+                }
+                if (boost && boost[n] && boost[n].boost_end) {
                   let date = new Date(Date.now());
                   let date2 = boost[n].boost_end;
                   console.log("วันปัจจุบัน : ",date);
@@ -1166,12 +1171,15 @@ router.get('/pointtwo', function (req, res, next) {
                     };
                     dbConnection.query("UPDATE promotion SET ? WHERE id_pro = ?",[form_data,boost[n].boost_id_pro], (err, result) => {
                       if (err) {
+
                         console.log(": อัพเดท status ใน promotion ไม่ได้");
                       } else {
                         console.log(": ปรับ boost promotion แล้ว");
                       }
                     });
                   }
+                } else {
+                  console.log("ไม่พบคุณสมบัติ boost_end หรือข้อมูล boost ในระบบ");
                 }
               });
           }
@@ -1230,7 +1238,8 @@ router.get('/pointfive', function (req, res, next) {
               (err, boost) => {
                 if (err) {
                   console.log("ERROR ตรวจสอบวัน boost"+ err);
-                } else {
+                }
+                if (boost && boost[n] && boost[n].boost_end) {
                   let date = new Date(Date.now());
                   let date2 = boost[n].boost_end;
                   console.log("วันปัจจุบัน : ",date);
@@ -1250,12 +1259,15 @@ router.get('/pointfive', function (req, res, next) {
                     };
                     dbConnection.query("UPDATE promotion SET ? WHERE id_pro = ?",[form_data,boost[n].boost_id_pro], (err, result) => {
                       if (err) {
+
                         console.log(": อัพเดท status ใน promotion ไม่ได้");
                       } else {
                         console.log(": ปรับ boost promotion แล้ว");
                       }
                     });
                   }
+                } else {
+                  console.log("ไม่พบคุณสมบัติ boost_end หรือข้อมูล boost ในระบบ");
                 }
               });
           }
@@ -1313,7 +1325,8 @@ router.get('/pointone', function (req, res, next) {
               (err, boost) => {
                 if (err) {
                   console.log("ERROR ตรวจสอบวัน boost"+ err);
-                } else {
+                }
+                if (boost && boost[n] && boost[n].boost_end) {
                   let date = new Date(Date.now());
                   let date2 = boost[n].boost_end;
                   console.log("วันปัจจุบัน : ",date);
@@ -1333,12 +1346,15 @@ router.get('/pointone', function (req, res, next) {
                     };
                     dbConnection.query("UPDATE promotion SET ? WHERE id_pro = ?",[form_data,boost[n].boost_id_pro], (err, result) => {
                       if (err) {
+
                         console.log(": อัพเดท status ใน promotion ไม่ได้");
                       } else {
                         console.log(": ปรับ boost promotion แล้ว");
                       }
                     });
                   }
+                } else {
+                  console.log("ไม่พบคุณสมบัติ boost_end หรือข้อมูล boost ในระบบ");
                 }
               });
           }
@@ -1393,7 +1409,8 @@ router.get('/cat_discount', function (req, res, next) {
               (err, boost) => {
                 if (err) {
                   console.log("ERROR ตรวจสอบวัน boost"+ err);
-                } else {
+                }
+                if (boost && boost[n] && boost[n].boost_end) {
                   let date = new Date(Date.now());
                   let date2 = boost[n].boost_end;
                   console.log("วันปัจจุบัน : ",date);
@@ -1413,12 +1430,15 @@ router.get('/cat_discount', function (req, res, next) {
                     };
                     dbConnection.query("UPDATE promotion SET ? WHERE id_pro = ?",[form_data,boost[n].boost_id_pro], (err, result) => {
                       if (err) {
+
                         console.log(": อัพเดท status ใน promotion ไม่ได้");
                       } else {
                         console.log(": ปรับ boost promotion แล้ว");
                       }
                     });
                   }
+                } else {
+                  console.log("ไม่พบคุณสมบัติ boost_end หรือข้อมูล boost ในระบบ");
                 }
               });
           }
@@ -1473,7 +1493,8 @@ router.get('/cat_specialprice', function (req, res, next) {
               (err, boost) => {
                 if (err) {
                   console.log("ERROR ตรวจสอบวัน boost"+ err);
-                } else {
+                }
+                if (boost && boost[n] && boost[n].boost_end) {
                   let date = new Date(Date.now());
                   let date2 = boost[n].boost_end;
                   console.log("วันปัจจุบัน : ",date);
@@ -1493,12 +1514,15 @@ router.get('/cat_specialprice', function (req, res, next) {
                     };
                     dbConnection.query("UPDATE promotion SET ? WHERE id_pro = ?",[form_data,boost[n].boost_id_pro], (err, result) => {
                       if (err) {
+
                         console.log(": อัพเดท status ใน promotion ไม่ได้");
                       } else {
                         console.log(": ปรับ boost promotion แล้ว");
                       }
                     });
                   }
+                } else {
+                  console.log("ไม่พบคุณสมบัติ boost_end หรือข้อมูล boost ในระบบ");
                 }
               });
           }
@@ -1553,7 +1577,8 @@ router.get('/cat_onefreeone', function (req, res, next) {
               (err, boost) => {
                 if (err) {
                   console.log("ERROR ตรวจสอบวัน boost"+ err);
-                } else {
+                }
+                if (boost && boost[n] && boost[n].boost_end) {
                   let date = new Date(Date.now());
                   let date2 = boost[n].boost_end;
                   console.log("วันปัจจุบัน : ",date);
@@ -1573,12 +1598,15 @@ router.get('/cat_onefreeone', function (req, res, next) {
                     };
                     dbConnection.query("UPDATE promotion SET ? WHERE id_pro = ?",[form_data,boost[n].boost_id_pro], (err, result) => {
                       if (err) {
+
                         console.log(": อัพเดท status ใน promotion ไม่ได้");
                       } else {
                         console.log(": ปรับ boost promotion แล้ว");
                       }
                     });
                   }
+                } else {
+                  console.log("ไม่พบคุณสมบัติ boost_end หรือข้อมูล boost ในระบบ");
                 }
               });
           }
@@ -1633,7 +1661,8 @@ router.get('/cat_tradefree', function (req, res, next) {
               (err, boost) => {
                 if (err) {
                   console.log("ERROR ตรวจสอบวัน boost"+ err);
-                } else {
+                }
+                if (boost && boost[n] && boost[n].boost_end) {
                   let date = new Date(Date.now());
                   let date2 = boost[n].boost_end;
                   console.log("วันปัจจุบัน : ",date);
@@ -1653,12 +1682,15 @@ router.get('/cat_tradefree', function (req, res, next) {
                     };
                     dbConnection.query("UPDATE promotion SET ? WHERE id_pro = ?",[form_data,boost[n].boost_id_pro], (err, result) => {
                       if (err) {
+
                         console.log(": อัพเดท status ใน promotion ไม่ได้");
                       } else {
                         console.log(": ปรับ boost promotion แล้ว");
                       }
                     });
                   }
+                } else {
+                  console.log("ไม่พบคุณสมบัติ boost_end หรือข้อมูล boost ในระบบ");
                 }
               });
           }
@@ -1713,7 +1745,8 @@ router.get('/cat_eatfree', function (req, res, next) {
               (err, boost) => {
                 if (err) {
                   console.log("ERROR ตรวจสอบวัน boost"+ err);
-                } else {
+                }
+                if (boost && boost[n] && boost[n].boost_end) {
                   let date = new Date(Date.now());
                   let date2 = boost[n].boost_end;
                   console.log("วันปัจจุบัน : ",date);
@@ -1733,12 +1766,15 @@ router.get('/cat_eatfree', function (req, res, next) {
                     };
                     dbConnection.query("UPDATE promotion SET ? WHERE id_pro = ?",[form_data,boost[n].boost_id_pro], (err, result) => {
                       if (err) {
+
                         console.log(": อัพเดท status ใน promotion ไม่ได้");
                       } else {
                         console.log(": ปรับ boost promotion แล้ว");
                       }
                     });
                   }
+                } else {
+                  console.log("ไม่พบคุณสมบัติ boost_end หรือข้อมูล boost ในระบบ");
                 }
               });
           }

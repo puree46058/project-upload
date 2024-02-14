@@ -97,35 +97,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="product__discount">
-                        <div class="section-title product__discount__title">
-                            <h2>ประเภทกินฟรี</h2>
-                        </div>
-                        <div class="row">
-                            <div class="product__discount__slider owl-carousel">
-                                <% if(data.length) { %>
-                                    <!-- Card 1 -->
-                                    <% for(let i = 0; i < data.length; i++) { %>
-                                        <div class="col-lg-4">
-                                            <div class="product__discount__item">
-                                                <div class="product__discount__item__pic set-bg"
-                                                    data-setbg="/uploads/resturantimg/<%= data[i].pro_image %>">
-                                                </div>
-                                                <div class="product__discount__item__text">
-                                                    <span><%= data[i].pro_type %></span>
-                                                    <h5><a href="/DetailShop/<%=data[i].id_pro%>"><%= data[i].pro_name %></a></h5>
-                                                    <div class="product__item__price"><%= data[i].pro_price %> พอยต์</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    <%}%>
-                                <%}%>
-                                <% if(!data.length) { %>
-                                    <p class="text-center">No Promotion found!</p>
-                                <% } %>
-                            </div>
-                        </div>
-                    </div>
+                   
                     <div class="filter__item">
                         <div class="row">
                             <div class="col-lg-12 col-md-4">

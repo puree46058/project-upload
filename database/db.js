@@ -2,7 +2,7 @@ const mysql = require('mysql2');
 // const dbConnection = mysql.createConnection({
 //   host: 'localhost',
 //   user: 'saduak_project',
-//   password: '#aQw83f22',
+//   password: '#nx3E8!1q7',
 //   port:3306,
 //   database: 'project'
 // });

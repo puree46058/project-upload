@@ -79,8 +79,11 @@ router.get('/coupon-list', function (req, res, next) {
             dbConnection.query("SELECT * FROM boostpromote WHERE boost_id_pro = ?",[rowspromotionboost[n].id_pro],
               (err, boost) => {
                 if (err) {
+                  req.flash('error', "โปรดตรวจสอบวันที่ต้องการโปรโมท");
                   console.log("ERROR ตรวจสอบวัน boost"+ err);
-                } else {
+                }
+                if (boost && boost[n] && boost[n].boost_end) {
+                  console.log("boost end ",boost[n]);
                   let date = new Date(Date.now());
                   let date2 = boost[n].boost_end;
                   console.log("วันปัจจุบัน : ",date);
@@ -106,11 +109,10 @@ router.get('/coupon-list', function (req, res, next) {
                       }
                     });
                   }
-                }
+                } else {
+                  console.log("ไม่พบคุณสมบัติ boost_end หรือข้อมูล boost ในระบบ");
+                } 
               });
-
-
-
           }
         }
       });
@@ -311,7 +313,7 @@ router.post('/Register', (req, res, next) => {
 
           dbConnection.query('INSERT INTO user SET ?', [form_data], (error, results) => {
             if (error) {
-              req.flash('error', error);
+              req.flash('error', "สมัครไม่สำเร็จ");
               res.render('FormRegister');
             } else {
               req.flash('success', 'สมัครสมาชิกสำเร็จ ');
@@ -537,7 +539,9 @@ router.get('/pointtwo', function (req, res, next) {
               (err, boost) => {
                 if (err) {
                   console.log("ERROR ตรวจสอบวัน boost"+ err);
-                } else {
+                } 
+                if (boost && boost[n] && boost[n].boost_end) {
+                  console.log("boost end ",boost[n]);
                   let date = new Date(Date.now());
                   let date2 = boost[n].boost_end;
                   console.log("วันปัจจุบัน : ",date);
@@ -563,7 +567,9 @@ router.get('/pointtwo', function (req, res, next) {
                       }
                     });
                   }
-                }
+                } else {
+                  console.log("ไม่พบคุณสมบัติ boost_end หรือข้อมูล boost ในระบบ");
+                } 
               });
           }
         }
@@ -613,7 +619,9 @@ router.get('/pointfive', function (req, res, next) {
               (err, boost) => {
                 if (err) {
                   console.log("ERROR ตรวจสอบวัน boost"+ err);
-                } else {
+                } 
+                if (boost && boost[n] && boost[n].boost_end) {
+                  console.log("boost end ",boost[n]);
                   let date = new Date(Date.now());
                   let date2 = boost[n].boost_end;
                   console.log("วันปัจจุบัน : ",date);
@@ -639,7 +647,9 @@ router.get('/pointfive', function (req, res, next) {
                       }
                     });
                   }
-                }
+                } else {
+                  console.log("ไม่พบคุณสมบัติ boost_end หรือข้อมูล boost ในระบบ");
+                } 
               });
           }
         }
@@ -688,7 +698,9 @@ router.get('/pointone', function (req, res, next) {
               (err, boost) => {
                 if (err) {
                   console.log("ERROR ตรวจสอบวัน boost"+ err);
-                } else {
+                }
+                if (boost && boost[n] && boost[n].boost_end) {
+                  console.log("boost end ",boost[n]);
                   let date = new Date(Date.now());
                   let date2 = boost[n].boost_end;
                   console.log("วันปัจจุบัน : ",date);
@@ -714,7 +726,9 @@ router.get('/pointone', function (req, res, next) {
                       }
                     });
                   }
-                }
+                } else {
+                  console.log("ไม่พบคุณสมบัติ boost_end หรือข้อมูล boost ในระบบ");
+                } 
               });
           }
         }
@@ -760,7 +774,9 @@ router.get('/cat_discount', function (req, res, next) {
               (err, boost) => {
                 if (err) {
                   console.log("ERROR ตรวจสอบวัน boost"+ err);
-                } else {
+                }
+                if (boost && boost[n] && boost[n].boost_end) {
+                  console.log("boost end ",boost[n]);
                   let date = new Date(Date.now());
                   let date2 = boost[n].boost_end;
                   console.log("วันปัจจุบัน : ",date);
@@ -786,7 +802,9 @@ router.get('/cat_discount', function (req, res, next) {
                       }
                     });
                   }
-                }
+                } else {
+                  console.log("ไม่พบคุณสมบัติ boost_end หรือข้อมูล boost ในระบบ");
+                } 
               });
           }
         }
@@ -832,7 +850,9 @@ router.get('/cat_specialprice', function (req, res, next) {
               (err, boost) => {
                 if (err) {
                   console.log("ERROR ตรวจสอบวัน boost"+ err);
-                } else {
+                } 
+                if (boost && boost[n] && boost[n].boost_end) {
+                  console.log("boost end ",boost[n]);
                   let date = new Date(Date.now());
                   let date2 = boost[n].boost_end;
                   console.log("วันปัจจุบัน : ",date);
@@ -858,7 +878,9 @@ router.get('/cat_specialprice', function (req, res, next) {
                       }
                     });
                   }
-                }
+                } else {
+                  console.log("ไม่พบคุณสมบัติ boost_end หรือข้อมูล boost ในระบบ");
+                } 
               });
           }
         }
@@ -904,7 +926,9 @@ router.get('/cat_onefreeone', function (req, res, next) {
               (err, boost) => {
                 if (err) {
                   console.log("ERROR ตรวจสอบวัน boost"+ err);
-                } else {
+                } 
+                if (boost && boost[n] && boost[n].boost_end) {
+                  console.log("boost end ",boost[n]);
                   let date = new Date(Date.now());
                   let date2 = boost[n].boost_end;
                   console.log("วันปัจจุบัน : ",date);
@@ -930,7 +954,9 @@ router.get('/cat_onefreeone', function (req, res, next) {
                       }
                     });
                   }
-                }
+                } else {
+                  console.log("ไม่พบคุณสมบัติ boost_end หรือข้อมูล boost ในระบบ");
+                } 
               });
           }
         }
@@ -976,7 +1002,9 @@ router.get('/cat_tradefree', function (req, res, next) {
               (err, boost) => {
                 if (err) {
                   console.log("ERROR ตรวจสอบวัน boost"+ err);
-                } else {
+                }
+                if (boost && boost[n] && boost[n].boost_end) {
+                  console.log("boost end ",boost[n]);
                   let date = new Date(Date.now());
                   let date2 = boost[n].boost_end;
                   console.log("วันปัจจุบัน : ",date);
@@ -1002,7 +1030,9 @@ router.get('/cat_tradefree', function (req, res, next) {
                       }
                     });
                   }
-                }
+                } else {
+                  console.log("ไม่พบคุณสมบัติ boost_end หรือข้อมูล boost ในระบบ");
+                } 
               });
           }
         }
@@ -1048,7 +1078,9 @@ router.get('/cat_eatfree', function (req, res, next) {
               (err, boost) => {
                 if (err) {
                   console.log("ERROR ตรวจสอบวัน boost"+ err);
-                } else {
+                } 
+                if (boost && boost[n] && boost[n].boost_end) {
+                  console.log("boost end ",boost[n]);
                   let date = new Date(Date.now());
                   let date2 = boost[n].boost_end;
                   console.log("วันปัจจุบัน : ",date);
@@ -1074,7 +1106,9 @@ router.get('/cat_eatfree', function (req, res, next) {
                       }
                     });
                   }
-                }
+                } else {
+                  console.log("ไม่พบคุณสมบัติ boost_end หรือข้อมูล boost ในระบบ");
+                } 
               });
           }
         }

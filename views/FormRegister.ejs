@@ -37,23 +37,21 @@
         </div>
         <div class="col-md-6 p-0">
 
-          <% if(messages.error) {%>
-            <div role="alert" class="alert alert-danger">
+        <% if(messages.error) {%>
+            <div role="alert" class="alert alert-danger text-center mt-3" style="font-size: 18px;">
               <%= messages.error%>
             </div>
-          <% } %>
-        
-          <% if(messages.success) {%>
-          <div role="alert" class="alert alert-success">
-            <%= messages.success%>
-          </div>
-          <% } %>
-        
-          <% if(messages.message) {%>
-            <div role="alert" class="alert alert-danger text-center mt-3" style="color: red; font-size: 18px; width: 520px;">
+        <% } %>
+        <% if(messages.success) {%>
+            <div role="alert" class="alert alert-success text-center mt-3" style="font-size: 18px;">
+              <%= messages.success%>
+            </div>
+        <% } %>
+        <% if(messages.message) {%>
+            <div role="alert" class="alert alert-warning text-center mt-3" style="font-size: 18px;">
               <%= messages.message%>
             </div>
-          <% } %>
+        <% } %>
 
           <div class="registration-form mt-4">
             <h2 class="mb-4">สมัครสมาชิก</h2>
