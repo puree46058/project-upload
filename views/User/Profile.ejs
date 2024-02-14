@@ -28,9 +28,6 @@
 
 <body>
 
-    <% if (messages.error) { %>
-        <div class="alert alert-danger" role="alert"><%= messages.error %></div>
-    <% } %>
 
     <div id="navbar-guest">
         <%- include('../Navbar/navbar') %>
@@ -47,7 +44,7 @@
                         <div class="breadcrumb__text">
                             <h2>ข้อมูลส่วนตัว</h2>
                             <div class="breadcrumb__option">
-                                <a href="#">สะดวกจอง</a>
+                                <a href="/users/back">สะดวกจอง</a>
                                 <span>ข้อมูลส่วนตัว</span>
                             </div>
                         </div>
@@ -56,6 +53,13 @@
             </div>
         </section>
         <!-- Breadcrumb Section End -->
+
+        <% if (messages.error) { %>
+          <div class="alert alert-danger text-center mt-3" role="alert" style="font-size: 18px;">
+            <%= messages.error %>
+          </div>
+        <% } %>
+
     <div class="container my-5" style=" box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);">
         <div class="row">
           <div class="col-md-6 mt-5">
@@ -94,7 +98,7 @@
                       </div>
                       <div class="mb-3 col-md-6">
                         <label for="">แต้มที่มีอยู่ : </label>
-                        <input type="number" class="form-control w-100" value="<%= point %>" readonly>
+                        <input type="number" class="form-control w-100" value="<%= parseFloat(point).toFixed(2) %>" readonly>
                       </div>
                       <div class="mb-3 col-md-12">
                         <label for="">ที่อยู่ : </label>

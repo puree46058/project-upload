@@ -208,7 +208,21 @@
             <!-- Content -->
 
             <div class="container-xxl flex-grow-1 container-p-y">
-
+              <% if(messages.error) {%>
+                <div role="alert" class="alert alert-danger text-center mt-3" style="font-size: 18px;">
+                  <%= messages.error%>
+                </div>
+              <% } %>
+              <% if(messages.success) {%>
+                  <div role="alert" class="alert alert-success text-center mt-3" style="font-size: 18px;">
+                    <%= messages.success%>
+                  </div>
+              <% } %>
+              <% if(messages.message) {%>
+                  <div role="alert" class="alert alert-success text-center mt-3" style="font-size: 18px;">
+                    <%= messages.message%>
+                  </div>
+              <% } %>
               <!-- Basic Bootstrap Table -->
               <div class="card mb-1">
                 <h5 class="card-header">รายชื่อลูกค้าที่มาร้าน</h5>

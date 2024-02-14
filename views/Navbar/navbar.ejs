@@ -45,6 +45,7 @@
                             <li><a href="/" style="margin: 0;">ออกจากระบบ</a></li>
                         </ul>
                     </li>
+                    
                     <li style="margin-right: 0;"><a href="/users/formaddpoint">แต้ม: <%= point %></a></li>
                 </ul>
             </div>
@@ -108,7 +109,7 @@
                                     <li><a href="/" style="margin: 0;">ออกจากระบบ</a></li>
                                 </ul>
                             </li>
-                            <li style="margin-right: 0;"><span style="color: black;">แต้ม: <%= point %></span></li>
+                            <li style="margin-right: 0;"><span style="color: black;">แต้ม: <%= parseFloat(point).toFixed(2) %></span></li>
                             <a href="/users/formaddpoint"><i class="fa fa-plus-circle" style="color: black;"></i></a>
                         </ul>
                         </div>

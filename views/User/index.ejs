@@ -26,13 +26,6 @@
 </head>
 
 <body>
-  <% if(messages.error) {%>
-    <div role="alert"><%= messages.error%></div>
-  <% } %>
-  
-  <% if(messages.message) { %>
-    <div role="alert"><%= messages.message%></div>
-  <% } %>
 
 
   <div id="navbar-guest">
@@ -55,7 +48,22 @@
     
 </section>
 <!-- Hero Section End -->
-
+ 
+<% if(messages.error) {%>
+    <div role="alert" class="alert alert-danger text-center mt-3" style="font-size: 18px;">
+      <%= messages.error%>
+    </div>
+<% } %>
+<% if(messages.success) {%>
+    <div role="alert" class="alert alert-success text-center mt-3" style="font-size: 18px;">
+      <%= messages.success%>
+    </div>
+<% } %>
+<% if(messages.message) {%>
+    <div role="alert" class="alert alert-success text-center mt-3" style="font-size: 18px;">
+      <%= messages.message%>
+    </div>
+<% } %>
 <!-- Categories Section Begin -->
 <section class="categories">
     <div class="container">
@@ -150,7 +158,7 @@
                 </div>
                 <div class="featured__controls">
                     <ul>
-                        <li class="active" data-filter="*">ทั้งหมด</li>
+                        <li class="active" data-filter="*">โปรโมชั่นทั้งหมด</li>
                         <li data-filter=".ราคาพิเศษ">โปรโมชั่นราคาพิเศษ</li>
                         <li data-filter=".กินฟรี">โปรโมชั่นกินฟรี</li>
                         <li data-filter=".1แถม1">โปรโมชั่น 1 แถม 1 </li>
@@ -170,7 +178,7 @@
                     </div>
                     <div class="featured__item__text">
                         <p style="margin-bottom: 10px;"><a href="/users/Detail_promotion/<%=data[i].id_pro%>" style=" color: black;"><%= data[i].pro_name %></a></p>
-                        <h5><%= data[i].pro_price%> พอยต์</h5>
+                        <h5><%= parseFloat(data[i].pro_price).toFixed(2) %> แต้ม</h5>
                     </div>
                 </div>
             </div>

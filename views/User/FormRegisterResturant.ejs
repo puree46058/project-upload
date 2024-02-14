@@ -26,16 +26,6 @@
     <%- include('../Navbar/navbar') %>
   </div>
 
-  <% if(messages.error) {%>
-    <div role="alert"><%= messages.error%></div>
-  <% } %>
-  <% if(messages.success) {%>
-    <div role="alert"><%= messages.success%></div>
-  <% } %>
-  <% if(messages.message) {%>
-    <div role="alert"><%= messages.message%></div>
-  <% } %>
-
   <!-- Breadcrumb Section Begin -->
 <section class="breadcrumb-section set-bg" 
 data-setbg="../stylesheetsUsers/img/breadcrumb.jpg" 
@@ -57,8 +47,26 @@ style="box-shadow: 0px 4px 9px 4px rgba(0, 0, 0, 0.25);
 </section>
 <!-- Breadcrumb Section End -->
 
+    <% if(messages.error) {%>
+      <div role="alert" class="alert alert-danger text-center mt-3" style="font-size: 18px;">
+        <%= messages.error%>
+      </div>
+    <% } %>
+
+    <% if(messages.success) {%>
+      <div role="alert" class="alert alert-success text-center mt-3" style="font-size: 18px;">
+        <%= messages.success%>
+      </div>
+    <% } %>
+
+    <% if(messages.message) {%>
+      <div role="alert" class="alert alert-danger text-center mt-3" style="font-size: 18px;">
+        <%= messages.message%>
+      </div>
+    <% } %>
+
     <!-- Form Register -->
-    <div class="container my-5" style=" box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);">
+    <div class="container" style=" box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1); margin-bottom: 200px; margin-top: 50px;">
       <div class="row">
         <div class="col-md-6" style="padding-left: 0;">
           <img src="../stylesheetsUsers/images/logo.png" 

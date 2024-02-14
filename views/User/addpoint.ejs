@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="../images/icon.png">
+    <link rel="icon" type="image/x-icon" href="../stylesheetsUsers/img/logotitle-removebg-preview.png" />
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">        
@@ -22,21 +22,9 @@
 </head>
 <body>
 
-
   <div id="navbar-guest">
     <%- include('../Navbar/navbar') %>
   </div>
-
-
-<% if(messages.error) {%>
-  <div role="alert"><%= messages.error%></div>
-<% } %>
-<% if(messages.success) {%>
-  <div role="alert"><%= messages.success%></div>
-<% } %>
-<% if(messages.message) {%>
-  <div role="alert"><%= messages.message%></div>
-<% } %>
 
 <!-- Breadcrumb Section Begin -->
 <section class="breadcrumb-section set-bg col-12" 
@@ -57,6 +45,18 @@ style="box-shadow: 0px 4px 9px 4px rgba(0, 0, 0, 0.25);
     </div>
 </section>
 <!-- Breadcrumb Section End -->
+
+  <% if(messages.error) {%>
+    <div role="alert" class="alert alert-danger text-center mt-3" style="font-size: 18px;">
+      <%= messages.error%>
+    </div>
+  <% } %>
+
+  <% if(messages.message) {%>
+    <div role="alert" class="alert alert-danger text-center mt-3" style="font-size: 18px;">
+      <%= messages.message%>
+    </div>
+  <% } %>
 
   <!-- Basic Bootstrap Table -->
   <div class="card mb-1 col-12">
@@ -150,7 +150,7 @@ style="box-shadow: 0px 4px 9px 4px rgba(0, 0, 0, 0.25);
             <div class="mt-3" style="margin-left: 102px;">
               <label class="ml-5">เลือกธนาคาร</label>
               <br>
-              <select name="bank_name" id="bank_name" class="ml-5">
+              <select name="bank_name" id="bank_name" class="ml-5 select2 form-select form-control">
                 <option value="ธนาคารกรุงไทย">ธนาคารกรุงไทย</option>
                 <option value="ธนาคารกรุงเทพ">ธนาคารกรุงเทพ</option>
                 <option value="ธนาคารกสิกร">ธนาคารกสิกร</option>
@@ -162,7 +162,7 @@ style="box-shadow: 0px 4px 9px 4px rgba(0, 0, 0, 0.25);
             <div class="mt-3 " style="margin-left: 105px;">
               <label class="ml-5">แนบหลักฐานการโอน : </label>
               <br>
-              <input type="file"  name="point" style="width: 300px;" class="ml-5">
+              <input type="file"  name="point" style="width: 300px;" class="ml-5 form-control form-control-sm">
             </div>
             
             <br>

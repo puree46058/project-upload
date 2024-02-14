@@ -51,7 +51,7 @@
                       <h2><%= namePromotion %></h2>
                       <div class="breadcrumb__option">
                           <a href="/">สะดวกจอง</a>
-                          <a href="#">คูปอง</a>
+                          <a href="/coupon-list">คูปอง</a>
                           <span><%= namePromotion %></span>
                       </div>
                   </div>
@@ -71,15 +71,13 @@
 
                 <div class="col-lg-6 col-md-6">
                     <div class="product__details__pic">
-                      <a href="#">
-                        <% if ( picPromotion === 'NULL') {%>
-                          <center><img src="../images/profileNon.png" alt="NOimg"  style="height: 300px; width: 300px; "></center>
-                        <%}else{%>
-                          <center><img src="/uploads/resturantimg/<%= picPromotion %> " 
-                            alt="img" 
-                            style="height: 450px; width: 100%; border-radius: 20px; box-shadow: 6px -4px 5px 3px rgba(0, 0, 0, 0.20);"></center>
-                        <% } %>
-                      </a>
+                      <% if ( picPromotion === 'NULL') {%>
+                        <center><img src="../images/profileNon.png" alt="NOimg"  style="height: 300px; width: 300px; "></center>
+                      <%}else{%>
+                        <center><img src="/uploads/resturantimg/<%= picPromotion %> " 
+                          alt="img" 
+                          style="height: 450px; width: 100%; border-radius: 20px; box-shadow: 6px -4px 5px 3px rgba(0, 0, 0, 0.20);"></center>
+                      <% } %>
                     </div>
                 </div>
                 
@@ -87,10 +85,10 @@
                     <div class="product__details__text">
                         <h3><%= namePromotion %></h3>
                         <div class="product__details__price">ราคา : <%= pricePromotion %></div>
-                        <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                        <span class="heart-icon icon_heart_alt"></span>
                         <ul style="padding-top: 10px; display: block;">
                             <li>รหัสโปรโมชัน : <%= idPromotion %> <span style="margin-left: 170px;">เวลาเริ่ม :  <%= timeStart %></span></li>
-                            <li>ชื่อโปรโมชัน : <%= namePromotion %> <span style="margin-left: 99px;">เวลาที่หมด :  <%= timeEnd %></span></li>
+                            <li>ชื่อโปรโมชัน : <%= namePromotion %> <span style="margin-left: 80px;">เวลาที่หมด :  <%= timeEnd %></span></li>
                             <li>วันเริ่ม : <%= new Intl.DateTimeFormat('th-TH', { year: 'numeric', month: 'long', day: '2-digit'}).format(dayStart)%>
                               <span style="margin-left: 105px;">วันที่หมดอายุ : <%= new Intl.DateTimeFormat('th-TH', { year: 'numeric', month: 'long', day: '2-digit'}).format(dayEnd)%></span>
                             </li>
@@ -115,8 +113,7 @@
                     <div class="product__details__tab" style="padding-top: 0; margin-bottom: 40px;">
                         <ul class="nav nav-tabs" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab"
-                                    aria-selected="true">ตำแหน่งที่ตั้งร้าน</a>
+                              <b><h4>ตำแหน่งที่ตั้งร้าน</h4></b>
                             </li>
                         </ul>
                     </div>

@@ -98,7 +98,7 @@
                   <div data-i18n="Basic">ปฏิทิน</div>
                 </a>
               </li>
-              <li class="menu-item active">
+              <li class="menu-item">
                 <a href="../resturant/Promotion" class="menu-link">
                   <i class="menu-icon tf-icons bx bxs-coupon"></i>
                   <div data-i18n="Basic">โปรโมชั่น</div>
@@ -110,7 +110,7 @@
                   <div data-i18n="Basic">เติมแต้ม</div>
                 </a>
               </li>
-              <li class="menu-item">
+              <li class="menu-item active">
                 <a href="../resturant/promote" class="menu-link">
                   <i class="menu-icon tf-icons bx bxs-coupon"></i>
                   <div data-i18n="Basic">โปรโมท</div>
@@ -206,6 +206,21 @@
             
             <!-- Content -->
             <div class="container-xxl flex-grow-1 container-p-y">
+              <% if(messages.error) {%>
+                <div role="alert" class="alert alert-danger text-center mt-3" style="font-size: 18px;">
+                  <%= messages.error%>
+                </div>
+              <% } %>
+              <% if(messages.success) {%>
+                  <div role="alert" class="alert alert-success text-center mt-3" style="font-size: 18px;">
+                    <%= messages.success%>
+                  </div>
+              <% } %>
+              <% if(messages.message) {%>
+                  <div role="alert" class="alert alert-success text-center mt-3" style="font-size: 18px;">
+                    <%= messages.message%>
+                  </div>
+              <% } %>
               <ul class="nav nav-pills flex-column flex-md-row mb-3">
                 <li class="nav-item">
                   <a class="nav-link active" href="javascript:void(0);"> **เน้นย้ำ** แต่ล่ะร้านสามารถโปรโมทโปรโมชันได้แค่ครั้งเดียวโปรดรอจนกว่าจะหมดโปรโมทถึงจะสามารถโปรโมทได้อีกครั้ง</a>

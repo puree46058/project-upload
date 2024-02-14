@@ -27,11 +27,6 @@
 </head>
 
 <body>
-
-    <% if (messages.error) { %>
-        <div class="alert alert-danger" role="alert"><%= messages.error %></div>
-    <% } %>
-
     <div id="navbar-guest">
         <%- include('../Navbar/navbar') %>
     </div>
@@ -57,6 +52,13 @@
             </div>
         </section>
         <!-- Breadcrumb Section End -->
+
+        <% if (messages.error) { %>
+          <div class="alert alert-danger text-center mt-3" role="alert" style="font-size: 18px;">
+            <%= messages.error %>
+          </div>
+        <% } %>
+
     <div class="container my-5" style=" box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.13);">
         <div class="row d-flex justify-content-center">
           <div class="col-md-6 p-0">

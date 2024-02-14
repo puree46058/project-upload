@@ -42,7 +42,7 @@ router.get('/', isNotLogin, (req, res, next) => {
   dbConnection.query(querytime,[id],(err, result2) => {
     dbConnection.query(query,[id],(err, result) => {
       if (err) {
-        req.flash('error', err);
+        req.flash('error', 'ไปหน้าร้านอาหารไม่สำเร็จ');
         res.render('Resturant', { 
           data: '',
           data2:'',
@@ -87,7 +87,7 @@ router.get('/back', isNotLogin, (req, res, next) => {
   dbConnection.query(querytime,[id], (err, result2) => {
     dbConnection.query(query, [id],(err, result) => {
       if (err) {
-        req.flash('error', err);
+        req.flash('error', 'ไปหน้าร้านอาหารไม่สำเร็จ');
         res.render('Resturant', { 
           data: '',
           data2:'',
@@ -120,7 +120,14 @@ router.get('/calendar', isNotLogin, (req, res) => {
   ORDER BY datebook DESC `;
   dbConnection.query(query, (err, result) => {
     if(err){
-      console.log(err);
+      req.flash('error', 'ไม่มีข้อมูลปฏิทิน');
+      res.render('Resturant', { 
+        data: '', 
+        name: req.session.nameResturant, 
+        role: req.session.level, 
+        img: req.session.profileResturant,
+        point:req.session.point
+      });
     }else{
       console.log(result);
       res.render('Resturant/calendar', { 
@@ -143,7 +150,7 @@ router.get('/Ceritificate', isNotLogin, (req, res) => {
     if (err) {
       console.log(err);
     } else if (rows.length <= 0) {
-      req.flash('error', 'ไม่มีข้อมูลผู้ใช้')
+      req.flash('error', 'ไม่มีใบประกอบกิจการ')
       res.redirect('/resturant/back');
     } else {
       res.render('Resturant/Ceritificate', {
@@ -285,13 +292,15 @@ router.post('/update', uploadProfileResturant.single('Profile'), (req, res, next
   let id = req.session.id_res
   dbConnection.query('UPDATE restaurants SET ? WHERE id_res = ?' , [updateProfileRes,id],(error, rows) => {
     if (error) {
-      req.flash('error', error);
+      req.flash('error', 'แก้ไขไม่สำเร็จ');
+      res.redirect('/resturant/back')
     } else {
       dbConnection.query('SELECT * FROM restaurants WHERE id_res= ?' , [id], (error, result) => {
         req.session.nameResturant = result[0].res_name;
         req.session.profileResturant = result[0].res_profile;
         if (error) {
-          req.flash('error', error);
+          req.flash('error', 'ไม่มีข้อมูลร้านอาหาร');
+          res.redirect('/resturant/back')
         } else {
           errors = true;
           req.flash('success', 'แก้ไขสำเร็จ');
@@ -346,7 +355,8 @@ router.post('/UpdateCertificate', upload.single('image'), (req, res, next) => {
   let id = req.session.id_res
   dbConnection.query('UPDATE restaurants SET ? WHERE id_res = ?',[update,id],(error, rows) => {
     if (error) {
-      req.flash('error', error);
+      req.flash('error', 'แก้ไขไม่สำเร็จ');
+      res.redirect('/resturant/back')
     } else {
       req.flash('success', 'แก้ไขสำเร็จ');
       res.redirect('/resturant/back')
@@ -362,7 +372,7 @@ router.get('/Promotion', isNotLogin, (req, res) => {
 
   dbConnection.query(' SELECT * FROM promotion WHERE id_restb= ?',[idrestbPromotion], (err, rows, fields) => {
     if (err) {
-      console.log(err);
+      req.flash('error', 'ไม่มีข้อมูลโปรโมชัน');
       res.redirect('/resturant/back')
     } else {
       res.render('Promotion', {
@@ -391,7 +401,7 @@ router.get('/tablePromotion', isNotLogin, (req, res) => {
 
   dbConnection.query(' SELECT * FROM promotion WHERE id_restb= ?',[idrestbPromotion], (err, rows, fields) => {
     if (err) {
-      console.log(err);
+      req.flash('error', 'ไม่มีข้อมูลโปรโมชัน');
       res.redirect('/resturant/back')
     } else {
       res.render('Promotion', {
@@ -504,7 +514,7 @@ router.post('/addPromotion', uploadimgResturant.single('imageFood'), (req, res, 
       // บันทึกที่อยู่ของไฟล์ในฐานข้อมูล
       dbConnection.query('INSERT INTO promotion SET ? ', [imgeResturant], (error, rows) => {
         if (error) {
-          req.flash('error', error);
+          req.flash('error', 'เพิ่มโปรโมชันไม่สำเร็จ');
           res.redirect('/resturant/tablePromotion');
           console.log("บันทึกลงฐานข้อมูลไม่สำเร็จ PROMOTION");
         } else {
@@ -542,7 +552,7 @@ router.post('/addPromotion', uploadimgResturant.single('imageFood'), (req, res, 
                 dbConnection.query('INSERT INTO coupon SET  ?  ', [cupondata], (error, rows) => {
 
                   if (error) {
-                    req.flash('error', error);
+                    req.flash('error', 'เพิ่มคูปองสำเร็จ');
                     res.redirect('/resturant/tablePromotion');
                     console.log("บันทึกลงฐานข้อมูลคูปองไม่สำเร็จ");
                   } else {
@@ -575,7 +585,7 @@ router.get('/editPromotion/(:id_pro)', isNotLogin, (req, res, next) => {
   let id = req.params.id_pro;
   dbConnection.query('SELECT * FROM promotion WHERE id_pro = ?',[id], (err, rows, fields) => {
     if (rows.length <= 0) {
-      req.flash('error', 'Promotion not found with id_pro = ' + id)
+      req.flash('error', 'หาโปรโมชันของ ID ' + id+'ไม่เจอ')
       res.redirect('/Promotion');
     } else {
       res.render('Promotion/editPromotion', {
@@ -682,6 +692,7 @@ router.post('/updateResturant/:id_pro', uploadimgResturant.single('imageFood'), 
             }
             dbConnection.query('INSERT INTO coupon SET ?',[cupondata], (error, rows) => {
               if (error) {
+                req.flash('error', 'เพิ่มคูปองไม่สำเร็จ');
                 console.log("แก้ไขเพิ่มคูปองไม่สำเร็จ", error);
               } else {
                 req.flash('success', 'แก้ไขสำเร็จ');
@@ -707,6 +718,7 @@ router.post('/updateResturant/:id_pro', uploadimgResturant.single('imageFood'), 
           
           dbConnection.query('DELETE FROM coupon WHERE id_pro_coupon = ? LIMIT ?', [id,excessCouponCount], (error, rows) => {
             if (error) {
+              req.flash('error', 'ลบคูปองไม่สำเร็จ');
               console.log("ลบคูปองไม่สำเร็จ", error);
             } else {
               req.flash('success', 'แก้ไขสำเร็จ');
@@ -721,7 +733,7 @@ router.post('/updateResturant/:id_pro', uploadimgResturant.single('imageFood'), 
 
   dbConnection.query('UPDATE promotion SET  ? WHERE id_pro = ?' ,[FormUpdatedataReaturant,id],(error, rows) => {
     if (error) {
-      req.flash('error', error);
+      req.flash('error', 'แก้ไขไม่สำเร็จ');
       console.log("บันทึกลงฐานข้อมูลไม่สำเร็จ");
     } else {
       errors = true;
@@ -742,20 +754,21 @@ router.get('/deletePromotion/(:id_pro)', isNotLogin, (req, res, next) => {
 
   dbConnection.query('DELETE FROM promotion WHERE pro_id =?' , [id], (err, result) => {
     if (err) {
-      req.flash('error', err),
+      req.flash('error', 'ลบโปรโมชันไม่สำเร็จ'),
         res.render('Promotion', { data: result });
     } else {
       dbConnection.query('DELETE FROM coupon WHERE id_pro_coupon = ?' ,[id], (err, result) => {
         if (err) {
-          req.flash('error', err),
+          req.flash('error', 'ลบคูปองไม่สำเร็จ'),
           res.render('Promotion', { data: result });
         } else {
-          req.flash('success', 'Promotion Delete successfully! ID = ' + id);
+          req.flash('success', 'ลบโปรโมชันของ ID = ' + id+'สำเร็จ');
           dbConnection.query('SELECT * FROM promotion ORDER BY pro_id ', (err, rows) => {
             if (err) {
-              req.flash('error', err);
+              req.flash('error', 'แสดงโปรโมชันของ');
               res.redirect('/resturant/tablePromotion');
             } else {
+              req.flash('success', 'ลบโปรโมชันสำเร็จ');
               res.redirect('/resturant/tablePromotion');
             }
           })
@@ -773,12 +786,13 @@ router.get('/openPromotion/(:id_pro)', isNotLogin, (req, res, next) => {
   dbConnection.query(' UPDATE promotion SET status = "Order" WHERE id_pro= ?' , [id], (err, rows) => {
     if (err) {
       console.log(err);
-      req.flash("error", err);
+      req.flash("error", "แก้ไขสถานะโปรโมชันไม่สำเร็จ");
       res.redirect('/resturant/tablePromotion');
     } else { 
       dbConnection.query(' UPDATE coupon SET status = "Order" WHERE id_pro_coupon= ?', [id], (err,rows) => {
       if (err) {
         console.log(err);
+        req.flash('success', 'แก้ไขสถานะคูปองไม่สำเร็จ');
         res.redirect('/resturant/tablePromotion');
       } else {
         return
@@ -791,12 +805,13 @@ router.get('/openPromotion/(:id_pro)', isNotLogin, (req, res, next) => {
   dbConnection.query("SELECT * FROM coupon WHERE id_pro_coupon= ?",[id], (err,rows) => {
     let couponId =rows[0].cu_id;
     if(err){
-      req.flash("error", err);
+      req.flash("error", 'เกิดข้อผิดพลาดในการหาข้อมูล');
       console.log(err);
       res.redirect('/resturant/tablePromotion');
     }else{
       dbConnection.query('SELECT user_id FROM coupon_user WHERE coupon_id = ?', [couponId], (error, results) => {
         if (error) {
+          req.flash('error', 'เกิดข้อผิดพลาดในการหาข้อมูล');
           console.error('เกิดข้อผิดพลาดในการค้นหาข้อมูล: ', error);
         }
         // ตรวจสอบว่าพบ id_user หรือไม่
@@ -805,14 +820,17 @@ router.get('/openPromotion/(:id_pro)', isNotLogin, (req, res, next) => {
           // ทำการอัปเดตข้อมูลในตาราง coupon
           dbConnection.query('UPDATE coupon SET status = ? WHERE id_user = ?', ['Book', userId], (updateError, updateResults) => {
             if (updateError) {
+              req.flash('error', 'แก้ไขข้อมูลคูปองไม่สำเร็จ');
               console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล: ', updateError);
               res.redirect('/resturant/tablePromotion');
             } else {
               dbConnection.query('UPDATE coupon_user SET status = ? WHERE user_id = ?', ['Book', userId], (updateError, updateResults) => {
                 if (updateError) {
+                  req.flash('error', 'แก้ไขข้อมูลคูปองที่มีการจองไม่สำเร็จ');
                   console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล: ', updateError);
                   res.redirect('/resturant/tablePromotion');
                 } else {
+                  req.flash('success', 'แก้ไขข้อมูลสำเร็จเฉพาะ Book');
                   console.log('อัปเดตข้อมูลสำเร็จ Book เฉพาะ');
                   res.redirect('/resturant/tablePromotion');
                 }
@@ -824,9 +842,11 @@ router.get('/openPromotion/(:id_pro)', isNotLogin, (req, res, next) => {
           // ทำการอัปเดตสถานะเป็น 'Order' หรือดำเนินการตามที่ต้องการ
           dbConnection.query('UPDATE coupon SET status = ?', ['Order'], (updateError, updateResults) => {
             if (updateError) {
+              req.flash('error', 'แก้ไขสถานะคูปองไม่สำเร็จ');
               console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล: ', updateError);
               res.redirect('/resturant/tablePromotion');
             } else {
+              req.flash('success', 'แก้ไขสถานะข้อมูลสำเร็จเฉพาะ Book');
               console.log('อัปเดตข้อมูลสำเร็จ Order ทั้งหมด');
               res.redirect('/resturant/tablePromotion');
             }
@@ -845,12 +865,12 @@ router.get('/closePromotion/(:id_pro)', isNotLogin, (req, res, next) => {
   dbConnection.query(' UPDATE promotion SET status = "Off" WHERE id_pro=?',[id], (err, rows) => {
     if (err) {
       console.log(err);
-      req.flash("error", err);
+      req.flash("error", "แก้ไขสถานะโปรโมชันไม่สำเร็จ");
       res.redirect('/resturant/tablePromotion');
     } else {
       dbConnection.query(' UPDATE coupon SET status = "Close" WHERE id_pro_coupon= ?',[id], (err, rows) => {
         if (err) {
-          req.flash("error", err);
+          req.flash("error", "แก้ไขสถานะคูปองไม่สำเร็จ");
           console.log(err);
           res.redirect('/resturant/tablePromotion');
         } else {
@@ -863,12 +883,13 @@ router.get('/closePromotion/(:id_pro)', isNotLogin, (req, res, next) => {
   });
 })
 /*-------------------------------------------------------ส่วนโฟลเดอร์ Cupon---------------------------------------------*/
-// delete Promotion
+// คูปอง
 router.get('/cupon/(:id_pro)', isNotLogin, (req, res, next) => {
   let id = req.params.id_pro;
   dbConnection.query(' SELECT * FROM coupon WHERE id_pro_coupon= ?',[id], (err, rows, fields) => {
 
     if (err) {
+      req.flash("error", "ไม่สามารถแสดงคูปองได้");
       console.log(err);
       res.redirect('/resturant/back');
     } else {
@@ -959,7 +980,7 @@ router.post("/addpoint", uploadPoint.single("point"), (req, res, next) => {
   };
   dbConnection.query("INSERT INTO point_transactions SET ?",[formpoint],(error, results) => {
       if (error) {
-        req.flash("error", error);
+        req.flash("error", 'ไม่สามารถเติมพอยต์ได้');
         res.redirect('/resturant/back');
       } else {
         req.flash("message", "รอการนุมัติการเติมพอยต์");
@@ -973,7 +994,7 @@ router.get('/ListCustomer', (req, res, next) => {
   let idRes= req.session.id_res;
     dbConnection.query('SELECT coupon.*,user.*,coupon_user.* FROM coupon JOIN user ON coupon.id_user = user.id_user  JOIN coupon_user ON coupon.cu_id = coupon_user.coupon_id WHERE coupon.status = "Book" AND coupon.id_res_coupon =?',[idRes],(error,userdata) => {
       if (error) {
-        req.flash("error", error);
+        req.flash("error", 'ไม่สามารถแสดงรายชื่อลูกค้าที่จองได้');
         res.redirect('/resturant/back');
       } else if(userdata.length<=0){
         req.flash("message", "ไม่มีลูกค้าที่จอง");
@@ -984,7 +1005,7 @@ router.get('/ListCustomer', (req, res, next) => {
           point:req.session.point
         });
       }else {
-        req.flash("message", "หน้ารายชื่อลูกค้า");
+        
         res.render('Resturant/ListCustomer',{
           dataUser:userdata,
           name: req.session.nameResturant,
@@ -1000,7 +1021,7 @@ router.get('/ConfirmBook/(:id_user)/(:cu_id)', (req, res, next) => {
   let couponid=req.params.cu_id;
   dbConnection.query('UPDATE coupon_user SET status="Confirm" WHERE coupon_id=? AND user_id=?',[couponid,idUser],(error, results) => {
     if (error) {
-      req.flash("error", error);
+      req.flash("error", 'ไม่สามารถแก้ไขสถานะคูปองที่ลูกค้าจองได้');
       res.redirect('/resturant/back');
     } else {
       let detailConfirm={
@@ -1009,7 +1030,7 @@ router.get('/ConfirmBook/(:id_user)/(:cu_id)', (req, res, next) => {
       }
       dbConnection.query('UPDATE coupon SET ? WHERE cu_id=? AND id_user=?',[detailConfirm,couponid,idUser],(error, results1) => {
         if (error) {
-          req.flash("error", error);
+          req.flash("error", 'ไม่สามารถแก้ไขสถานะคูปองได้');
           res.redirect('/resturant/back');
         } else {
           req.flash("message", "ยืนยันการจองสำเร็จ");
@@ -1026,7 +1047,7 @@ router.get('/CancelBook/(:id_user)/(:cu_id)', (req, res, next) => {
   let couponid=req.params.cu_id;
   dbConnection.query('UPDATE coupon_user SET status="Cancel" WHERE coupon_id=? AND user_id=?',[couponid,idUser],(error, results) => {
     if (error) {
-      req.flash("error", error);
+      req.flash("error", 'ไม่สามารถแก้ไขสถานะคูปองที่จองได้');
       res.redirect('/resturant/back');
     } else {
       let detailCancel={
@@ -1036,10 +1057,10 @@ router.get('/CancelBook/(:id_user)/(:cu_id)', (req, res, next) => {
       dbConnection.query('UPDATE coupon SET ? WHERE cu_id=? AND id_user=?',[detailCancel,couponid,idUser],(error, results1) => {
      
         if (error) {
-          req.flash("error", error);
+          req.flash("error", 'ไม่สามารถแก้ไขสถานะคูปองได้');
           res.redirect('/resturant/back');
         } else {
-          req.flash("message", "ยกเลิกการจองสำเร็จ");
+          req.flash("error", "ยกเลิกการจองสำเร็จ");
           res.redirect('/resturant/ListCustomer');
         }
       });
@@ -1077,7 +1098,7 @@ router.post("/report", (req, res, next) => {
   dbConnection.query(query, (error, results) => {
 
     if (error) {
-      req.flash("error", error);
+      req.flash("error", "ผิดพลาดการหารายงาน");
       console.log(error);
       res.redirect('/resturant/back');
     } else if (results.length <= 0) {
@@ -1162,6 +1183,7 @@ router.get('/pdf', (req, res, next) => {
     // ส่งไฟล์ PDF กลับให้ผู้ใช้
     res.download(filePath, 'Report.pdf', (err) => {
       if (err) {
+
         console.error(err);
         res.status(500).send('Error downloading file');
       }
@@ -1180,6 +1202,7 @@ router.get('/promote', (req, res, next) => {
 
   dbConnection.query("SELECT * FROM promotion WHERE status='Order' AND id_restb= ?",[idrestbPromotion], (err, rows, fields) => {
     if (err) {
+      req.flash("error", "ไม่สามารถไปหน้าโปรโมทได้");
       console.log(err);
       res.redirect('/resturant/back')
     } else {
@@ -1201,6 +1224,7 @@ router.get('/promoteSelect/(:id_pro)', (req, res, next) => {
   dbConnection.query(' SELECT * FROM promotion WHERE id_pro= ?' , [idpro], (err, rows, fields) => {
     let idpro=rows[0].id_pro;
     if (err) {
+      req.flash("error", "ไม่สามารถแสดงโปรโมชันทีต้องการโปรโมทได้");
       console.log(err);
       res.redirect('/resturant/back')
     } else {
@@ -1236,6 +1260,7 @@ router.post('/boostpromote/(:id_pro)', (req, res, next) => {
   dbConnection.query(" SELECT * FROM user WHERE id_restb= ?", [idres], (err, rowsuser, fields) => {
     let pointuser=rowsuser[0].user_point;
     if(err){
+      req.flash("error", "ไม่สามารถโปรโมทได้");
       res.redirect('/resturant/back')
     }else{
       let cutpointtopromotion=pointuser/daypromote;
@@ -1248,6 +1273,7 @@ router.post('/boostpromote/(:id_pro)', (req, res, next) => {
       }
       dbConnection.query("UPDATE user SET ? WHERE id_restb= ?", [formpointtouser,idres], (err, rowsuser, fields) => {
         if(err){
+          req.flash("error", "ไม่สามารถโปรโมทได้");
           res.redirect('/resturant/back')
         }else{
           let formboostpromote={
@@ -1259,6 +1285,7 @@ router.post('/boostpromote/(:id_pro)', (req, res, next) => {
           }
           dbConnection.query('INSERT INTO boostpromote SET ? ',[formboostpromote],(error, rows) => {
             if(err){
+              req.flash("error", "ไม่สามารถโปรโมทได้");
               res.redirect('/resturant/back')
             }else{
               let boostformpromotion={
@@ -1266,8 +1293,10 @@ router.post('/boostpromote/(:id_pro)', (req, res, next) => {
               }
               dbConnection.query('UPDATE promotion SET ? WHERE id_pro= ?',[boostformpromotion,idpro],(error, rows) => {
                 if(err){
+                  req.flash("error", "ไม่สามารถโปรโมทได้");
                   res.redirect('/resturant/back')
                 }else{
+                  req.flash("message", "โปรโมทเรียบร้อย");
                   res.redirect('/resturant/back')
                 }
               });

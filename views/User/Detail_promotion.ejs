@@ -29,13 +29,6 @@
   <% if(messages.error) {%>
     <div role="alert"><%= messages.error%></div>
   <% } %>
-  
-  <% if(messages.message) { %>
-    <div role="alert"><%= messages.message%></div>
-  <% } %>
-  <% if(messages.success) { %>
-    <div role="alert"><%= messages.success%></div>
-  <% } %>
 
   <div id="navbar-guest">
     <%- include('../Navbar/navbar') %>
@@ -55,7 +48,7 @@
                       <h2><%= namePromotion %></h2>
                       <div class="breadcrumb__option">
                           <a href="/users/">สะดวกจอง</a>
-                          <a href="#">คูปอง</a>
+                          <a href="/users/coupon-list-user">คูปอง</a>
                           <span><%= namePromotion %></span>
                       </div>
                   </div>
@@ -90,7 +83,7 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="product__details__text">
                         <h3><%= namePromotion %></h3>
-                        <div class="product__details__price">ราคา : <%= pricePromotion %></div>
+                        <div class="product__details__price">ราคา : <%= parseFloat(pricePromotion).toFixed(2) %></div>
 
                         <form action="/users/like_count/<%=id_pro%>" method="POST">
                           <button  class="heart-icon"><span class="icon_heart_alt"></span> <%= like %></button>
@@ -123,8 +116,7 @@
                     <div class="product__details__tab" style="padding-top: 0; margin-bottom: 40px;">
                         <ul class="nav nav-tabs" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab"
-                                    aria-selected="true">ตำแหน่งที่ตั้งร้าน</a>
+                                <b><h4>ตำแหน่งที่ตั้งร้าน</h4></b>
                             </li>
                         </ul>
                     </div>
@@ -178,7 +170,7 @@
                         </div>
                         <div class="product__item__text">
                           <h6><a href="/users/cart_add/<%= dataCoupon[i].cu_id %>" class="text-primary">จองคูปอง</a></h6>
-                            <h5>ราคา : <%= dataCoupon[i].price_pro %> แต้ม</h5>
+                            <h5>ราคา : <%= parseFloat(dataCoupon[i].price_pro).toFixed(2) %> แต้ม</h5>
                         </div>
                     </div>
                 </div>

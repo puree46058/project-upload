@@ -280,7 +280,7 @@ router.post('/Register', (req, res, next) => {
       req.flash('error', error);
     } else if (results.length > 0) { // email in database 
       message = true;
-      req.flash('message', 'มีผู้ใช้นี้ในฐานข้อมูลแล้ว!');
+      req.flash('message', 'มีรหัสผู้ใช้นี้ในฐานข้อมูลแล้ว');
       res.render('FormRegister');
 
     } else if (PassWord !== Confirmpassword) {  //check password != confirm password
@@ -343,7 +343,7 @@ router.post('/Login', (req, res, next) => {
       console.log(error);
     } else if (results.length === 0) {// check ไม่มีค่าให้แสดง
       message = true;
-      req.flash('message', 'ไม่มีผู้ใช้นี้หรือพาสเวิร์ดในฐานข้อมูล');
+      req.flash('message', 'รหัสผู้ใช้หรือพาสเวิร์ดนี้ไม่ถูกต้อง');
       res.render('FormLogin');
       console.log(error);
     } else if (results.length === 1) {
@@ -441,7 +441,7 @@ router.post('/Login', (req, res, next) => {
                     req.flash('error', error);
                   } else {
                     errors = true;
-                    req.flash('success', 'สมัครร้านอาหารเรียบร้อย !');
+                    req.flash('success', 'ยินดีต้อรับเข้าสู่ร้านอาหาร !');
                     res.render('Resturant', {
                       data: rows,
                       datatime:rowtime,
@@ -461,7 +461,7 @@ router.post('/Login', (req, res, next) => {
                     req.flash('error', error);
                   } else {
                     errors = true;
-                    req.flash('success', 'สมัครร้านอาหารเรียบร้อย !');
+                    req.flash('success', 'ยินดีต้อรับเข้าสู่ร้านอาหาร !');
                     res.render('Resturant', {
                       data: rows,
                       datatime:rowtime,

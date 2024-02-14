@@ -85,11 +85,7 @@ router.get("/back", (req, res) => {
 });
 
 //display FormRegisterResturant page
-router.get(
-  "/RegisResturant",
-  isNotLogin,
-  NOStatusResturant,
-  function (req, res, next) {
+router.get("/RegisResturant",isNotLogin,NOStatusResturant,function (req, res, next) {
     res.render("User/FormRegisterResturant", {
       name: req.session.fname,
       img: req.session.profile,
@@ -157,10 +153,7 @@ router.post("/RegisResturant", upload.single("image"), (req, res, next) => {
 
   console.log(Name,Email,Adress,Phone,StatusResturant,Profile,Owner_Nname,Owner_Lname,Owner_Email,Owner_Phone);
   //check email is use
-  dbConnection.query(
-    "SELECT res_email FROM restaurants WHERE res_email = ? ",
-    [Email],
-    (error, results) => {
+  dbConnection.query("SELECT res_email FROM restaurants WHERE res_email = ? ",[Email],(error, results) => {
       //เช็ค email ใน resturant ใน resturant
       if (error) {
         error = true;
@@ -168,7 +161,7 @@ router.post("/RegisResturant", upload.single("image"), (req, res, next) => {
       } else if (results.length > 0) {
         // email resturant in database
         message = true;
-        req.flash("message", "มีร้านอาหารนี้ในฐานข้อมูลแล้ว !");
+        req.flash("message", "มีร้านอาหารนี้อยู่ในฐานข้อมูลแล้ว");
         res.render("User/FormRegisterResturant"); // ไปหน้า resturant พร้อม id_user
       } else {
         dbConnection.query(
@@ -237,7 +230,7 @@ router.post("/RegisResturant", upload.single("image"), (req, res, next) => {
                                       errors = true;
                                       req.flash(
                                         "success",
-                                        "สมัครร้านอาหารเรียบร้อย !"
+                                        "สมัครร้านอาหารเรียบร้อยแล้ว กรุณารอแอดมินตรวจสอบรายละเอียด"
                                       );
                                       // res.redirect('/users/back')
                                       req.session.destroy();
@@ -400,7 +393,7 @@ router.post("/update", uploadProfile.single("Profile"), (req, res, next) => {
               req.flash("error", error);
             } else {
               errors = true;
-              req.flash("success", "แก้ไขสำเร็จ");
+              req.flash("success", "แก้ไขโปรไฟล์สำเร็จ");
               res.redirect("/users/back");
             }
           }
@@ -438,41 +431,41 @@ router.post("/changpsw", (req, res, next) => {
 
   if (PassWord !== Confirmpassword) {
     //check password != confirm password
-    message = true;
-    req.flash("message", "พาสเวิร์ดไม่ตรงกัน");
-    res.render("User/FormChangpassword");
+    req.flash("message", "พาสเวิร์ดไม่ตรงกันโปรดตรวจสอบอีกครั้ง");
+    res.redirect("/users/back");
+  }else{
+    bcrypt.hash(PassWord, 12, function (error, hash) {
+      let updatepsw = {
+        password: hash,
+      };
+      let updatepswid = req.session.id_user;
+      dbConnection.query(
+        "UPDATE user SET  ? WHERE id_user = ?",[updatepsw,updatepswid],
+        (error, rows) => {
+          if (error) {
+            req.flash("error", "แก้ไขรหัสผ่านไม่สำเร็จ");
+          } else {
+            dbConnection.query(
+              "SELECT * FROM user WHERE id_user= ?",[updatepswid],
+              (error, rows) => {
+                req.session.fname = rows[0].fname; // sent&check  session  name
+                req.session.profile = rows[0].Profile;
+                if (error) {
+                  req.flash("error", error);
+                } else {
+                  errors = true;
+                  req.flash("success", "แก้ไขรหัสผ่านสำเร็จ");
+                  res.redirect("/users/back");
+                }
+              }
+            );
+          }
+        }
+      );
+    });
   }
 
-  bcrypt.hash(PassWord, 12, function (error, hash) {
-    let updatepsw = {
-      password: hash,
-    };
-    let updatepswid = req.session.id_user;
-    dbConnection.query(
-      "UPDATE user SET  ? WHERE id_user = ?",[updatepswid],
-      updatepsw,
-      (error, rows) => {
-        if (error) {
-          req.flash("error", error);
-        } else {
-          dbConnection.query(
-            "SELECT * FROM user WHERE id_user= ?"+[updatepswid],
-            (error, rows) => {
-              req.session.fname = rows[0].fname; // sent&check  session  name
-              req.session.profile = rows[0].Profile;
-              if (error) {
-                req.flash("error", error);
-              } else {
-                errors = true;
-                req.flash("success", "แก้ไขสำเร็จ");
-                res.redirect("/users/back");
-              }
-            }
-          );
-        }
-      }
-    );
-  });
+  
 });
 
 /* ---------------------------------------------- Cupon Cart -----------------------------------------------*/
@@ -481,20 +474,21 @@ router.post("/changpsw", (req, res, next) => {
 router.get('/coupon-list-user', function (req, res, next) {
   dbConnection.query('SELECT * FROM promotion WHERE status="Order" ORDER BY boost DESC  ', (err, rowspromotion) => {
     if (err) {
-      req.flash('error', err);
+      req.flash('error', "ไม่มีโปรโมชันที่ว่าง");
       // res.render('index', { data: '',dataCoupon:'',totalcoupon:'',pro_name:'',id_pro:''});
-      res.redirect('/');
+      res.redirect('/users/back');
     } else {
       dbConnection.query('SELECT * FROM promotion WHERE boost!=0', (err, rowspromotionboost) => {
         if (err) {
-          req.flash('error', err);
-          res.redirect('/');
+          req.flash('error', "ไม่มีโปรโมชันที่ว่าง");
+          res.redirect('/users/back');
         } else {
           console.log("Promotion ที่มีการ boost",rowspromotionboost.length);
           for (let n = 0; n < rowspromotionboost.length; n++) {
             dbConnection.query("SELECT * FROM boostpromote WHERE boost_id_pro = ? ",[rowspromotionboost[n].id_pro],
               (err, boost) => {
                 if (err) {
+                  req.flash('error', "โปรดตรวจสอบวันที่ต้องการโปรโมท");
                   console.log("ERROR ตรวจสอบวัน boost"+ err);
                 } else {
                   let date = new Date(Date.now());
@@ -516,6 +510,7 @@ router.get('/coupon-list-user', function (req, res, next) {
                     };
                     dbConnection.query("UPDATE promotion SET ? WHERE id_pro = ?",[form_data,boost[n].boost_id_pro], (err, result) => {
                       if (err) {
+
                         console.log(": อัพเดท status ใน promotion ไม่ได้");
                       } else {
                         console.log(": ปรับ boost promotion แล้ว");
@@ -534,12 +529,12 @@ router.get('/coupon-list-user', function (req, res, next) {
         let totalcoupon = total[0].total;
         if (err) {
           req.flash('error', err);
-          res.redirect('/');
+          res.redirect('/users/back');
         } else {
           dbConnection.query('SELECT * FROM coupon WHERE status="Order" ORDER BY cu_id ASC  ', (err, rowscoupon) => {
             if (err) {
               req.flash('error', err);
-              res.redirect('/');
+              res.redirect('/users/back');
             } else {
               res.render('User/coupon-list-user',{
                 data:rowspromotion,
@@ -690,6 +685,7 @@ router.get("/cart", isNotLogin, (req, res, next) => {
       `SELECT * FROM coupon WHERE cu_id IN (${promotion.join(",")})`,
       (error, results) => {
         if (error) {
+          req.flash("error", "มีข้อผิดพลาดของคูปองโปรดแจ้งผู้ดูแลระบบ");
           console.error("Error querying cart products:", err);
           res.redirect("/users/back");
         }
@@ -735,7 +731,7 @@ router.get("/confirmCart",  (req, res, next) => {
         let idpro=results[0].id_pro_coupon;
         if (error) {
           console.error("Error querying cart products:", error);
-          req.flash("error", error);
+          req.flash("error", "มีข้อผิดพลาดของคูปองโปรดแจ้งผู้ดูแลระบบ");
           console.log("1");
           return res.redirect("/users/back");
          
@@ -749,7 +745,7 @@ router.get("/confirmCart",  (req, res, next) => {
             (error, rows) => {
               let userPoint = rows[0].user_point;
               if (error) {
-                req.flash("error", error);
+                req.flash("error", "มีข้อผิดพลาดของระบบผู้ใช้โปรดแจ้งผู้ดูแลระบบ");
                 console.log("2");
                 return res.redirect("/users/back");
                
@@ -769,7 +765,7 @@ router.get("/confirmCart",  (req, res, next) => {
                     [PointBuyCoupon,id],
                     (error, rows2) => {
                       if (error) {
-                        req.flash("error", error);
+                        req.flash("error", "มีข้อผิดพลาดของระบบผู้ใช้โปรดแจ้งผู้ดูแลระบบ");
                         console.log("4");
                         return res.redirect("/users/back");
                         
@@ -780,7 +776,7 @@ router.get("/confirmCart",  (req, res, next) => {
                         let connectquery = `UPDATE coupon SET status = '${newValue}', id_user ='${id}' WHERE cu_id IN (${idList})`;
                         dbConnection.query(connectquery, (error, rows3) => {
                           if (error) {
-                            req.flash("error", error);
+                            req.flash("error", "มีข้อผิดพลาดของคูปองโปรดแจ้งผู้ดูแลระบบ");
                             console.log("5");
                             return res.redirect("/users/back");
                             
@@ -889,6 +885,7 @@ router.get("/confirmCart",  (req, res, next) => {
 // รับ request ล้างตะกร้า
 router.get("/clear-cart", (req, res) => {
   delete req.session.promotion;
+  req.flash("message", "ในตะกร้าไม่มีคูปอง");
   res.redirect("/users/back");
 });
 
@@ -897,7 +894,7 @@ router.get("/remove/(:cu_id)", (req, res) => {
 
   // ตรวจสอบว่าตะกร้าไม่ว่าจะว่างหรือไม่
   if (!req.session.promotion || req.session.promotion.length === 0) {
-    req.flash("message", "ในตะกร้าไม่มีคูปอง");
+    req.flash("message", "ลบคูปองเรียบร้อย");
     res.redirect("/users/cart");
     return;
   }
@@ -1119,6 +1116,7 @@ router.post("/like_count/(:id_pro)",(req, res, next) => {
           req.flash("error", error);
           res.redirect("/users/back");
         }else{
+          req.flash("success", "ถูกใจเรียบร้อย");
           res.redirect("/users/back");
         }
       });

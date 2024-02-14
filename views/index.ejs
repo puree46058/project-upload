@@ -26,14 +26,6 @@
 </head>
 
 <body>
-  <% if(messages.error) {%>
-    <div role="alert"><%= messages.error%></div>
-  <% } %>
-  
-  <% if(messages.message) { %>
-    <div role="alert"><%= messages.message%></div>
-  <% } %>
-
 
   <div id="navbar-guest">
     <%- include('Navbar/navbar-guest') %>
@@ -63,7 +55,21 @@
     
 </section>
 <!-- Hero Section End -->
-
+<% if(messages.error) {%>
+    <div role="alert" class="alert alert-danger text-center mt-3" style="font-size: 18px;">
+      <%= messages.error%>
+    </div>
+<% } %>
+<% if(messages.success) {%>
+    <div role="alert" class="alert alert-success text-center mt-3" style="font-size: 18px;">
+      <%= messages.success%>
+    </div>
+<% } %>
+<% if(messages.message) {%>
+    <div role="alert" class="alert alert-success text-center mt-3" style="font-size: 18px;">
+      <%= messages.message%>
+    </div>
+<% } %>
 <!-- Categories Section Begin -->
 <section class="categories">
     <div class="container">

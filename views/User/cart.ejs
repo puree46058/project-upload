@@ -29,14 +29,6 @@
 
 <body>
 
-  <% if(messages.error) {%>
-    <div role="alert"><%= messages.error%></div>
-  <% } %>
-  
-  <% if(messages.message) { %>
-    <div role="alert"><%= messages.message%></div>
-  <% } %>
-
   <div id="navbar-guest">
     <%- include('../Navbar/navbar') %>
   </div>
@@ -60,6 +52,18 @@
       </div>
   </section>
   <!-- Breadcrumb Section End -->
+
+  <% if(messages.error) {%>
+    <div role="alert" class="alert alert-danger text-center mt-3" style="font-size: 18px;">
+      <%= messages.error%>
+    </div>
+  <% } %>
+  
+  <% if(messages.message) {%>
+    <div role="alert" class="alert alert-danger text-center mt-3" style="font-size: 18px;">
+      <%= messages.message%>
+    </div>
+  <% } %>
 
     <!-- Shoping Cart Section Begin -->
     <section class="shoping-cart spad" style="margin-bottom: 300px;">
