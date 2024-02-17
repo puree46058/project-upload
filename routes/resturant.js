@@ -997,7 +997,6 @@ router.get('/ListCustomer', (req, res, next) => {
         req.flash("error", 'ไม่สามารถแสดงรายชื่อลูกค้าที่จองได้');
         res.redirect('/resturant/back');
       } else if(userdata.length<=0){
-        req.flash("message", "ไม่มีลูกค้าที่จอง");
         res.render('Resturant/ListCustomer',{
           dataUser:'',
           name: req.session.nameResturant,

@@ -127,15 +127,29 @@
                             </div>
                         <%}%>
                     <%}%>
-                <% if(!data.length) { %>
-                    <p class="text-center">No Coupon found!</p>
+                <% if(!dataCoupon.length) { %>
+                    <p class="text-center">ไม่มีคูปอง</p>
                 <% } %>
                 </div>
-                <div class="product__pagination text-center">
-                    <a href="#">1</a>
-                    <a href="#">2</a>
-                    <a href="#">3</a>
-                    <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                <div class="pagination justify-content-center">  
+                    <% if (currentPage !== 1) { %> <!-- เพิ่มเงื่อนไขนี้เพื่อตรวจสอบว่าไม่ได้อยู่ที่หน้าแรก -->
+                        <form action="/users/cat_specialprice" method="GET">
+                          <input type="hidden" name="page" value="<%= currentPage - 1 %>">
+                          <button type="submit" class="page-link">
+                            <i class="fa fa-long-arrow-left"></i>
+                          </button>
+                        </form>
+                    <% } %>
+            
+                    <% if (dataCoupon.length===perPage) { %>
+                        
+                        <form action="/users/cat_specialprice" method="GET">
+                          <input type="hidden" name="page" value="<%= parseInt(currentPage) + 1 %>">
+                          <button type="submit" class="page-link">
+                            <i class="fa fa-long-arrow-right"></i>
+                          </button>
+                        </form>
+                    <% } %>
                 </div>
             </div>
         </div>
