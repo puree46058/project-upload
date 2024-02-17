@@ -251,36 +251,26 @@
                   <% } %>
                 </div>
                 <hr>
-                <nav aria-label="Page navigation">
-                  
-                  <ul class="pagination justify-content-end mx-5 p-0">
-                    <li class="page-item prev">
-                      <a class="page-link" href="javascript:void(0);"
-                        ><i class="tf-icon bx bx-chevrons-left"></i
-                      ></a>
-                    </li>
-                    <li class="page-item active">
-                      <a class="page-link" href="javascript:void(0);">1</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="javascript:void(0);">2</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="javascript:void(0);">3</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="javascript:void(0);">4</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="javascript:void(0);">5</a>
-                    </li>
-                    <li class="page-item next">
-                      <a class="page-link" href="javascript:void(0);"
-                        ><i class="tf-icon bx bx-chevrons-right"></i
-                      ></a>
-                    </li>
-                  </ul>
-                </nav>
+                <div class="pagination justify-right-right">  
+                  <% if (currentPage !== 1) { %> <!-- เพิ่มเงื่อนไขนี้เพื่อตรวจสอบว่าไม่ได้อยู่ที่หน้าแรก -->
+                      <form action="/admin/HistoryWebsite" method="GET">
+                        <input type="hidden" name="page" value="<%= currentPage - 1 %>">
+                        <button type="submit" class="page-link">
+                          <i class="fa fa-long-arrow-left"></i>
+                        </button>
+                      </form>
+                  <% } %>
+          
+                  <% if (data.length===perPage) { %>
+                      
+                      <form action="/admin/HistoryWebsite" method="GET">
+                        <input type="hidden" name="page" value="<%= parseInt(currentPage) + 1 %>">
+                        <button type="submit" class="page-link">
+                          <i class="fa fa-long-arrow-right"></i>
+                        </button>
+                      </form>
+                  <% } %>
+              </div>
               </div>
               
               <!--/ Basic Bootstrap Table -->

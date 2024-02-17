@@ -48,12 +48,18 @@ router.get('/HistoryWebsite', isNotLogin, (req, res, next) => {
             req.flash("error", "ระบบผิดพลาดโปรดแจ้งผู้ดูแลระบบ");
             res.render('adminn/HistoryWebsite', { visitCount: ''.visitCount, img: req.session.profile, name: req.session.fname, data: '' });
         } else {
-            dbConnection.query("SELECT * FROM point_transactions ",(error, results) => {
+
+            const currentPage = req.query.page || 1; // หากไม่ได้รับค่าหน้ามาให้เป็นหน้าที่ 1
+            const perPage = 6; // จำนวนข้อมูลต่อหน้า
+            const offset = (currentPage - 1) * perPage;
+            const sql =`SELECT * FROM point_transactions LIMIT ${perPage}  OFFSET ${offset}`;
+      
+            dbConnection.query(sql,(error, results) => {
                 if(error){
                   req.flash("error", "ระบบผิดพลาดโปรดแจ้งผู้ดูแลระบบ");
                   res.redirect('/admin/mainadmin');
                 }else{
-                    res.render('adminn/HistoryWebsite', { visitCount: rows[0].visitCount, img: req.session.profile, name: req.session.fname, data: results });
+                    res.render('adminn/HistoryWebsite', { visitCount: rows[0].visitCount, img: req.session.profile, name: req.session.fname, data: results,currentPage:currentPage,perPage:perPage });
                 }
               });
             
