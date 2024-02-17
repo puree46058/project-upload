@@ -111,14 +111,15 @@ router.get('/back', isNotLogin, (req, res, next) => {
 });
 
 router.get('/calendar', isNotLogin, (req, res) => {
+  let id = req.session.id_res;
   const query = `SELECT cu.coupon_id, cu.datebook,cu.timebook, cu.status, u.fname, u.lname, u.Profile,cp.cu_id, cp.name_pro_coupon, cp.price_pro ,res.res_name 
   FROM coupon_user cu 
   INNER JOIN coupon cp ON cu.coupon_id = cp.cu_id 
   INNER JOIN user u ON cu.user_id = u.id_user 
   INNER JOIN restaurants res ON cp.id_res_coupon = res.id_res 
-  WHERE cu.status='Book'
+  WHERE cu.status='Book' AND cp.id_res_coupon=?
   ORDER BY datebook DESC `;
-  dbConnection.query(query, (err, result) => {
+  dbConnection.query(query,[id], (err, result) => {
     if(err){
       req.flash('error', 'ไม่มีข้อมูลปฏิทิน');
       res.render('Resturant', { 

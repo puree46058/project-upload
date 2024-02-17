@@ -466,7 +466,6 @@ router.post('/Login', (req, res, next) => {
                     req.flash('error', error);
                   } else {
                     errors = true;
-                    req.flash('success', 'ยินดีต้อรับเข้าสู่ร้านอาหาร !');
                     res.render('Resturant', {
                       data: rows,
                       datatime:rowtime,

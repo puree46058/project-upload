@@ -157,11 +157,10 @@ router.get('/confirmStatus/(:id_res)', isNotLogin, (req, res, next) => {
     }
     dbConnection.query('UPDATE user SET ? WHERE id_restb = ?',[updateStatusResturantFromtableUser,id], (err, result) => {
         if (err) {
-            req.flash('error', err),
+            req.flash('error', 'เพิ่มร้านอาหารไม่สำเร็จ'),
                 res.redirect('/admin/tableStatus');
             // res.render('AdminStatusResturant', { data: result });
         } else {
-            req.flash('success', 'User Update Successfully! ID User= ' + id);
             dbConnection.query('UPDATE restaurants SET ? WHERE id_res =?', [updateResturantStatusFromtableResturant,id], (err, rows) => {
                 if (err) {
                     req.flash('error', err);
@@ -797,6 +796,9 @@ const fileFilter = function (req, file, cb) {
 const maxSize = 1 * 1000 * 1000;
 
 let upload = multer({ storage: storage, fileFilter: fileFilter, limits: { fileSize: maxSize }, });
+
+
+
 router.post('/UpdateCertificateResturant/:id_res', upload.single('image'), (req, res, next) => {
 
     let certificate = req.file.filename;
