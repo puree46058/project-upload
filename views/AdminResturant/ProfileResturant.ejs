@@ -366,14 +366,17 @@
                       </div>
                           </div>
                           <div class="mb-3 col-md-6 mt-3" style="display: flex; flex-direction: row; align-items: center;">
+                            <form action="">
+                              
+                            </form>
                             <form action="../add-points/<%= id %>" method="post">
-                              <label for="addPoints" class="mx-1">เพิ่มพอยต์:</label>
-                              <input type="number" id="pointAdd" name="pointAdd" required min="1" max="10000">
+                              <label for="addPoints" class="ml-4 mr-1">เพิ่มพอยต์:</label>
+                              <input type="number" id="add" name="add" required min="1" max="10000">
                               <button type="submit" class="btn btn-success mx-2">เพิ่ม</button>
                             </form>
                             <form action="../minus-points/<%= id %>" method="post">
                               <label for="minusPoints" class="ml-4 mr-1">ลดพอยต์:</label>
-                              <input type="number" id="pointMinus" name="pointMinus" required min="1" max="10000">
+                              <input type="number" id="minus" name="minus" required min="1" max="10000">
                               <button type="submit" class="btn btn-danger mx-1">ลด</button>
                             </form>
                           </div>

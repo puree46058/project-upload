@@ -123,7 +123,7 @@ const fileFilter = function (req, file, cb) {
 };
 
 // ภาพไม่เกิน 1 MB
-const maxSize = 1 * 1000 * 1000;
+const maxSize = 10 * 1024 * 1024;
 
 let upload = multer({
   storage: storage,
@@ -350,7 +350,7 @@ const fileFilterProfile = function (req, file, cb) {
 };
 
 // ภาพไม่เกิน 1 MB
-const maxSizeProfile = 1 * 1000 * 1000;
+const maxSizeProfile = 10 * 1024 * 1024;
 
 let uploadProfile = multer({
   storage: storageProfile,
@@ -969,7 +969,7 @@ const fileFilterPoint = function (req, file, cb) {
 };
 
 // ภาพไม่เกิน 1 MB
-const maxSizePoint = 1 * 1000 * 1000;
+const maxSizePoint = 10 * 1024 * 1024;
 
 let uploadPoint = multer({
   storage: storagePoint,

@@ -257,7 +257,7 @@ const fileFilterResturant = function (req, file, cb) {
 }
 
 // ภาพไม่เกิน 1 MB
-const maxSizeResturant = 1 * 1000 * 1000;
+const maxSizeResturant = 10 * 1024 * 1024;
 
 let uploadProfileResturant = multer({ storage: storageResturant, fileFilter: fileFilterResturant, limits: { fileSize: maxSizeResturant }, });
 
@@ -339,7 +339,7 @@ const fileFilter = function (req, file, cb) {
 }
 
 // ภาพไม่เกิน 1 MB
-const maxSize = 1 * 1000 * 1000;
+const maxSize = 10 * 1024 * 1024;
 
 let upload = multer({ storage: storage, fileFilter: fileFilter, limits: { fileSize: maxSize }, });
 
@@ -452,7 +452,7 @@ const fileFilterimgResturant = function (req, file, cb) {
 }
 
 // ภาพไม่เกิน 1 MB
-const maxSizeimgResturant = 1 * 1000 * 1000;
+const maxSizeimgResturant = 10 * 1024 * 1024;
 
 let uploadimgResturant = multer({ storage: storageimgResturant, fileFilter: fileFilterimgResturant, limits: { fileSize: maxSizeimgResturant }, });
 
@@ -947,7 +947,7 @@ const fileFilterPoint = function (req, file, cb) {
 };
 
 // ภาพไม่เกิน 1 MB
-const maxSizePoint = 1 * 1000 * 1000;
+const maxSizePoint = 10 * 1024 * 1024;
 
 let uploadPoint = multer({
   storage: storagePoint,

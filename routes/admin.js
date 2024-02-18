@@ -426,7 +426,7 @@ const fileFilterProfile = function (req, file, cb) {
 }
 
 // ภาพไม่เกิน 1 MB
-const maxSizeProfile = 1 * 1000 * 1000;
+const maxSizeProfile = 10 * 1024 * 1024;
 
 let uploadProfile = multer({ storage: storageProfile, fileFilter: fileFilterProfile, limits: { fileSize: maxSizeProfile }, });
 // Post update User page
@@ -607,7 +607,7 @@ router.get('/ProfileResturant/(:id_res)', isNotLogin, (req, res, next) => {
         let pointres = results[0].user_point;
         if (err) {
             req.flash('error', 'หาผู้ใช้ไอดี' + idUSer+'ไม่พบ')
-            res.redirect('mainadmin');
+            res.redirect('/admin/mainadmin');
         } else {
             let idusername = results[0].username;
             let passusername = results[0].password;
@@ -616,7 +616,7 @@ router.get('/ProfileResturant/(:id_res)', isNotLogin, (req, res, next) => {
                     console.log(err);
                 } else if (rows.length <= 0) {
                     req.flash('error', 'ไม่มีข้อมูลผู้ใช้')
-                    res.redirect('mainadmin');
+                    res.redirect('/admin/mainadmin');
                 } else {
 
                     res.render('AdminResturant/ProfileResturant', {
@@ -702,7 +702,7 @@ const fileFilterResturant = function (req, file, cb) {
 }
 
 // ภาพไม่เกิน 1 MB
-const maxSizeResturant = 1 * 1000 * 1000;
+const maxSizeResturant = 10 * 1024 * 1024;
 
 let uploadProfileResturant = multer({ storage: storageResturant, fileFilter: fileFilterResturant, limits: { fileSize: maxSizeResturant }, });
 
@@ -799,7 +799,7 @@ const fileFilter = function (req, file, cb) {
 }
 
 // ภาพไม่เกิน 1 MB
-const maxSize = 1 * 1000 * 1000;
+const maxSize = 10 * 1024 * 1024;
 
 let upload = multer({ storage: storage, fileFilter: fileFilter, limits: { fileSize: maxSize }, });
 
@@ -816,7 +816,7 @@ router.post('/UpdateCertificateResturant/:id_res', upload.single('image'), (req,
         if (error) {
             req.flash('error', error);
         } else {
-            req.flash('success', 'แก้ไขสำเร็จ');
+            req.flash('success', 'แก้ไขใบประกอบกิจการสำเร็จ');
             res.redirect('../mainadmin')
         }
     })
@@ -877,7 +877,7 @@ router.get('/deleteResturant/(:id_res)', isNotLogin, (req, res, next) => {
 router.post('/add-points/(:id_res)', isNotLogin, (req, res, next) => {
     let id = req.params.id_res;
     let idRes = req.params.id_res;
-    let point =parseInt(req.body.pointAdd);
+    let point =parseInt(req.body.add);
     dbConnection.query('SELECT * FROM user WHERE id_restb = ? ', [id], (err, rows, fields) => {
         let PointUser=rows[0].user_point;
         if (err) {
@@ -906,7 +906,7 @@ router.post('/add-points/(:id_res)', isNotLogin, (req, res, next) => {
 router.post('/minus-points/(:id_res)', isNotLogin, (req, res, next) => {
     let id = req.params.id_res;
     let idRes = req.params.id_res;
-    let point =parseInt(req.body.pointMinus);
+    let point =parseInt(req.body.minus);
     dbConnection.query('SELECT * FROM user WHERE id_restb = ? ', [id], (err, rows, fields) => {
         let PointUser=rows[0].user_point;
         if (err) {
@@ -1030,7 +1030,7 @@ const fileFilterimgResturant = function (req, file, cb) {
 }
 
 // ภาพไม่เกิน 1 MB
-const maxSizeimgResturant = 1 * 1000 * 1000;
+const maxSizeimgResturant = 10 * 1024 * 1024;
 
 let uploadimgResturant = multer({ storage: storageimgResturant, fileFilter: fileFilterimgResturant, limits: { fileSize: maxSizeimgResturant }, });
 
@@ -1487,7 +1487,7 @@ router.get('/ReportPoint', function (req, res, next) {
         dbConnection.query(query, (error, results) => {
      
             if (error) {
-                req.flash("error", error);
+                req.flash("error", "แสดงรายงานไม่สำเร็จ");
                 console.log(error);
                 res.redirect('/admin/mainadmin');
               } else if (results.length <= 0) {
@@ -1606,7 +1606,7 @@ const fileFilterLogo = function (req, file, cb) {
 }
 
 // ภาพไม่เกิน 1 MB
-const maxSizeLogo = 1 * 1000 * 1000;
+const maxSizeLogo = 10 * 1024 * 1024;
 
 let uploadLogo = multer({ storage: storageLogo, fileFilter: fileFilterLogo, limits: { fileSize: maxSizeLogo }, });
 
@@ -1620,10 +1620,10 @@ router.post('/logoweb', uploadLogo.single('logo'), (req, res, next) => {
     }
     dbConnection.query("UPDATE logo SET ?",[formlogo],(error, results) =>{
         if (error) {
-            console.error(error);
+            req.flash('error','เปลี่ยนโลโก้ไม่สำเร็จ')
             res.redirect('/admin/mainadmin');
         }else{
-            console.log(results);
+            req.flash('message','เปลี่ยนโลโก้เว็ปไซต์เรียบร้อย')
             res.redirect('/admin/mainadmin');
         }
     })
@@ -1659,7 +1659,7 @@ router.post('/logoweb', uploadLogo.single('logo'), (req, res, next) => {
     }
 
     // ภาพไม่เกิน 1 MB
-    const maxSizeBanner = 1 * 1000 * 1000;
+    const maxSizeBanner = 10 * 1024 * 1024;
 
     let uploadBanner = multer({ storage: storageBanner, fileFilter: fileFilterBanner, limits: { fileSize: maxSizeBanner }, });
 
@@ -1673,10 +1673,10 @@ router.post('/logoweb', uploadLogo.single('logo'), (req, res, next) => {
         }
         dbConnection.query("UPDATE banner SET ?",[formbanner],(error, results) =>{
             if (error) {
-                console.error(error);
+                req.flash('error','เปลี่ยนป้ายหน้าร้านเว็ปไซต์ไม่เรียบร้อย')
                 res.redirect('/admin/mainadmin');
             }else{
-                console.log(results);
+                req.flash('message','เปลี่ยนป้ายหน้าร้านเว็ปไซต์เรียบร้อย')
                 res.redirect('/admin/mainadmin');
             }
         })

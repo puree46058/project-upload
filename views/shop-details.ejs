@@ -149,21 +149,19 @@
                 <div class="col-lg-3 col-md-4 col-sm-6">
                     <div class="product__item">
                         <div class="product__item__pic">
-                          <a href="#">
-                            <% if ( dataCoupon[i].img_pro === 'NULL') {%>
-                              <center><img src="../images/profileNon.png" alt="NOimg"  style="height: 300px; width: 300px; "></center>
-                            <%}else{%>
-                              <center><img src="/uploads/resturantimg/<%= dataCoupon[i].img_pro %> " 
-                                alt="img" 
-                                style="
-                                       width: 100%;
-                                       height: 200px;
-                                       border-radius: 20px; 
-                                       background-position: center;
-                                       background-repeat: no-repeat;
-                                       background-size: contain;"></center>
-                            <% } %>
-                          </a>
+                          <% if ( dataCoupon[i].img_pro === 'NULL') {%>
+                            <center><img src="../images/profileNon.png" alt="NOimg"  style="height: 300px; width: 300px; "></center>
+                          <%}else{%>
+                            <center><img src="/uploads/resturantimg/<%= dataCoupon[i].img_pro %> " 
+                              alt="img" 
+                              style="
+                                     width: 100%;
+                                     height: 200px;
+                                     border-radius: 20px; 
+                                     background-position: center;
+                                     background-repeat: no-repeat;
+                                     background-size: contain;"></center>
+                          <% } %>
                         </div>
                         <div class="product__item__text">
                           <h6><a href="/FormLogin" class="text-primary">จองคูปอง</a></h6>

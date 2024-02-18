@@ -22,18 +22,20 @@ router.get('/', function (req, res, next) {
   
 
   dbConnection.query('SELECT logo FROM logo ', (err, rowslogo) => {
+    let logochange =rowslogo[0].logo;
     if (err) {
-      req.flash('error', "1");
-      res.red('index', { data: '',visitCount: '', logo:'' ,banner:''});
+      req.flash('error', "ไม่มีโลโก้เว็ปไซต์");
+      res.render('index', { data: '',visitCount: '', logo:'' ,banner:''});
     } else {
       dbConnection.query('SELECT banner FROM banner ', (err, rowsbanner) => {
+        let bannerchange =rowsbanner[0].banner;
         if (err) {
-          req.flash('error',  "2");
+          req.flash('error',  "ไม่มีป้ายหน้าเว็ปไซต์");
           res.render('index', { data: '',visitCount: '', logo:'' ,banner:''});
         } else {
           dbConnection.query('SELECT * FROM promotion WHERE status="Order" ORDER BY id_pro ASC ', (err, rowspromotion) => {
             if (err) {
-              req.flash('error',  "3");
+              req.flash('error',  "ไม่มีโปรโมชันที่มีสถานะว่าง");
               res.render('index', { data: '',visitCount: '', logo:'' ,banner:'' });
             } else {
         
@@ -48,7 +50,7 @@ router.get('/', function (req, res, next) {
                   const selectQuery = 'SELECT COUNT(*) AS visitCount FROM historyviews';
                   dbConnection.query(selectQuery, (err, rows) => {
                     if (err) throw  "4";
-                    res.render('index', { visitCount: rows[0].visitCount, data: rowspromotion, logo:rowslogo,banner:rowsbanner });
+                    res.render('index', { visitCount: rows[0].visitCount, data: rowspromotion, logo:logochange,banner:bannerchange });
                   });
                 }
               });
@@ -62,157 +64,120 @@ router.get('/', function (req, res, next) {
 
 //listcoupont
 router.get('/coupon-list', function (req, res, next) {
-  dbConnection.query('SELECT * FROM promotion WHERE status="Order" ORDER BY boost DESC , id_pro DESC', (err, rowspromotion) => {
-    if (err) {
-      req.flash('error', err);
-      // res.render('index', { data: '',dataCoupon:'',totalcoupon:'',pro_name:'',id_pro:''});
-      res.redirect('/');
+    dbConnection.query('SELECT logo FROM logo ', (err, rowslogo) => {
+      let logochange =rowslogo[0].logo;
+      if (err) {
+      req.flash('error', "ไม่มีโลโก้เว็ปไซต์");
+      res.render('index', { logo:'' ,banner:''});
     } else {
-      dbConnection.query('SELECT * FROM promotion WHERE boost!=0', (err, rowspromotionboost) => {
-        if (err) {
-          req.flash('error', err);
-          res.redirect('/');
-        } else {
-          console.log("Promotion ที่มีการ boost",rowspromotionboost.length);
-          for (let n = 0; n < rowspromotionboost.length; n++) {
-          
-            dbConnection.query("SELECT * FROM boostpromote WHERE boost_id_pro = ?",[rowspromotionboost[n].id_pro],
-              (err, boost) => {
-                if (err) {
-                  req.flash('error', "โปรดตรวจสอบวันที่ต้องการโปรโมท");
-                  console.log("ERROR ตรวจสอบวัน boost"+ err);
-                }
-                if (boost && boost[n] && boost[n].boost_end) {
-                  console.log("boost end ",boost[n]);
-                  let date = new Date(Date.now());
-                  let date2 = boost[n].boost_end;
-                  console.log("วันปัจจุบัน : ",date);
-                  console.log("วันหมดอายุ : ",date2);
-
-                  let sum = date - date2 ;
-                  // console.log("ลบกัน : "+sum);
-                  // console.log(boost[n].);
-                  if (sum <= 0) {
-                    //ยังไม่หมดเวลา
-                    console.log(boost[n].boost_id_pro +" :"+ sum+": ยังไม่หมดเวลา");
-                  }else{
-                    //หมดเวลาแล้ว
-                    console.log(boost[n].boost_id_pro +" :"+ sum+": หมดเวลา");
-                    let form_data = {
-                      boost: 0,
-                    };
-                    dbConnection.query("UPDATE promotion SET ? WHERE id_pro = ?",[form_data,boost[n].boost_id_pro], (err, result) => {
+    dbConnection.query('SELECT banner FROM banner ', (err, rowsbanner) => {
+      let bannerchange =rowsbanner[0].banner;
+      if (err) {
+        req.flash('error',  "ไม่มีป้ายหน้าเว็ปไซต์");
+      }else{
+        dbConnection.query('SELECT * FROM promotion WHERE status="Order" ORDER BY boost DESC , id_pro DESC', (err, rowspromotion) => {
+          if (err) {
+            req.flash('error', err);
+            // res.render('index', { data: '',dataCoupon:'',totalcoupon:'',pro_name:'',id_pro:''});
+            res.redirect('/');
+          } else {
+            dbConnection.query('SELECT * FROM promotion WHERE boost!=0', (err, rowspromotionboost) => {
+              if (err) {
+                req.flash('error', err);
+                res.redirect('/');
+              } else {
+                console.log("Promotion ที่มีการ boost",rowspromotionboost.length);
+                for (let n = 0; n < rowspromotionboost.length; n++) {
+                
+                  dbConnection.query("SELECT * FROM boostpromote WHERE boost_id_pro = ?",[rowspromotionboost[n].id_pro],
+                    (err, boost) => {
                       if (err) {
-                        console.log(": อัพเดท status ใน promotion ไม่ได้");
-                      } else {
-                        console.log(": ปรับ boost promotion แล้ว");
+                        req.flash('error', "โปรดตรวจสอบวันที่ต้องการโปรโมท");
+                        console.log("ERROR ตรวจสอบวัน boost"+ err);
                       }
-                    });
-                  }
-                } else {
-                  console.log("ไม่พบคุณสมบัติ boost_end หรือข้อมูล boost ในระบบ");
-                } 
-              });
-          }
-        }
-      });
-
-     
-      const currentPage = req.query.page || 1; // หากไม่ได้รับค่าหน้ามาให้เป็นหน้าที่ 1
-      const perPage = 6; // จำนวนข้อมูลต่อหน้า
-      const offset = (currentPage - 1) * perPage;
-      const sql =`SELECT * FROM coupon WHERE status="Order" ORDER BY cu_id ASC LIMIT ${perPage}  OFFSET ${offset}`;
+                      if (boost && boost[n] && boost[n].boost_end) {
+                        console.log("boost end ",boost[n]);
+                        let date = new Date(Date.now());
+                        let date2 = boost[n].boost_end;
+                        console.log("วันปัจจุบัน : ",date);
+                        console.log("วันหมดอายุ : ",date2);
       
-      dbConnection.query(sql, (err, rowscoupon) => {
-        if (err) {
-          req.flash('message', 'กลับสู่หน้าหลัก');
-          res.redirect('/');
-        } else {
-          dbConnection.query('SELECT COUNT(*) AS total FROM coupon WHERE status="Order"', (err,total ) => {
-            if (err) {
-              req.flash('message', 'กลับสู่หน้าหลัก');
-              res.redirect('/');
-            } else {
-              let totalcoupon = total[0].total;
-              res.render('coupon-list',{data:rowspromotion,dataCoupon:rowscoupon,totalcoupon:totalcoupon,currentPage:currentPage,perPage:perPage});
-            }
-          });
-        }
-      });
-
-     
-
-
-
-
+                        let sum = date - date2 ;
+                        // console.log("ลบกัน : "+sum);
+                        // console.log(boost[n].);
+                        if (sum <= 0) {
+                          //ยังไม่หมดเวลา
+                          console.log(boost[n].boost_id_pro +" :"+ sum+": ยังไม่หมดเวลา");
+                        }else{
+                          //หมดเวลาแล้ว
+                          console.log(boost[n].boost_id_pro +" :"+ sum+": หมดเวลา");
+                          let form_data = {
+                            boost: 0,
+                          };
+                          dbConnection.query("UPDATE promotion SET ? WHERE id_pro = ?",[form_data,boost[n].boost_id_pro], (err, result) => {
+                            if (err) {
+                              console.log(": อัพเดท status ใน promotion ไม่ได้");
+                            } else {
+                              console.log(": ปรับ boost promotion แล้ว");
+                            }
+                          });
+                        }
+                      } else {
+                        console.log("ไม่พบคุณสมบัติ boost_end หรือข้อมูล boost ในระบบ");
+                      } 
+                    });
+                }
+              }
+            });
+      
+           
+            const currentPage = req.query.page || 1; // หากไม่ได้รับค่าหน้ามาให้เป็นหน้าที่ 1
+            const perPage = 6; // จำนวนข้อมูลต่อหน้า
+            const offset = (currentPage - 1) * perPage;
+            const sql =`SELECT * FROM coupon WHERE status="Order" ORDER BY cu_id ASC LIMIT ${perPage}  OFFSET ${offset}`;
+            
+            dbConnection.query(sql, (err, rowscoupon) => {
+              if (err) {
+                req.flash('message', 'กลับสู่หน้าหลัก');
+                res.redirect('/');
+              } else {
+                dbConnection.query('SELECT COUNT(*) AS total FROM coupon WHERE status="Order"', (err,total ) => {
+                  if (err) {
+                    req.flash('message', 'กลับสู่หน้าหลัก');
+                    res.redirect('/');
+                  } else {
+                    let totalcoupon = total[0].total;
+                    res.render('coupon-list',{data:rowspromotion,dataCoupon:rowscoupon,totalcoupon:totalcoupon,currentPage:currentPage,perPage:perPage,logo:logochange,banner:bannerchange});
+                  }
+                });
+              }
+            });
+          }
+        });
+      }
+    })
     }
-  });
-  
-
+  })
 });
 
 // Detail Pormotion **แก้หลังมีpdf**
 router.get('/DetailShop/(:id_pro)', (req, res, next) => {
   const idpro = req.params.id_pro;
   console.log("id Promotion : ",idpro);
-  dbConnection.query("SELECT * FROM promotion WHERE id_pro =?",[idpro], (err, rowsPromotion) => {
+
+
+  dbConnection.query('SELECT logo FROM logo ', (err, rowslogo) => {
+    let logochange =rowslogo[0].logo;
     if (err) {
-      console.log(err);
-      req.flash("error", err);
-      return res.render('shop-details', {
-        namePromotion: '',
-        picPromotion: '',
-        idPromotion: '',
-        pricePromotion: '',
-        dayStart: '',
-        dayEnd: '',
-        timeStart: '',
-        timeEnd: '',
-        dataCoupon: '',
-        address: ''
-      });
-    }
-
-    if (!rowsPromotion || rowsPromotion.length === 0) {
-      // Handle the case where no promotion is found
-      return res.render('shop-details', {
-        namePromotion: '',
-        picPromotion: '',
-        idPromotion: '',
-        pricePromotion: '',
-        dayStart: '',
-        dayEnd: '',
-        timeStart: '',
-        timeEnd: '',
-        dataCoupon: '',
-        address: ''
-      });
-    }
-
-    let idres = rowsPromotion[0].id_restb;
-    console.log("id Resturant",idres);
-
-    dbConnection.query("SELECT * FROM restaurants WHERE id_res = ?" ,[idres], (err, rowsResturant) => {
-      if (err) {
-        console.log(err);
-        req.flash("error", err);
-        return res.render('shop-details', {
-          namePromotion: '',
-          picPromotion: '',
-          idPromotion: '',
-          pricePromotion: '',
-          dayStart: '',
-          dayEnd: '',
-          timeStart: '',
-          timeEnd: '',
-          dataCoupon: '',
-          address: ''
-        });
-      }
-
-      let address = rowsResturant[0] ? rowsResturant[0].res_address : '';
-      console.log("address : ",address);
-      dbConnection.query("SELECT * FROM coupon WHERE status = 'Order' AND id_pro_coupon = ?",[idpro], (err, rowsCoupon) => {
+    req.flash('error', "ไม่มีโลโก้เว็ปไซต์");
+    res.render('index', { logo:'' ,banner:''});
+  } else {
+  dbConnection.query('SELECT banner FROM banner ', (err, rowsbanner) => {
+    let bannerchange =rowsbanner[0].banner;
+    if (err) {
+      req.flash('error',  "ไม่มีป้ายหน้าเว็ปไซต์");
+    }else{
+      dbConnection.query("SELECT * FROM promotion WHERE id_pro =?",[idpro], (err, rowsPromotion) => {
         if (err) {
           console.log(err);
           req.flash("error", err);
@@ -226,27 +191,98 @@ router.get('/DetailShop/(:id_pro)', (req, res, next) => {
             timeStart: '',
             timeEnd: '',
             dataCoupon: '',
-            address: ''
-          });
-        }else{
-          res.render('shop-details', {
-            namePromotion: rowsPromotion[0].pro_name,
-            picPromotion: rowsPromotion[0].pro_image,
-            idPromotion: rowsPromotion[0].id_pro,
-            pricePromotion: rowsPromotion[0].pro_price,
-            dayStart: rowsPromotion[0].date_start,
-            dayEnd: rowsPromotion[0].date_end,
-            timeStart: rowsPromotion[0].time_start,
-            timeEnd: rowsPromotion[0].time_end,
-            dataCoupon: rowsCoupon,
-            address: address
+            address: '',
+            logo:logochange,banner:bannerchange
           });
         }
-
-        
+    
+        if (!rowsPromotion || rowsPromotion.length === 0) {
+          // Handle the case where no promotion is found
+          return res.render('shop-details', {
+            namePromotion: '',
+            picPromotion: '',
+            idPromotion: '',
+            pricePromotion: '',
+            dayStart: '',
+            dayEnd: '',
+            timeStart: '',
+            timeEnd: '',
+            dataCoupon: '',
+            address: '',
+            logo:logochange,banner:bannerchange
+          });
+        }
+    
+        let idres = rowsPromotion[0].id_restb;
+        console.log("id Resturant",idres);
+    
+        dbConnection.query("SELECT * FROM restaurants WHERE id_res = ?" ,[idres], (err, rowsResturant) => {
+          if (err) {
+            console.log(err);
+            req.flash("error", err);
+            return res.render('shop-details', {
+              namePromotion: '',
+              picPromotion: '',
+              idPromotion: '',
+              pricePromotion: '',
+              dayStart: '',
+              dayEnd: '',
+              timeStart: '',
+              timeEnd: '',
+              dataCoupon: '',
+              address: '',
+              logo:logochange,banner:bannerchange
+            });
+          }
+    
+          let address = rowsResturant[0] ? rowsResturant[0].res_address : '';
+          console.log("address : ",address);
+          dbConnection.query("SELECT * FROM coupon WHERE status = 'Order' AND id_pro_coupon = ?",[idpro], (err, rowsCoupon) => {
+            if (err) {
+              console.log(err);
+              req.flash("error", err);
+              return res.render('shop-details', {
+                namePromotion: '',
+                picPromotion: '',
+                idPromotion: '',
+                pricePromotion: '',
+                dayStart: '',
+                dayEnd: '',
+                timeStart: '',
+                timeEnd: '',
+                dataCoupon: '',
+                address: '',
+                logo:logochange,banner:bannerchange
+              });
+            }else{
+              res.render('shop-details', {
+                namePromotion: rowsPromotion[0].pro_name,
+                picPromotion: rowsPromotion[0].pro_image,
+                idPromotion: rowsPromotion[0].id_pro,
+                pricePromotion: rowsPromotion[0].pro_price,
+                dayStart: rowsPromotion[0].date_start,
+                dayEnd: rowsPromotion[0].date_end,
+                timeStart: rowsPromotion[0].time_start,
+                timeEnd: rowsPromotion[0].time_end,
+                dataCoupon: rowsCoupon,
+                address: address,
+                logo:logochange,banner:bannerchange
+              });
+            }
+    
+            
+          });
+        });
       });
-    });
-  });
+    }
+  })
+  }
+})
+
+
+  
+
+
 });
 
 
@@ -254,8 +290,24 @@ router.get('/DetailShop/(:id_pro)', (req, res, next) => {
 
 //display Form Register
 router.get('/FormRegister', function (req, res, next) {
+  dbConnection.query('SELECT logo FROM logo ', (err, rowslogo) => {
+    let logochange =rowslogo[0].logo;
+    if (err) {
+      req.flash('error', "ไม่มีโลโก้เว็ปไซต์");
+      res.render('index', { logo:'' ,banner:''});
+    } else {
+      dbConnection.query('SELECT banner FROM banner ', (err, rowsbanner) => {
+        let bannerchange =rowsbanner[0].banner;
+        if (err) {
+          req.flash('error',  "ไม่มีป้ายหน้าเว็ปไซต์");
+          res.render('index', { logo:'' ,banner:''});
+        } else {
+          res.render('FormRegister',{ logo:logochange ,banner:bannerchange});
+        }
+      })
+    }
+  })
 
-  res.render('FormRegister');
 });
 
 
@@ -333,8 +385,24 @@ router.post('/Register', (req, res, next) => {
 
 //display Form Login
 router.get('/FormLogin', function (req, res, next) {
-
-  res.render('FormLogin');
+  dbConnection.query('SELECT logo FROM logo ', (err, rowslogo) => {
+    let logochange =rowslogo[0].logo;
+    if (err) {
+      req.flash('error', "ไม่มีโลโก้เว็ปไซต์");
+      res.render('index', { logo:'' ,banner:''});
+    } else {
+      dbConnection.query('SELECT banner FROM banner ', (err, rowsbanner) => {
+        let bannerchange =rowsbanner[0].banner;
+        if (err) {
+          req.flash('error',  "ไม่มีป้ายหน้าเว็ปไซต์");
+          res.render('index', { logo:'' ,banner:''});
+        } else {
+          res.render('FormLogin',{ logo:logochange ,banner:bannerchange});
+        }
+      })
+    }
+  })
+  
 });
 
 /* Post login listing. */
@@ -507,14 +575,36 @@ router.get('/contact', (req, res) => {
   const email = {email: 'test@gmail.com'};
   const tel = {tel: '0897878787'};
     
+  dbConnection.query('SELECT logo FROM logo ', (err, rowslogo) => {
+    let logochange =rowslogo[0].logo;
+    if (err) {
+    req.flash('error', "ไม่มีโลโก้เว็ปไซต์");
+    res.render('index', { logo:'' ,banner:''});
+  } else {
+  dbConnection.query('SELECT banner FROM banner ', (err, rowsbanner) => {
+    let bannerchange =rowsbanner[0].banner;
+    if (err) {
+      req.flash('error',  "ไม่มีป้ายหน้าเว็ปไซต์");
+    }else{
 
-  res.render('contact', {
-    address,
-    email,
-    tel,
-    name: req.session.fname,
-    img: req.session.profile,
-  });
+      res.render('contact', {
+        address,
+        email,
+        tel,
+        name: req.session.fname,
+        img: req.session.profile,
+        logo:logochange,
+        banner:bannerchange
+      });
+
+    }
+  })
+  }
+})
+
+  
+
+
 });
 
 
@@ -524,84 +614,100 @@ router.get('/contact', (req, res) => {
 
 //น้อยกว่า 200
 router.get('/pointtwo', function (req, res, next) {
-  dbConnection.query('SELECT * FROM promotion WHERE status="Order" AND pro_price <= 200 ORDER BY boost DESC  ', (err, rowspromotion) => {
+
+  dbConnection.query('SELECT logo FROM logo ', (err, rowslogo) => {
+    let logochange =rowslogo[0].logo;
     if (err) {
-      req.flash('error', err);
-      // res.render('index', { data: '',dataCoupon:'',totalcoupon:'',pro_name:'',id_pro:''});
-      res.redirect('/');
-    } else {
-      dbConnection.query('SELECT * FROM promotion WHERE boost!=0', (err, rowspromotionboost) => {
+    req.flash('error', "ไม่มีโลโก้เว็ปไซต์");
+    res.render('index', { logo:'' ,banner:''});
+  } else {
+  dbConnection.query('SELECT banner FROM banner ', (err, rowsbanner) => {
+    let bannerchange =rowsbanner[0].banner;
+    if (err) {
+      req.flash('error',  "ไม่มีป้ายหน้าเว็ปไซต์");
+    }else{
+      dbConnection.query('SELECT * FROM promotion WHERE status="Order" AND pro_price <= 200 ORDER BY boost DESC  ', (err, rowspromotion) => {
         if (err) {
           req.flash('error', err);
+          // res.render('index', { data: '',dataCoupon:'',totalcoupon:'',pro_name:'',id_pro:''});
           res.redirect('/');
         } else {
-          console.log("Promotion ที่มีการ boost",rowspromotionboost.length);
-          for (let n = 0; n < rowspromotionboost.length; n++) {
-            dbConnection.query("SELECT * FROM boostpromote WHERE boost_id_pro = ? ",[rowspromotionboost[n].id_pro],
-              (err, boost) => {
-                if (err) {
-                  console.log("ERROR ตรวจสอบวัน boost"+ err);
-                } 
-                if (boost && boost[n] && boost[n].boost_end) {
-                  console.log("boost end ",boost[n]);
-                  let date = new Date(Date.now());
-                  let date2 = boost[n].boost_end;
-                  console.log("วันปัจจุบัน : ",date);
-                  console.log("วันหมดอายุ : ",date2);
-
-                  let sum = date - date2 ;
-                  // console.log("ลบกัน : "+sum);
-                  // console.log(boost[n].);
-                  if (sum <= 0) {
-                    //ยังไม่หมดเวลา
-                    console.log(boost[n].boost_id_pro +" :"+ sum+": ยังไม่หมดเวลา");
-                  }else{
-                    //หมดเวลาแล้ว
-                    console.log(boost[n].boost_id_pro +" :"+ sum+": หมดเวลา");
-                    let form_data = {
-                      boost: 0,
-                    };
-                    dbConnection.query("UPDATE promotion SET ? WHERE id_pro = ?",[form_data,boost[n].boost_id_pro], (err, result) => {
-                      if (err) {
-                        console.log(": อัพเดท status ใน promotion ไม่ได้");
-                      } else {
-                        console.log(": ปรับ boost promotion แล้ว");
+          dbConnection.query('SELECT * FROM promotion WHERE boost!=0', (err, rowspromotionboost) => {
+            if (err) {
+              req.flash('error', err);
+              res.redirect('/');
+            } else {
+              console.log("Promotion ที่มีการ boost",rowspromotionboost.length);
+              for (let n = 0; n < rowspromotionboost.length; n++) {
+                dbConnection.query("SELECT * FROM boostpromote WHERE boost_id_pro = ? ",[rowspromotionboost[n].id_pro],
+                  (err, boost) => {
+                    if (err) {
+                      console.log("ERROR ตรวจสอบวัน boost"+ err);
+                    } 
+                    if (boost && boost[n] && boost[n].boost_end) {
+                      console.log("boost end ",boost[n]);
+                      let date = new Date(Date.now());
+                      let date2 = boost[n].boost_end;
+                      console.log("วันปัจจุบัน : ",date);
+                      console.log("วันหมดอายุ : ",date2);
+    
+                      let sum = date - date2 ;
+                      // console.log("ลบกัน : "+sum);
+                      // console.log(boost[n].);
+                      if (sum <= 0) {
+                        //ยังไม่หมดเวลา
+                        console.log(boost[n].boost_id_pro +" :"+ sum+": ยังไม่หมดเวลา");
+                      }else{
+                        //หมดเวลาแล้ว
+                        console.log(boost[n].boost_id_pro +" :"+ sum+": หมดเวลา");
+                        let form_data = {
+                          boost: 0,
+                        };
+                        dbConnection.query("UPDATE promotion SET ? WHERE id_pro = ?",[form_data,boost[n].boost_id_pro], (err, result) => {
+                          if (err) {
+                            console.log(": อัพเดท status ใน promotion ไม่ได้");
+                          } else {
+                            console.log(": ปรับ boost promotion แล้ว");
+                          }
+                        });
                       }
-                    });
-                  }
-                } else {
-                  console.log("ไม่พบคุณสมบัติ boost_end หรือข้อมูล boost ในระบบ");
-                } 
-              });
-          }
-        }
-      });
-
-      const currentPage = req.query.page || 1; // หากไม่ได้รับค่าหน้ามาให้เป็นหน้าที่ 1
-      const perPage = 6; // จำนวนข้อมูลต่อหน้า
-      const offset = (currentPage - 1) * perPage;
-      const sql =`SELECT * FROM coupon WHERE status="Order" AND price_pro <= 200  ORDER BY cu_id ASC  LIMIT ${perPage}  OFFSET ${offset}`;
-
-
-      dbConnection.query(sql, (err,  rowscoupon) => {
-        
-        if (err) {
-          req.flash('message', 'กลับสู่หน้าหลัก');
-          res.redirect('/');
-        } else {
-          dbConnection.query('SELECT COUNT(*) AS total FROM coupon WHERE status="Order" AND price_pro <= 200 ', (err,total ) => {
-            let totalcoupon = total[0].total;
+                    } else {
+                      console.log("ไม่พบคุณสมบัติ boost_end หรือข้อมูล boost ในระบบ");
+                    } 
+                  });
+              }
+            }
+          });
+    
+          const currentPage = req.query.page || 1; // หากไม่ได้รับค่าหน้ามาให้เป็นหน้าที่ 1
+          const perPage = 6; // จำนวนข้อมูลต่อหน้า
+          const offset = (currentPage - 1) * perPage;
+          const sql =`SELECT * FROM coupon WHERE status="Order" AND price_pro <= 200  ORDER BY cu_id ASC  LIMIT ${perPage}  OFFSET ${offset}`;
+    
+          dbConnection.query(sql, (err,  rowscoupon) => {
+            
             if (err) {
               req.flash('message', 'กลับสู่หน้าหลัก');
               res.redirect('/');
             } else {
-              res.render('pointtwo',{data:rowspromotion,dataCoupon:rowscoupon,totalcoupon:totalcoupon,currentPage:currentPage,perPage:perPage});
+              dbConnection.query('SELECT COUNT(*) AS total FROM coupon WHERE status="Order" AND price_pro <= 200 ', (err,total ) => {
+                let totalcoupon = total[0].total;
+                if (err) {
+                  req.flash('message', 'กลับสู่หน้าหลัก');
+                  res.redirect('/');
+                } else {
+                  res.render('pointtwo',{data:rowspromotion,dataCoupon:rowscoupon,totalcoupon:totalcoupon,currentPage:currentPage,perPage:perPage,logo:logochange,banner:bannerchange});
+                }
+              });
             }
           });
         }
       });
     }
-  });
+  })
+  }
+  })
+
 });
 
 
@@ -668,22 +774,40 @@ router.get('/pointfive', function (req, res, next) {
       const offset = (currentPage - 1) * perPage;
       const sql =`SELECT * FROM coupon WHERE status="Order" AND price_pro <= 500  ORDER BY cu_id ASC LIMIT ${perPage}  OFFSET ${offset}`;
 
-      dbConnection.query(sql, (err,  rowscoupon) => {
+
+      dbConnection.query('SELECT logo FROM logo ', (err, rowslogo) => {
+        let logochange =rowslogo[0].logo;
         if (err) {
-          req.flash('message', 'กลับสู่หน้าหลัก');
-          res.redirect('/');
-        } else {
-          dbConnection.query('SELECT COUNT(*) AS total FROM coupon WHERE status="Order" AND price_pro <= 500 ', (err,total) => {
-            let totalcoupon = total[0].total;
+        req.flash('error', "ไม่มีโลโก้เว็ปไซต์");
+        res.render('index', { logo:'' ,banner:''});
+      } else {
+      dbConnection.query('SELECT banner FROM banner ', (err, rowsbanner) => {
+        let bannerchange =rowsbanner[0].banner;
+        if (err) {
+          req.flash('error',  "ไม่มีป้ายหน้าเว็ปไซต์");
+        }else{
+          dbConnection.query(sql, (err,  rowscoupon) => {
             if (err) {
               req.flash('message', 'กลับสู่หน้าหลัก');
               res.redirect('/');
             } else {
-              res.render('pointfive',{data:rowspromotion,dataCoupon:rowscoupon,totalcoupon:totalcoupon,currentPage:currentPage,perPage:perPage});
+              dbConnection.query('SELECT COUNT(*) AS total FROM coupon WHERE status="Order" AND price_pro <= 500 ', (err,total) => {
+                let totalcoupon = total[0].total;
+                if (err) {
+                  req.flash('message', 'กลับสู่หน้าหลัก');
+                  res.redirect('/');
+                } else {
+                  res.render('pointfive',{data:rowspromotion,dataCoupon:rowscoupon,totalcoupon:totalcoupon,currentPage:currentPage,perPage:perPage,logo:logochange,banner:bannerchange});
+                }
+              });
             }
           });
+          
+    
         }
-      });
+      })
+      }
+    })
     }
   });
 });
@@ -751,22 +875,43 @@ router.get('/pointone', function (req, res, next) {
       const sql =`SELECT * FROM coupon WHERE status="Order" AND price_pro <= 1000  ORDER BY cu_id ASC LIMIT ${perPage}  OFFSET ${offset}`;
 
 
-      dbConnection.query(sql, (err,  rowscoupon) => {
+      dbConnection.query('SELECT logo FROM logo ', (err, rowslogo) => {
+        let logochange =rowslogo[0].logo;
         if (err) {
-          req.flash('message', 'กลับสู่หน้าหลัก');
-          res.redirect('/');
+          req.flash('error', "ไม่มีโลโก้เว็ปไซต์");
+          res.render('index', { logo:'' ,banner:''});
         } else {
-          dbConnection.query('SELECT COUNT(*) AS total FROM coupon WHERE status="Order" AND price_pro <= 1000 ', (err,total) => {
-            let totalcoupon = total[0].total;
+          dbConnection.query('SELECT banner FROM banner ', (err, rowsbanner) => {
+            let bannerchange =rowsbanner[0].banner;
             if (err) {
-              req.flash('message', 'กลับสู่หน้าหลัก');
-              res.redirect('/');
+              req.flash('error',  "ไม่มีป้ายหน้าเว็ปไซต์");
+              res.render('index', { logo:'' ,banner:''});
             } else {
-              res.render('pointone',{data:rowspromotion,dataCoupon:rowscoupon,totalcoupon:totalcoupon,currentPage:currentPage,perPage:perPage});
+              dbConnection.query(sql, (err,  rowscoupon) => {
+                if (err) {
+                  req.flash('message', 'กลับสู่หน้าหลัก');
+                  res.redirect('/');
+                } else {
+                  dbConnection.query('SELECT COUNT(*) AS total FROM coupon WHERE status="Order" AND price_pro <= 1000 ', (err,total) => {
+                    let totalcoupon = total[0].total;
+                    if (err) {
+                      req.flash('message', 'กลับสู่หน้าหลัก');
+                      res.redirect('/');
+                    } else {
+                      res.render('pointone',{data:rowspromotion,dataCoupon:rowscoupon,totalcoupon:totalcoupon,currentPage:currentPage,perPage:perPage,logo:logochange,banner:bannerchange});
+                    }
+                  });
+                }
+              });
             }
-          });
+          })
         }
-      });
+      })
+      
+     
+
+
+
     }
   });
 });
@@ -832,23 +977,42 @@ router.get('/cat_discount', function (req, res, next) {
       const sql =`SELECT * FROM coupon WHERE status="Order" AND type_pro_coupon="โปรโมชั่นส่วนลดพิเศษ"  ORDER BY cu_id ASC   LIMIT ${perPage}  OFFSET ${offset}`;
 
 
-      dbConnection.query(sql, (err, rowscoupon ) => {
-        
+      dbConnection.query('SELECT logo FROM logo ', (err, rowslogo) => {
+        let logochange =rowslogo[0].logo;
         if (err) {
-          req.flash('message', 'กลับสู่หน้าหลัก');
-          res.redirect('/');
+          req.flash('error', "ไม่มีโลโก้เว็ปไซต์");
+          res.render('index', { logo:'' ,banner:''});
         } else {
-          dbConnection.query('SELECT COUNT(*) AS total FROM coupon WHERE status="Order" AND type_pro_coupon="โปรโมชั่นส่วนลดพิเศษ" ', (err, total) => {
-            let totalcoupon = total[0].total;
+          dbConnection.query('SELECT banner FROM banner ', (err, rowsbanner) => {
+            let bannerchange =rowsbanner[0].banner;
             if (err) {
-              req.flash('message', 'กลับสู่หน้าหลัก');
-              res.redirect('/');
+              req.flash('error',  "ไม่มีป้ายหน้าเว็ปไซต์");
+              res.render('index', { logo:'' ,banner:''});
             } else {
-              res.render('cat_discount',{data:rowspromotion,dataCoupon:rowscoupon,totalcoupon:totalcoupon,currentPage:currentPage,perPage:perPage});
+              dbConnection.query(sql, (err, rowscoupon ) => {
+        
+                if (err) {
+                  req.flash('message', 'กลับสู่หน้าหลัก');
+                  res.redirect('/');
+                } else {
+                  dbConnection.query('SELECT COUNT(*) AS total FROM coupon WHERE status="Order" AND type_pro_coupon="โปรโมชั่นส่วนลดพิเศษ" ', (err, total) => {
+                    let totalcoupon = total[0].total;
+                    if (err) {
+                      req.flash('message', 'กลับสู่หน้าหลัก');
+                      res.redirect('/');
+                    } else {
+                      res.render('cat_discount',{data:rowspromotion,dataCoupon:rowscoupon,totalcoupon:totalcoupon,currentPage:currentPage,perPage:perPage,logo:logochange,banner:bannerchange});
+                    }
+                  });
+                }
+              });
             }
-          });
+          })
         }
-      });
+      })
+
+
+     
     }
   });
 });
@@ -912,22 +1076,41 @@ router.get('/cat_specialprice', function (req, res, next) {
       const offset = (currentPage - 1) * perPage;
       const sql =`SELECT * FROM coupon WHERE status="Order" AND type_pro_coupon="ประเภทราคาพิเศษ"  ORDER BY cu_id ASC LIMIT ${perPage} OFFSET ${offset}`;
 
-      dbConnection.query(sql, (err, rowscoupon) => {
+
+      dbConnection.query('SELECT logo FROM logo ', (err, rowslogo) => {
+        let logochange =rowslogo[0].logo;
         if (err) {
-          req.flash('message', 'กลับสู่หน้าหลัก');
-          res.redirect('/');
+          req.flash('error', "ไม่มีโลโก้เว็ปไซต์");
+          res.render('index', { logo:'' ,banner:''});
         } else {
-          dbConnection.query('SELECT COUNT(*) AS total FROM coupon WHERE status="Order" AND type_pro_coupon="ประเภทราคาพิเศษ" ', (err, total) => {
-            let totalcoupon = total[0].total;
+          dbConnection.query('SELECT banner FROM banner ', (err, rowsbanner) => {
+            let bannerchange =rowsbanner[0].banner;
             if (err) {
-              req.flash('message', 'กลับสู่หน้าหลัก');
-              res.redirect('/');
+              req.flash('error',  "ไม่มีป้ายหน้าเว็ปไซต์");
+              res.render('index', { logo:'' ,banner:''});
             } else {
-              res.render('cat_specialprice',{data:rowspromotion,dataCoupon:rowscoupon,totalcoupon:totalcoupon,currentPage:currentPage,perPage:perPage});
+              dbConnection.query(sql, (err, rowscoupon) => {
+                if (err) {
+                  req.flash('message', 'กลับสู่หน้าหลัก');
+                  res.redirect('/');
+                } else {
+                  dbConnection.query('SELECT COUNT(*) AS total FROM coupon WHERE status="Order" AND type_pro_coupon="ประเภทราคาพิเศษ" ', (err, total) => {
+                    let totalcoupon = total[0].total;
+                    if (err) {
+                      req.flash('message', 'กลับสู่หน้าหลัก');
+                      res.redirect('/');
+                    } else {
+                      res.render('cat_specialprice',{data:rowspromotion,dataCoupon:rowscoupon,totalcoupon:totalcoupon,currentPage:currentPage,perPage:perPage,logo:logochange,banner:bannerchange});
+                    }
+                  });
+                }
+              });
             }
-          });
+          })
         }
-      });
+      })
+
+    
     }
   });
 });
@@ -992,23 +1175,42 @@ router.get('/cat_onefreeone', function (req, res, next) {
       const sql =`SELECT * FROM coupon WHERE status="Order" AND type_pro_coupon="ประเภท1แถม1"  ORDER BY cu_id ASC LIMIT ${perPage} OFFSET ${offset}`;
 
 
-      dbConnection.query(sql, (err, rowscoupon) => {
-        
+      dbConnection.query('SELECT logo FROM logo ', (err, rowslogo) => {
+        let logochange =rowslogo[0].logo;
         if (err) {
-          req.flash('message', 'กลับสู่หน้าหลัก');
-          res.redirect('/');
+          req.flash('error', "ไม่มีโลโก้เว็ปไซต์");
+          res.render('index', { logo:'' ,banner:''});
         } else {
-          dbConnection.query('SELECT COUNT(*) AS total FROM coupon WHERE status="Order" AND type_pro_coupon="ประเภท1แถม1" ', (err, total) => {
-            let totalcoupon = total[0].total;
+          dbConnection.query('SELECT banner FROM banner ', (err, rowsbanner) => {
+            let bannerchange =rowsbanner[0].banner;
             if (err) {
-              req.flash('message', 'กลับสู่หน้าหลัก');
-              res.redirect('/');
+              req.flash('error',  "ไม่มีป้ายหน้าเว็ปไซต์");
+              res.render('index', { logo:'' ,banner:''});
             } else {
-              res.render('cat_onefreeone',{data:rowspromotion,dataCoupon:rowscoupon,totalcoupon:totalcoupon,currentPage:currentPage,perPage:perPage});
+              dbConnection.query(sql, (err, rowscoupon) => {
+        
+                if (err) {
+                  req.flash('message', 'กลับสู่หน้าหลัก');
+                  res.redirect('/');
+                } else {
+                  dbConnection.query('SELECT COUNT(*) AS total FROM coupon WHERE status="Order" AND type_pro_coupon="ประเภท1แถม1" ', (err, total) => {
+                    let totalcoupon = total[0].total;
+                    if (err) {
+                      req.flash('message', 'กลับสู่หน้าหลัก');
+                      res.redirect('/');
+                    } else {
+                      res.render('cat_onefreeone',{data:rowspromotion,dataCoupon:rowscoupon,totalcoupon:totalcoupon,currentPage:currentPage,perPage:perPage,logo:logochange,banner:bannerchange});
+                    }
+                  });
+                }
+              });
             }
-          });
+          })
         }
-      });
+      })
+
+
+      
     }
   });
 });
@@ -1073,23 +1275,41 @@ router.get('/cat_tradefree', function (req, res, next) {
       const sql =`SELECT * FROM coupon WHERE status="Order" AND type_pro_coupon="ประเภทแลกของฟรี"  ORDER BY cu_id ASC LIMIT ${perPage} OFFSET ${offset}`;
 
 
-      dbConnection.query(sql, (err, rowscoupon) => {
-
+      dbConnection.query('SELECT logo FROM logo ', (err, rowslogo) => {
+        let logochange =rowslogo[0].logo;
         if (err) {
-          req.flash('message', 'กลับสู่หน้าหลัก');
-          res.redirect('/');
+          req.flash('error', "ไม่มีโลโก้เว็ปไซต์");
+          res.render('index', { logo:'' ,banner:''});
         } else {
-          dbConnection.query('SELECT COUNT(*) AS total FROM coupon WHERE status="Order" AND type_pro_coupon="ประเภทแลกของฟรี" ', (err, total) => {
-            let totalcoupon = total[0].total;
+          dbConnection.query('SELECT banner FROM banner ', (err, rowsbanner) => {
+            let bannerchange =rowsbanner[0].banner;
             if (err) {
-              req.flash('message', 'กลับสู่หน้าหลัก');
-              res.redirect('/');
+              req.flash('error',  "ไม่มีป้ายหน้าเว็ปไซต์");
+              res.render('index', { logo:'' ,banner:''});
             } else {
-              res.render('cat_tradefree',{data:rowspromotion,dataCoupon:rowscoupon,totalcoupon:totalcoupon,currentPage:currentPage,perPage:perPage});
+              dbConnection.query(sql, (err, rowscoupon) => {
+
+                if (err) {
+                  req.flash('message', 'กลับสู่หน้าหลัก');
+                  res.redirect('/');
+                } else {
+                  dbConnection.query('SELECT COUNT(*) AS total FROM coupon WHERE status="Order" AND type_pro_coupon="ประเภทแลกของฟรี" ', (err, total) => {
+                    let totalcoupon = total[0].total;
+                    if (err) {
+                      req.flash('message', 'กลับสู่หน้าหลัก');
+                      res.redirect('/');
+                    } else {
+                      res.render('cat_tradefree',{data:rowspromotion,dataCoupon:rowscoupon,totalcoupon:totalcoupon,currentPage:currentPage,perPage:perPage,logo:logochange,banner:bannerchange});
+                    }
+                  });
+                }
+              });
             }
-          });
+          })
         }
-      });
+      })
+
+      
     }
   });
 });
@@ -1155,23 +1375,39 @@ router.get('/cat_eatfree', function (req, res, next) {
       const sql =`SELECT * FROM coupon WHERE status="Order" AND type_pro_coupon="ประเภทกินฟรี"  ORDER BY cu_id ASC LIMIT ${perPage} OFFSET ${offset}`;
 
 
-      dbConnection.query(sql, (err, rowscoupon) => {
-      
+      dbConnection.query('SELECT logo FROM logo ', (err, rowslogo) => {
+        let logochange =rowslogo[0].logo;
         if (err) {
-          req.flash('message', 'กลับสู่หน้าหลัก');
-          res.redirect('/');
+          req.flash('error', "ไม่มีโลโก้เว็ปไซต์");
+          res.render('index', { logo:'' ,banner:''});
         } else {
-          dbConnection.query('SELECT COUNT(*) AS total FROM coupon WHERE status="Order" AND type_pro_coupon="ประเภทกินฟรี" ', (err, total) => {
-            let totalcoupon = total[0].total;
+          dbConnection.query('SELECT banner FROM banner ', (err, rowsbanner) => {
+            let bannerchange =rowsbanner[0].banner;
             if (err) {
-              req.flash('message', 'กลับสู่หน้าหลัก');
-              res.redirect('/');
+              req.flash('error',  "ไม่มีป้ายหน้าเว็ปไซต์");
+              res.render('index', { logo:'' ,banner:''});
             } else {
-              res.render('cat_eatfree',{data:rowspromotion,dataCoupon:rowscoupon,totalcoupon:totalcoupon,currentPage:currentPage,perPage:perPage});
+              dbConnection.query(sql, (err, rowscoupon) => {
+      
+                if (err) {
+                  req.flash('message', 'กลับสู่หน้าหลัก');
+                  res.redirect('/');
+                } else {
+                  dbConnection.query('SELECT COUNT(*) AS total FROM coupon WHERE status="Order" AND type_pro_coupon="ประเภทกินฟรี" ', (err, total) => {
+                    let totalcoupon = total[0].total;
+                    if (err) {
+                      req.flash('message', 'กลับสู่หน้าหลัก');
+                      res.redirect('/');
+                    } else {
+                      res.render('cat_eatfree',{data:rowspromotion,dataCoupon:rowscoupon,totalcoupon:totalcoupon,currentPage:currentPage,perPage:perPage,logo:logochange,banner:bannerchange});
+                    }
+                  });
+                }
+              });
             }
-          });
+          })
         }
-      });
+      })
     }
   });
 });
