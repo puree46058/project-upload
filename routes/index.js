@@ -234,7 +234,7 @@ router.get('/DetailShop/(:id_pro)', (req, res, next) => {
               logo:logochange,banner:bannerchange
             });
           }
-    
+          let resPhone=rowsResturant[0] ? rowsResturant[0].res_phone:'';
           let address = rowsResturant[0] ? rowsResturant[0].res_address : '';
           console.log("address : ",address);
           dbConnection.query("SELECT * FROM coupon WHERE status = 'Order' AND id_pro_coupon = ?",[idpro], (err, rowsCoupon) => {
@@ -266,6 +266,7 @@ router.get('/DetailShop/(:id_pro)', (req, res, next) => {
                 timeEnd: rowsPromotion[0].time_end,
                 dataCoupon: rowsCoupon,
                 address: address,
+                resPhone:resPhone,
                 logo:logochange,banner:bannerchange
               });
             }
@@ -331,55 +332,76 @@ router.post('/Register', (req, res, next) => {
   let id_restb = 0;
   let point = 0;
   console.log(username, Name, Lname, Email, PassWord, Confirmpassword,);
+
   //check email is use
-  dbConnection.query('SELECT username FROM user WHERE username = ? ', [username], (error, results) => {
-    if (error) {
-      error = true;
-      req.flash('error', error);
-    } else if (results.length > 0) { // email in database 
-      message = true;
-      req.flash('message', 'มีรหัสผู้ใช้นี้ในฐานข้อมูลแล้ว');
-      res.render('FormRegister');
 
-    } else if (PassWord !== Confirmpassword) {  //check password != confirm password
-      message = true;
-      req.flash('message', 'พาสเวิร์ดไม่ตรงกัน');
-      res.render('FormRegister');
+  dbConnection.query('SELECT logo FROM logo ', (err, rowslogo) => {
+    let logochange =rowslogo[0].logo;
+    if (err) {
+      req.flash('error', "ไม่มีโลโก้เว็ปไซต์");
+      res.render('index', { logo:'' ,banner:''});
     } else {
-      dbConnection.query('SELECT MAX(id_user) AS max_id FROM user', (error, results, fields) => { // หาเลข max id_user ที่มากที่สุดเพื่อเพิ่มค่าให้อีกที
-        let currentId = results[0].max_id // 
-        let newId = currentId + 1;
-
-        bcrypt.hash(PassWord, 12, function (error, hash) {
-          let form_data = { // ข้อมูลที่เอาเข้า DB 
-            id_user: newId,
-            username: username,
-            password: hash,
-            email: Email,
-            phone: phonetel,
-            fname: Name,
-            lname: Lname,
-            level: Level,
-            Profile: 'NULL',
-            address:'NULL',
-            status: 'success',
-            user_point: point,
-            id_restb: id_restb
-          }
-
-          dbConnection.query('INSERT INTO user SET ?', [form_data], (error, results) => {
+      dbConnection.query('SELECT banner FROM banner ', (err, rowsbanner) => {
+        let bannerchange =rowsbanner[0].banner;
+        if (err) {
+          req.flash('error',  "ไม่มีป้ายหน้าเว็ปไซต์");
+          res.render('index', { logo:'' ,banner:''});
+        } else {
+          dbConnection.query('SELECT username FROM user WHERE username = ? ', [username], (error, results) => {
             if (error) {
-              req.flash('error', "สมัครไม่สำเร็จ");
-              res.render('FormRegister');
+              error = true;
+              req.flash('error', error);
+            } else if (results.length > 0) { // email in database 
+              message = true;
+              req.flash('message', 'มีรหัสผู้ใช้นี้ในฐานข้อมูลแล้ว');
+              res.render('FormRegister',{ logo:logochange ,banner:bannerchange});
+        
+            } else if (PassWord !== Confirmpassword) {  //check password != confirm password
+              message = true;
+              req.flash('message', 'พาสเวิร์ดไม่ตรงกัน');
+              res.render('FormRegister',{ logo:logochange ,banner:bannerchange});
             } else {
-              req.flash('success', 'สมัครสมาชิกสำเร็จ ');
-              res.redirect('/');
+              dbConnection.query('SELECT MAX(id_user) AS max_id FROM user', (error, results, fields) => { // หาเลข max id_user ที่มากที่สุดเพื่อเพิ่มค่าให้อีกที
+                let currentId = results[0].max_id // 
+                let newId = currentId + 1;
+        
+                bcrypt.hash(PassWord, 12, function (error, hash) {
+                  let form_data = { // ข้อมูลที่เอาเข้า DB 
+                    id_user: newId,
+                    username: username,
+                    password: hash,
+                    email: Email,
+                    phone: phonetel,
+                    fname: Name,
+                    lname: Lname,
+                    level: Level,
+                    Profile: 'NULL',
+                    address:'NULL',
+                    status: 'success',
+                    user_point: point,
+                    id_restb: id_restb
+                  }
+        
+        
+                  dbConnection.query('INSERT INTO user SET ?', [form_data], (error, results) => {
+                    if (error) {
+                      req.flash('error', "สมัครไม่สำเร็จ");
+                      res.render('FormRegister');
+                    } else {
+                      req.flash('success', 'สมัครสมาชิกสำเร็จ ');
+                      res.render('FormLogin',{ logo:logochange ,banner:bannerchange});
+                    }
+                  });
+                });
+              })
             }
           });
-        });
+         
+        }
       })
     }
-  });
+  })
+  
 });
 
 
@@ -410,161 +432,180 @@ router.post('/Login', (req, res, next) => {
   let username = req.body.username;
   let PassWord = req.body.psw;
   let message = false;
-  dbConnection.query('SELECT * FROM user WHERE username = ? ', [username], async (error, results) => {
-    if (error) {
-      req.flash('error', error);
-      res.render('FormLogin');
-      console.log(error);
-    } else if (results.length === 0) {// check ไม่มีค่าให้แสดง
-      message = true;
-      req.flash('message', 'รหัสผู้ใช้หรือพาสเวิร์ดนี้ไม่ถูกต้อง');
-      res.render('FormLogin');
-      console.log(error);
-    } else if (results.length === 1) {
-      // แบบรหัส hash 
-      let compare_hash = await bcrypt.compare(PassWord, results[0].password)
-      if (compare_hash) {
-        req.session.isLoggedIn = true;
-        req.session.id_user = results[0].id_user; // session id_user
-        req.session.id_res = results[0].id_restb; //session id_res
-        req.session.status = results[0].status; // session status resturant
-
-        let point = req.session.point = results[0].user_point;
-        let role = req.session.level = results[0].level;// sent&check  session level
-        req.session.profile = results[0].Profile // sent&check  session Profile img
-        req.session.fname = results[0].fname; // sent&check  session  name
-        req.session.lname = results[0].lname; // sent&check  session  lname
-        req.session.email = results[0].email;
-        if (role === 'A') {
-          let status = "success";
-          dbConnection.query('SELECT * FROM restaurants WHERE status = ? ORDER BY res_id ASC', [status], (err, rows) => {
-            let data = rows;
-            if (err) {
-              req.flash('error', err);
-              res.render('adminn', { data: '', img: req.session.profile, name: req.session.fname });
-            } else {
-
-              dbConnection.query('SELECT * FROM restaurants WHERE status = ? ORDER BY res_id DESC', [status], (err, result) => {
-                if (err) {
-                  req.flash('error', err);
-                  res.render('adminn', { dataNew: '', img: req.session.profile, name: req.session.fname });
-                } else {
-                  res.render('adminn', { dataNew: result, img: req.session.profile, name: req.session.fname, data });
-                }
-              })
-            }
-          })
-
-
-        } else if (role === 'U') {
-          dbConnection.query('SELECT * FROM promotion WHERE status="Order" ORDER BY id_pro ASC ', (err, rows, fields) => {
-
-            if (err) {
-              console.log(err);
-            } else if (rows.length <= 0) {
-              res.render('User', {
-                data: '', name: req.session.fname,
-                role: role,
-                img: req.session.profile,
-                point:point,
-                promotion: req.session.promotion || {}
-              });
-            } else {
-              res.render('User', {
-                name: req.session.fname,
-                role: role,
-                img: req.session.profile,
-                point:point,
-                promotion: req.session.promotion || {},
-                data: rows
-              })
-            }
-          });
-        } else if (role === 'R') {
-          let id = req.session.id_res;
-          
-          let idUsertb = req.session.id_user;
-          let idUser = req.session.id_user;
-          let query=`SELECT cu.coupon_id, cu.datebook, cu.timebook,cu.status, u.fname, u.lname,u.Profile,u.phone,pro.id_restb, cp.cu_id,cp.id_pro_coupon, cp.name_pro_coupon,cp.cu_code
-          FROM coupon_user cu 
-          INNER JOIN coupon cp ON cu.coupon_id = cp.cu_id 
-          INNER JOIN user u ON cu.user_id = u.id_user 
-          INNER JOIN promotion pro ON cp.id_pro_coupon = pro.id_pro 
-          WHERE cu.status='Book' AND pro.id_restb=?
-          ORDER BY cu.id DESC`;
-          let querytime=`SELECT cu.coupon_id, cu.datebook, cu.timebook,cu.status, u.fname, u.lname,u.Profile,u.phone,pro.id_restb, cp.cu_id,cp.id_pro_coupon, cp.name_pro_coupon,cp.cu_code
-          FROM coupon_user cu 
-          INNER JOIN coupon cp ON cu.coupon_id = cp.cu_id 
-          INNER JOIN user u ON cu.user_id = u.id_user 
-          INNER JOIN promotion pro ON cp.id_pro_coupon = pro.id_pro 
-          WHERE cu.status='Book' AND pro.id_restb=?
-          ORDER BY cu.datebook ASC`;
-
-
-
-          dbConnection.query(querytime,[id], (err, rowtime, fields) => {
-            dbConnection.query(query,[id], (err, rows, fields) => {
-              if (err) {
-                console.log(err);
-              } else if (rows.length <= 0) {
-                dbConnection.query('SELECT * FROM restaurants WHERE id_usertb= ?',[idUsertb], (error, rowRes) => {
-                  req.session.nameResturant = rowRes[0].res_name;
-                  req.session.profileResturant = rowRes[0].res_profile;
-                  req.session.emailResturant =rowRes[0].res_email;
-                  if (error) {
-                    req.flash('error', error);
-                  } else {
-                    errors = true;
-                    res.render('Resturant', {
-                      data: rows,
-                      datatime:rowtime,
-                      name: req.session.nameResturant,
-                      role: role,
-                      img: req.session.profileResturant,
-                      point:point
-                    });
-                  }
-                })
-              } else {
-                dbConnection.query('SELECT * FROM restaurants WHERE id_usertb= ?',[idUser], (error, rowRes) => {
-                  req.session.emailResturant =rowRes[0].res_email;
-                  req.session.nameResturant = rowRes[0].res_name;
-                  req.session.profileResturant = rowRes[0].res_profile;
-                  if (error) {
-                    req.flash('error', error);
-                  } else {
-                    errors = true;
-                    res.render('Resturant', {
-                      data: rows,
-                      datatime:rowtime,
-                      name: req.session.nameResturant,
-                      role: role,
-                      point:point,
-                      img: req.session.profileResturant
-                    });
-                  }
-                })
-              }
-            });
-          });
-         
-        } else (
-          res.send('NO Status')
-        )
-        console.log('Connect Success !');
-
-
-      } else {
-        console.log(error);
-        req.flash('error', error);
-        res.render('FormLogin');
-      }
-
+  dbConnection.query('SELECT logo FROM logo ', (err, rowslogo) => {
+    let logochange =rowslogo[0].logo;
+    if (err) {
+      req.flash('error', "ไม่มีโลโก้เว็ปไซต์");
+      res.render('index', { logo:'' ,banner:''});
     } else {
-      req.session.isLoggedIn = false;
-      res.redirect('/FormLogin?error=1');
+      dbConnection.query('SELECT banner FROM banner ', (err, rowsbanner) => {
+        let bannerchange =rowsbanner[0].banner;
+        if (err) {
+          req.flash('error',  "ไม่มีป้ายหน้าเว็ปไซต์");
+          res.render('index', { logo:'' ,banner:''});
+        } else {
+
+          dbConnection.query('SELECT * FROM user WHERE username = ? ', [username], async (error, results) => {
+            if (error) {
+              req.flash('error', error);
+              res.render('FormLogin',{ logo:logochange ,banner:bannerchange});
+              console.log(error);
+            } else if (results.length === 0) {// check ไม่มีค่าให้แสดง
+              message = true;
+              req.flash('message', 'รหัสผู้ใช้หรือพาสเวิร์ดนี้ไม่ถูกต้อง');
+              res.render('FormLogin',{ logo:logochange ,banner:bannerchange});
+              console.log(error);
+            } else if (results.length === 1) {
+              // แบบรหัส hash 
+              let compare_hash = await bcrypt.compare(PassWord, results[0].password)
+              if (compare_hash) {
+                req.session.isLoggedIn = true;
+                req.session.id_user = results[0].id_user; // session id_user
+                req.session.id_res = results[0].id_restb; //session id_res
+                req.session.status = results[0].status; // session status resturant
+        
+                let point = req.session.point = results[0].user_point;
+                let role = req.session.level = results[0].level;// sent&check  session level
+                req.session.profile = results[0].Profile // sent&check  session Profile img
+                req.session.fname = results[0].fname; // sent&check  session  name
+                req.session.lname = results[0].lname; // sent&check  session  lname
+                req.session.email = results[0].email;
+                if (role === 'A') {
+                  let status = "success";
+                  dbConnection.query('SELECT * FROM restaurants WHERE status = ? ORDER BY res_id ASC', [status], (err, rows) => {
+                    let data = rows;
+                    if (err) {
+                      req.flash('error', err);
+                      res.render('adminn', { data: '', img: req.session.profile, name: req.session.fname });
+                    } else {
+        
+                      dbConnection.query('SELECT * FROM restaurants WHERE status = ? ORDER BY res_id DESC', [status], (err, result) => {
+                        if (err) {
+                          req.flash('error', err);
+                          res.render('adminn', { dataNew: '', img: req.session.profile, name: req.session.fname });
+                        } else {
+                          res.render('adminn', { dataNew: result, img: req.session.profile, name: req.session.fname, data });
+                        }
+                      })
+                    }
+                  })
+        
+        
+                } else if (role === 'U') {
+                  dbConnection.query('SELECT * FROM promotion WHERE status="Order" ORDER BY id_pro ASC ', (err, rows, fields) => {
+        
+                    if (err) {
+                      console.log(err);
+                    } else if (rows.length <= 0) {
+                      res.render('User', {
+                        data: '', name: req.session.fname,
+                        role: role,
+                        img: req.session.profile,
+                        point:point,
+                        promotion: req.session.promotion || {}
+                      });
+                    } else {
+                      res.render('User', {
+                        name: req.session.fname,
+                        role: role,
+                        img: req.session.profile,
+                        point:point,
+                        promotion: req.session.promotion || {},
+                        data: rows
+                      })
+                    }
+                  });
+                } else if (role === 'R') {
+                  let id = req.session.id_res;
+                  
+                  let idUsertb = req.session.id_user;
+                  let idUser = req.session.id_user;
+                  let query=`SELECT cu.coupon_id, cu.datebook, cu.timebook,cu.status, u.fname, u.lname,u.Profile,u.phone,pro.id_restb, cp.cu_id,cp.id_pro_coupon, cp.name_pro_coupon,cp.cu_code
+                  FROM coupon_user cu 
+                  INNER JOIN coupon cp ON cu.coupon_id = cp.cu_id 
+                  INNER JOIN user u ON cu.user_id = u.id_user 
+                  INNER JOIN promotion pro ON cp.id_pro_coupon = pro.id_pro 
+                  WHERE cu.status='Book' AND pro.id_restb=?
+                  ORDER BY cu.id DESC`;
+                  let querytime=`SELECT cu.coupon_id, cu.datebook, cu.timebook,cu.status, u.fname, u.lname,u.Profile,u.phone,pro.id_restb, cp.cu_id,cp.id_pro_coupon, cp.name_pro_coupon,cp.cu_code
+                  FROM coupon_user cu 
+                  INNER JOIN coupon cp ON cu.coupon_id = cp.cu_id 
+                  INNER JOIN user u ON cu.user_id = u.id_user 
+                  INNER JOIN promotion pro ON cp.id_pro_coupon = pro.id_pro 
+                  WHERE cu.status='Book' AND pro.id_restb=?
+                  ORDER BY cu.datebook ASC`;
+        
+        
+        
+                  dbConnection.query(querytime,[id], (err, rowtime, fields) => {
+                    dbConnection.query(query,[id], (err, rows, fields) => {
+                      if (err) {
+                        console.log(err);
+                      } else if (rows.length <= 0) {
+                        dbConnection.query('SELECT * FROM restaurants WHERE id_usertb= ?',[idUsertb], (error, rowRes) => {
+                          req.session.nameResturant = rowRes[0].res_name;
+                          req.session.profileResturant = rowRes[0].res_profile;
+                          req.session.emailResturant =rowRes[0].res_email;
+                          if (error) {
+                            req.flash('error', error);
+                          } else {
+                            errors = true;
+                            res.render('Resturant', {
+                              data: rows,
+                              datatime:rowtime,
+                              name: req.session.nameResturant,
+                              role: role,
+                              img: req.session.profileResturant,
+                              point:point
+                            });
+                          }
+                        })
+                      } else {
+                        dbConnection.query('SELECT * FROM restaurants WHERE id_usertb= ?',[idUser], (error, rowRes) => {
+                          req.session.emailResturant =rowRes[0].res_email;
+                          req.session.nameResturant = rowRes[0].res_name;
+                          req.session.profileResturant = rowRes[0].res_profile;
+                          if (error) {
+                            req.flash('error', error);
+                          } else {
+                            errors = true;
+                            res.render('Resturant', {
+                              data: rows,
+                              datatime:rowtime,
+                              name: req.session.nameResturant,
+                              role: role,
+                              point:point,
+                              img: req.session.profileResturant
+                            });
+                          }
+                        })
+                      }
+                    });
+                  });
+                 
+                } else (
+                  res.send('NO Status')
+                )
+                console.log('Connect Success !');
+        
+        
+              } else {
+                console.log(error);
+                req.flash('error', "รหัสผ่านไม่ตรงกับฐานข้อมูล");
+                res.render('FormLogin',{ logo:logochange ,banner:bannerchange});
+              }
+        
+            } else {
+              req.session.isLoggedIn = false;
+              res.redirect('/FormLogin?error=1');
+            }
+          });
+        }
+      })
     }
-  });
+  })
+  
+  
 
 });
 

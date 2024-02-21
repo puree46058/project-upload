@@ -198,15 +198,15 @@ router.get('/cancleStatus/(:id_res)', isNotLogin, (req, res, next) => {
             dbConnection.query('UPDATE user SET ? WHERE id_user = ?', [updatebrhideDelete,iduser], (error, results) => {
                 if (error) {
                     error = true;
-                    req.flash('error', error);
+                    req.flash('error', 'ไม่ผ่านสถานะร้านอาหาร');
+                    res.redirect('/admin/tableStatus');
                 } else {
-                    req.flash('success', 'User UPDATE successfully! ID = ' + id);
                     dbConnection.query('SELECT * FROM restaurants ORDER BY res_id ', (err, rows) => {
                         if (err) {
-                            req.flash('error', err);
+                            req.flash('error', 'แสดงร้านอาหารของ ไอดี '+rows+'ไม่ได้');
                             res.redirect('/admin/tableStatus');
                         } else {
-                            req.flash('success', 'ไม่ผ่านสถานะร้านอาหาร !');
+                            req.flash('error', 'ไม่ผ่านสถานะร้านอาหาร !');
                             res.redirect('/admin/tableStatus');
 
                         }
@@ -223,7 +223,7 @@ router.get('/cancleStatus/(:id_res)', isNotLogin, (req, res, next) => {
             req.flash('error', err),
                 res.redirect('/admin/tableStatus');
         } else {
-            req.flash('success', 'ลบสำเร็จ !');
+           
             
         }
     })

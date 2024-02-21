@@ -18,6 +18,7 @@ function isNotLogin(req, res, next) {
 
 function NOStatusResturant(req, res, next) {
   if (req.session.status === "process") {
+    req.flash("message","โปรดรอผู้ดูแลระบบตรวจสอบข้อมูลร้านอาหาร")
     return res.redirect("/users/back");
   }
   next();
@@ -198,7 +199,7 @@ router.post("/RegisResturant", upload.single("image"), (req, res, next) => {
                 [form_data_register_resturant],
                 (error, results) => {
                   if (error) {
-                    req.flash("error", error);
+                    req.flash("error", "สมัครเป็นร้านอาหารไม่สำเร็จ");
                     res.redirect("/");
                   } else {
                     // req.flash('success','สมัครร้านอาหารเรียบร้อย !');
@@ -220,7 +221,8 @@ router.post("/RegisResturant", upload.single("image"), (req, res, next) => {
                             (error, results) => {
                               if (error) {
                                 error = true;
-                                req.flash("error", error);
+                                req.flash("error", "สมัครเป็นร้านอาหารไม่สำเร็จ");
+                                res.redirect('/users/back')
                               } else {
                                 dbConnection.query(
                                   "SELECT * FROM user WHERE id_user= ?",[id_userForusertb],(error, rows) => {
@@ -229,8 +231,7 @@ router.post("/RegisResturant", upload.single("image"), (req, res, next) => {
                                     } else {
                                       errors = true;
                                       req.flash(
-                                        "success",
-                                        "สมัครร้านอาหารเรียบร้อยแล้ว กรุณารอแอดมินตรวจสอบรายละเอียด"
+                                        "success","สมัครร้านอาหารเรียบร้อยแล้ว กรุณารอแอดมินตรวจสอบรายละเอียด"
                                       );
                                       // res.redirect('/users/back')
                                       req.session.destroy();
@@ -593,6 +594,7 @@ router.get('/Detail_promotion/(:id_pro)', (req, res, next) => {
     } else { 
       dbConnection.query('SELECT * FROM restaurants WHERE id_res = ?',[idres], (err,rowsResturant) => {
         let address=rowsResturant[0].res_address;
+        let resPhone=rowsResturant[0].res_phone;
       if (err) {
         console.log(err);
         req.flash("error", err);
@@ -651,6 +653,7 @@ router.get('/Detail_promotion/(:id_pro)', (req, res, next) => {
               like:rowsPromotion[0].like,
               dataCoupon:rowsCoupon,
               address:address,
+              resPhone:resPhone,
               name: req.session.fname,
               img: req.session.profile,
               point:req.session.point,

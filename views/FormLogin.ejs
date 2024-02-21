@@ -25,25 +25,31 @@
     <%- include('Navbar/navbar-guest') %>
   </div>
 
-  <% if(messages.error) {%>
-    <div role="alert" class="alert alert-danger text-center" style="font-size: 20px;">
-      <%= messages.error%>
-    </div>
-  <% } %>
-  
-  <% if(messages.message) {%>
-    <div role="alert" class="alert alert-success text-center" style="font-size: 20px;">
-      <%= messages.message%>
-    </div>
-  <% } %>
+
 
     <!-- Form login -->
     <div class="container my-5">
+     
       <div class="login-container">
         <div class="login-header">
           <img src="../stylesheetsUsers/img/logo1.png" alt="Logo" width="250">
           <h3>เข้าสู่ระบบ</h3>
         </div>
+        <% if(messages.error) {%>
+          <div role="alert" class="alert alert-danger text-center mt-3" style="font-size: 18px;">
+            <%= messages.error%>
+          </div>
+      <% } %>
+      <% if(messages.success) {%>
+          <div role="alert" class="alert alert-success text-center mt-3" style="font-size: 18px;">
+            <%= messages.success%>
+          </div>
+      <% } %>
+      <% if(messages.message) {%>
+          <div role="alert" class="alert alert-warning text-center mt-3" style="font-size: 18px;">
+            <%= messages.message%>
+          </div>
+      <% } %>
         <form class="login-form" action="/Login" method="post">
           <div class="form-group">
             <label for="username">ชื่อผู้ใช้งาน</label>
