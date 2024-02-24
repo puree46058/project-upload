@@ -5,7 +5,7 @@
 <link rel="icon" type="image/x-icon" href="../stylesheetsUsers/img/logotitle-removebg-preview.png" />
 <!-- Google Font -->
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">        
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <!-- Css Styles -->
 <link rel="stylesheet" type="text/css" href="stylesheetsUsers/stylesheet/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/font-awesome.min.css">
@@ -17,7 +17,42 @@
 <link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/style.css">
 <link rel="stylesheet" type="text/css" href="../stylesheetsUsers/stylesheet/formlogin.css">
 
-<title>สมัครสมาชิก</title>
+
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/stylesheetAdminandRes/img/logotitle-removebg-preview.png" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Icons. Uncomment required icon fonts -->
+    <link rel="stylesheet" href="/stylesheetAdminandRes/vendor/fonts/boxicons.css" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="/stylesheetAdminandRes/vendor/css/core.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="/stylesheetAdminandRes/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="/stylesheetAdminandRes/css/demo.css"/>
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="/stylesheetAdminandRes/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="/stylesheetAdminandRes/vendor/libs/apex-charts/apex-charts.css" />
+
+    <!-- Page CSS -->
+    <link href="https://emoji-css.afeld.me/emoji.css" rel="stylesheet">
+    <!-- Helpers -->
+    <script src="/stylesheetAdminandRes/vendor/js/helpers.js"></script>
+
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="/stylesheetAdminandRes/js/config.js"></script>
+
+
+   
 </head>
 <body>
 
@@ -58,36 +93,81 @@
             <form class="login-form" action="/Register" method="post">
               <div class="form-group">
                 <label for="name">ชื่อจริง</label>
-                <input type="text" class="form-control" name="name" placeholder="กรุณาใส่ชื่อจริง" required>
+                <input type="text" class="form-control" id="name" name="name" placeholder="กรุณาใส่ชื่อจริง" onkeyup="checkName()" required>
+                <span id="nameError" style="color: red;"></span>
               </div>
               <div class="form-group">
                 <label for="lastname">นามสกุล</label>
-                <input type="text" class="form-control" name="lastname" placeholder="กรุณาใส่นามสกุล" required>
+                <input type="text" class="form-control" id="lname" name="lastname" placeholder="กรุณาใส่นามสกุล" onkeyup="checkLastName()" required>
+                <span id="lnameError" style="color: red;"></span>
               </div>
               <div class="form-group">
                 <label for="email">อีเมล์</label>
-                <input type="email" class="form-control" name="email" placeholder="กรุณาใส่อีเมล์" required>
+                <input type="email" class="form-control" id="email" name="email" placeholder="กรุณาใส่อีเมล์ เช่น jame@gmail.com" onkeyup="checkEmail()" required>
+                <span id="emailError" style="color: red;"></span>
               </div>
               <div class="form-group">
                 <label for="username">ชื่อผู้ใช้</label>
-                <input type="text" class="form-control" name="username" placeholder="กรุณาใส่ชื่อผู้ใช้" required>
+                <input type="text" class="form-control" id="username" name="username" placeholder="กรุณาใส่ชื่อผู้ใช้" onkeyup="validateUsername()" required>
+                <span id="usernameError" style="color: red;"></span>
+                <p id="errorusername" style="color: red;"></p>
               </div>
               <div class="form-group">
                 <label for="psw">รหัสผ่าน</label>
-                <input type="password" class="form-control" name="psw" placeholder="กรุณาใส่รหัสผ่าน" required>
+                <input type="password" class="form-control" id="psw" name="psw" placeholder="กรุณาใส่รหัสผ่าน"  onkeyup="checkPassword()"required>
+                <span id="passwordError" style="color: red;"></span>
               </div>
               <div class="form-group">
                 <label for="confpsw">ยืนยันรหัสผ่าน</label>
-                <input type="password" class="form-control" name="confpsw" placeholder="กรุณาใส่ยืนยันรหัสผ่าน" required>
+                <input type="password" class="form-control" id="psw2" name="confpsw" placeholder="กรุณาใส่ยืนยันรหัสผ่าน" onkeyup="validatePassword()" required>
+                <span id="passwordError2" style="color: red;"></span>
               </div>
               <div class="form-group">
                 <label for="phonenumber">เบอร์โทรศัพท์</label>
-                <input type="text" class="form-control" name="phonenumber" maxlength="10" placeholder="กรุณาใส่เบอร์โทรศัพท์" required>
+                <input type="text" class="form-control" id="phone" name="phonenumber" maxlength="10" placeholder="กรุณาใส่เบอร์โทรศัพท์ โดยที่ไม่ต้องใส่ '-' เช่น 095456123" onkeyup="validatePhone()" required>
+                <span id="phoneError" style="color: red;"></span>
               </div>
               <div class="accept my-3">
                 <input type="checkbox"required>
-                <label>ฉันยอมรับเงื่อนไขเว็บไซต์นี้แล้ว</label>
+                <button type="button" class="btn btn-primary "   data-bs-toggle="modal"
+                data-bs-target="#modalToggle">
+                  ฉันยอมรับเงื่อนไขเว็บไซต์นี้แล้ว
+                </button>
               </div>
+             
+
+
+               <div class="mb-3 col-md-6">
+                           
+                            <div
+                            class="modal fade"
+                            id="modalToggle"
+                            aria-labelledby="modalToggleLabel"
+                            tabindex="-1"
+                            style="display: none"
+                            aria-hidden="true"
+                          >
+                            <div class="modal-dialog modal-dialog-centered">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <button
+                                    type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                  ></button>
+                                </div>
+                                <div class="modal-body">
+                                  <label for="">earth</label>
+                                </div>
+                              </div>
+                            </div>
+                            </div>
+                          </div>
+
+
+
+
               <div class="button">
                 <center><button type="submit" class="btn btn-success">ยืนยัน</button></center>
               </div>
@@ -115,6 +195,148 @@
     <script src="../stylesheetsUsers/js/mixitup.min.js"></script>
     <script src="../stylesheetsUsers/js/owl.carousel.min.js"></script>
     <script src="../stylesheetsUsers/js/main.js"></script>
+     <!-- / Layout wrapper -->
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
+    <script src="/stylesheetAdminandRes/vendor/libs/jquery/jquery.js"></script>
+    <script src="/stylesheetAdminandRes/vendor/libs/popper/popper.js"></script>
+    <script src="/stylesheetAdminandRes/vendor/js/bootstrap.js"></script>
+    <script src="/stylesheetAdminandRes/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
+ 
+
+
+
+    
+
+  
+    <script>
+     
+    const usernameInput = document.getElementById('username');
+    const resultElement = document.getElementById('errorusername');
+
+    usernameInput.addEventListener('input', async function() {
+      const username = this.value.trim();
+      if (username === '') {
+        resultElement.innerText = '';
+        return;
+      }
+
+      const response = await fetch(`/check-username/${username}`);
+      const data = await response.json();
+
+      if (data.exists) {
+        resultElement.textContent = 'มีผู้ใช้นี้แล้ว';
+      } else {
+        resultElement.textContent = 'ไม่มีผู้ใช้นี้ ';
+      }
+    });
+
+
+
+      function checkName() {// name
+      var nameInput = document.getElementById("name").value;
+      var containsNumber = /\d/;
+      var containsSpecialCharacter = /[!@#$%^&*(),.?":{}|<>]/;
+
+      if (containsNumber.test(nameInput) || containsSpecialCharacter.test(nameInput)) {
+        document.getElementById("nameError").textContent = "ชื่อไม่สามารถมีตัวเลขหรือเครื่องหมายพิเศษได้";
+      } else {
+        document.getElementById("nameError").textContent = "";
+      }
+    }
+
+    function checkLastName() {// lastname
+      var nameInput = document.getElementById("lname").value;
+      var containsNumber = /\d/;
+      var containsSpecialCharacter = /[!@#$%^&*(),.?":{}|<>]/;
+
+      if (containsNumber.test(nameInput) || containsSpecialCharacter.test(nameInput)) {
+        document.getElementById("lnameError").textContent = "นามสกุลไม่สามารถมีตัวเลขหรือเครื่องหมายพิเศษได้";
+      } else {
+        document.getElementById("lnameError").textContent = "";
+      }
+    }
+
+    function validateUsername() {// check username
+      var username = document.getElementById("username").value;
+      var usernameError = document.getElementById("usernameError");
+      var usernameRegex = /[!@#$%^&*(),.?":{}|<>]/;
+      var userthai =/[ก-๙]/;
+
+      if (usernameRegex.test(username)) {
+        usernameError.textContent  = "ชื่อผู้ใช้ไม่สามารถมีเครื่องหมายพิเศษได้";
+      }else if (userthai.test(username)) {
+        usernameError.textContent  = "ชื่อผู้ใช้ไม่สามารถใช้ภาษาไทยได้";
+      } else {
+        usernameError.textContent  = "";
+      }
+    }
+    function checkPassword() {// password
+        var passwordInput = document.getElementById("psw").value;
+        var specialCharacters = /[*\-!@#$%^&]/;
+  
+        if (specialCharacters.test(passwordInput)) {
+          document.getElementById("passwordError").textContent  = "รหัสผ่านไม่สามารถมีข้อมูลพิเศษ เช่น /*-!@#$%^& ได้";
+        } else if(passwordInput<6){
+          document.getElementById("passwordError").textContent  = "รหัสห้ามน้อยกว่า 6 ตัว";
+        } else {
+        document.getElementById("passwordError").textContent  = "";
+        }
+      }
+    function validatePassword() { //check psw
+      var password1 = document.getElementById("psw").value;
+      var password2 = document.getElementById("psw2").value;
+      var passwordError = document.getElementById("passwordError2");
+
+      if (password1 === password2) {
+        passwordError.textContent  = "";
+      } else {
+        passwordError.textContent  = "รหัสผ่านไม่ตรงกัน";
+      }
+
+      if(password2<6){
+        passwordError.textContent  = "";
+      } else {
+        passwordError.textContent  = "รหัสห้ามน้อยกว่า 6 ตัว";
+      }
+    }
+    
+
+    function checkEmail() { //email
+      var emailInput = document.getElementById("email").value;
+    
+      var emailRegex = /[ก-๙]/;
+    
+      if (emailInput.includes('@')) {
+        document.getElementById("emailError").textContent = ""; // ลบข้อความแสดงผลทิ้งหากมี @
+      } else {
+        document.getElementById("emailError").textContent = "โปรดกรอกอีเมล์ที่ถูกต้อง"; // แสดงข้อความเตือน
+      }
+
+     
+
+      if (emailRegex.test(emailInput)) {
+        document.getElementById("emailError").textContent = "อีเมลไม่ถูกต้องหรือใช้ภาษาไทย";
+      } else {
+        document.getElementById("emailError").textContent = "";
+      }
+    }
+
+    function validatePhone() { //phone
+      var phoneInput = document.getElementById("phone").value;
+      var phoneRegex = /^[0-9]*$/;
+
+      if (phoneRegex.test(phoneInput)) {
+        document.getElementById("phoneError").textContent = "";
+      } else {
+        document.getElementById("phoneError").textContent = "เบอร์โทรศัพท์ต้องประกอบด้วยตัวเลขเท่านั้น";
+      }
+    }
+
+  
+
+    
+    </script>
 </body>
 </html>

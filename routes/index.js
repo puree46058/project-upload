@@ -313,7 +313,43 @@ router.get('/FormRegister', function (req, res, next) {
 
 
 
+router.get('/check-username/:username', (req, res) => {
+  const { username } = req.params;
 
+  dbConnection.query('SELECT logo FROM logo ', (err, rowslogo) => {
+    let logochange =rowslogo[0].logo;
+    if (err) {
+      req.flash('error', "ไม่มีโลโก้เว็ปไซต์");
+      res.render('index', { logo:'' ,banner:''});
+    } else {
+      dbConnection.query('SELECT banner FROM banner ', (err, rowsbanner) => {
+        let bannerchange =rowsbanner[0].banner;
+        if (err) {
+          req.flash('error',  "ไม่มีป้ายหน้าเว็ปไซต์");
+          res.render('index', { logo:'' ,banner:''});
+        } else {
+           // ค้นหา username ในฐานข้อมูล
+        dbConnection.query('SELECT username FROM user WHERE username = ? ', [username], (error, results) => {
+          if (error) {
+            req.flash('message', 'มีรหัสผู้ใช้นี้ในฐานข้อมูลแล้ว');
+            res.render('FormRegister',{ logo:logochange ,banner:bannerchange});
+            return;
+          }
+          if (results.length > 0) {
+            // ถ้ามี username ในฐานข้อมูลแล้ว
+            res.json({ exists: true });
+          } else {
+            // ถ้ายังไม่มี username ในฐานข้อมูล
+            res.json({ exists: false });
+          }
+        });
+        }
+      });
+    }
+  });
+
+ 
+});
 
 /* Post Register listing. */
 router.post('/Register', (req, res, next) => {
@@ -331,6 +367,12 @@ router.post('/Register', (req, res, next) => {
   let message = false;
   let id_restb = 0;
   let point = 0;
+
+  var containsNumber = /\d/;
+  var containsSpecialCharacter = /[!@#$%^&*(),.?":{}|<>]/;
+  var userthai =/[ก-๙]/;
+  var phoneRegex = /^[0-9]*$/;
+
   console.log(username, Name, Lname, Email, PassWord, Confirmpassword,);
 
   //check email is use
@@ -350,8 +392,9 @@ router.post('/Register', (req, res, next) => {
           dbConnection.query('SELECT username FROM user WHERE username = ? ', [username], (error, results) => {
             if (error) {
               error = true;
-              req.flash('error', error);
-            } else if (results.length > 0) { // email in database 
+              req.flash('error', 'ผิดพลาดในการหา username');
+              res.render('FormRegister',{ logo:logochange ,banner:bannerchange});
+            } else if (results.length > 0) { // username in database 
               message = true;
               req.flash('message', 'มีรหัสผู้ใช้นี้ในฐานข้อมูลแล้ว');
               res.render('FormRegister',{ logo:logochange ,banner:bannerchange});
@@ -359,6 +402,36 @@ router.post('/Register', (req, res, next) => {
             } else if (PassWord !== Confirmpassword) {  //check password != confirm password
               message = true;
               req.flash('message', 'พาสเวิร์ดไม่ตรงกัน');
+              res.render('FormRegister',{ logo:logochange ,banner:bannerchange});
+            } else if (containsNumber.test(Name) || containsSpecialCharacter.test(Name)) { //check name 
+              req.flash('message', 'ชื่อมีตัวเลขหรือตัวอักษรพิเศษ');
+              res.render('FormRegister',{ logo:logochange ,banner:bannerchange});
+            } else if (containsNumber.test(Lname)|| containsSpecialCharacter.test(Lname)){ //check lname
+              req.flash('message', 'นามสกุลไม่สามารถมีตัวเลขหรือเครื่องหมายพิเศษได้');
+              res.render('FormRegister',{ logo:logochange ,banner:bannerchange});
+            }else  if (containsSpecialCharacter.test(username)) { //check username
+              req.flash('message', 'ชื่อผู้ใช้ไม่สามารถมีเครื่องหมายพิเศษได้');
+              res.render('FormRegister',{ logo:logochange ,banner:bannerchange});
+            }else if (userthai.test(username)) { //check username no thai
+              req.flash('message', 'ชื่อผู้ใช้ไม่สามารถใช้ภาษาไทยได้');
+              res.render('FormRegister',{ logo:logochange ,banner:bannerchange});
+            } else if (containsSpecialCharacter.test(PassWord)) { //check PassWord
+              req.flash('message', 'รหัสผ่านไม่สามารถมีข้อมูลพิเศษ เช่น /*-!@#$%^& ได้');
+              res.render('FormRegister',{ logo:logochange ,banner:bannerchange});
+            } else if(PassWord<6){ //check PassWord < 6
+              req.flash('message', 'รหัสห้ามน้อยกว่า 6 ตัว');
+              res.render('FormRegister',{ logo:logochange ,banner:bannerchange});
+            } else if(Confirmpassword<6){ //check PassWord < 6
+              req.flash('message', 'รหัสอีกครั้งห้ามน้อยกว่า 6 ตัว');
+              res.render('FormRegister',{ logo:logochange ,banner:bannerchange});
+            }else if (!Email.includes('@')) { //check @ email
+              req.flash('message', 'เมล์ต้องใส่ @ ด้วยยย');
+              res.render('FormRegister',{ logo:logochange ,banner:bannerchange});
+            }else if (userthai.test(Email)) { //check thai email
+              req.flash('message', 'อีเมลไม่ถูกต้องหรือใช้ภาษาไทย');
+              res.render('FormRegister',{ logo:logochange ,banner:bannerchange});
+            }else if (phoneRegex.test(phonetel)) { //check phone
+              req.flash('message', 'เบอร์โทรศัพท์ต้องประกอบด้วยตัวเลขเท่านั้น');
               res.render('FormRegister',{ logo:logochange ,banner:bannerchange});
             } else {
               dbConnection.query('SELECT MAX(id_user) AS max_id FROM user', (error, results, fields) => { // หาเลข max id_user ที่มากที่สุดเพื่อเพิ่มค่าให้อีกที

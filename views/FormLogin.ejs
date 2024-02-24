@@ -53,17 +53,19 @@
         <form class="login-form" action="/Login" method="post">
           <div class="form-group">
             <label for="username">ชื่อผู้ใช้งาน</label>
-            <input type="text" placeholder="กรุณาใส่รหัสสมาขิก" name="username" style="width: 530px;">
+            <input type="text" placeholder="กรุณาใส่รหัสสมาขิก" id="username" name="username" style="width: 530px;" onkeyup="validateUsername()" required>
+            <span id="usernameError" style="color: red; font-size: 16px;"></span>
+            <p id="errorusername" style="color: red; font-size: 16px;" ></p>
           </div>
           <div class="form-group">
             <label for="psw">รหัสผ่าน</label>
-            <input type="password" placeholder="กรุณาใส่รหัสผ่าน" name="psw" style="width: 530px;">
+            <input type="password" placeholder="กรุณาใส่รหัสผ่าน" name="psw" style="width: 530px;" required>
           </div>
           <div class="saveid">
             <input type="checkbox" class="mt-1">
             <label for="checkbox">จดจำฉัน</label>
           </div>
-          <a href="/Forgetpassword" style="float: right; color: black; font-weight: 600;">ลืมรหัสผ่าน</a>
+         
           <br><br>
           <div class="button">
             <center><button type="submit" class="btn btn-primary mr-4"><b>เข้าสู่ระบบ</b></button></center>
@@ -89,6 +91,43 @@
     <script src="../stylesheetsUsers/js/mixitup.min.js"></script>
     <script src="../stylesheetsUsers/js/owl.carousel.min.js"></script>
     <script src="../stylesheetsUsers/js/main.js"></script>
+    <script>
+      
+    const usernameInput = document.getElementById('username');
+    const resultElement = document.getElementById('errorusername');
 
+    usernameInput.addEventListener('input', async function() {
+      const username = this.value.trim();
+      if (username === '') {
+        resultElement.innerText = '';
+        return;
+      }
+
+      const response = await fetch(`/check-username/${username}`);
+      const data = await response.json();
+
+      if (data.exists) {
+        resultElement.textContent = '';
+      } else {
+        resultElement.textContent = 'ไม่มีผู้ใช้นี้โปรดสมัคร';
+      }
+    });
+
+
+    function validateUsername() {// check username
+      var username = document.getElementById("username").value;
+      var usernameError = document.getElementById("usernameError");
+      var usernameRegex = /[!@#$%^&*(),.?":{}|<>]/;
+      var userthai =/[ก-๙]/;
+
+      if (usernameRegex.test(username)) {
+        usernameError.textContent  = "ชื่อผู้ใช้ไม่สามารถมีเครื่องหมายพิเศษได้";
+      }else if (userthai.test(username)) {
+        usernameError.textContent  = "ชื่อผู้ใช้ไม่สามารถใช้ภาษาไทยได้";
+      } else {
+        usernameError.textContent  = "";
+      }
+    }
+    </script>
 </body>
 </html>
