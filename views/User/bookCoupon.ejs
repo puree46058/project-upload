@@ -82,22 +82,26 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th class="shoping__product">ชื่อคูปอง</th>
-                                    <th>แต้ม</th>
+                                    <th>ภาพโปรโมชัน</th>
+                                    <th >ชื่อคูปอง</th>
+                                    <th>จำนวนแต้ม</th>
                                     <th>จำนวน</th>
                                     <th>สถานะการจอง</th>
-                                    <th>ที่อยู่ร้าน</th>
+                                    <th>รหัสที่จอง</th>
                                 </tr>
                             </thead>
                             <tbody>
                               <% for(let i = 0; i < data.length; i++) { %>
                                 <tr>
-                                    <td class="shoping__cart__item">
+                                    <td class="shoping__cart__price" style="width: 150px;">
                                       <% if ( data[i].img_pro === 'NULL') {%>
                                         <img src="../images/noimg.png" alt="No Pic" style="height: 120px; width: 120px; border-radius: 50%; margin: 0; padding: 0;">
                                         <%}else{%>
                                         <img src="../uploads/resturantimg/<%= data[i].img_pro %>" alt="img" style="height: 120px; width: 120px; border-radius: 50%;margin: 0; padding: 0;">
                                       <% } %>
+                                      
+                                    </td>
+                                    <td class="shoping__cart__quantity">
                                       <h5 class="ml-4"><%= data[i].name_pro_coupon %></h5>
                                     </td>
                                     <td class="shoping__cart__price">
@@ -115,7 +119,7 @@
                                     </td> 
                                     <td class="shoping__cart__quantity">
                                       <div class="quantity">
-                                        <p><%-address%></p>
+                                        <p style="color: black;"><%=data[i].cu_code%></p>
                                       </div>
                                     </td>
                                 </tr>

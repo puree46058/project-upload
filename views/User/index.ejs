@@ -169,7 +169,7 @@
                     </div>
                     <div class="featured__item__text">
                         <p style="margin-bottom: 10px;"><a href="/users/Detail_promotion/<%=data[i].id_pro%>" style=" color: black;"><%= data[i].pro_name %></a></p>
-                        <h5><%= parseFloat(data[i].pro_price).toFixed(2) %> แต้ม</h5>
+                        <h5><%= parseFloat(data[i].pro_price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })%> แต้ม</h5>
                     </div>
                 </div>
             </div>

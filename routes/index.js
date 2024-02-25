@@ -214,6 +214,7 @@ router.get('/DetailShop/(:id_pro)', (req, res, next) => {
         }
     
         let idres = rowsPromotion[0].id_restb;
+        let detail=rowsPromotion[0].pro_detail;
         console.log("id Resturant",idres);
     
         dbConnection.query("SELECT * FROM restaurants WHERE id_res = ?" ,[idres], (err, rowsResturant) => {
@@ -224,6 +225,7 @@ router.get('/DetailShop/(:id_pro)', (req, res, next) => {
               namePromotion: '',
               picPromotion: '',
               idPromotion: '',
+              detail:'',
               pricePromotion: '',
               dayStart: '',
               dayEnd: '',
@@ -252,6 +254,7 @@ router.get('/DetailShop/(:id_pro)', (req, res, next) => {
                 timeEnd: '',
                 dataCoupon: '',
                 address: '',
+                detail:'',
                 logo:logochange,banner:bannerchange
               });
             }else{
@@ -267,6 +270,7 @@ router.get('/DetailShop/(:id_pro)', (req, res, next) => {
                 dataCoupon: rowsCoupon,
                 address: address,
                 resPhone:resPhone,
+                detail:detail,
                 logo:logochange,banner:bannerchange
               });
             }
@@ -930,9 +934,9 @@ router.get('/pointfive', function (req, res, next) {
 
 //น้อยกว่า 1000
 router.get('/pointone', function (req, res, next) {
-  dbConnection.query('SELECT * FROM promotion WHERE status="Order" AND pro_price <= 1000 ORDER BY boost DESC  ', (err, rowspromotion) => {
+  dbConnection.query('SELECT * FROM promotion WHERE status="Order" AND pro_price >= 1000 ORDER BY boost DESC  ', (err, rowspromotion) => {
     if (err) {
-      req.flash('error', err);
+      req.flash('error', 'หาโปรโมชันมากกว่า 1,000 ไม่เจอ');
       // res.render('index', { data: '',dataCoupon:'',totalcoupon:'',pro_name:'',id_pro:''});
       res.redirect('/');
     } else {
@@ -986,7 +990,7 @@ router.get('/pointone', function (req, res, next) {
       const currentPage = req.query.page || 1; // หากไม่ได้รับค่าหน้ามาให้เป็นหน้าที่ 1
       const perPage = 6; // จำนวนข้อมูลต่อหน้า
       const offset = (currentPage - 1) * perPage;
-      const sql =`SELECT * FROM coupon WHERE status="Order" AND price_pro <= 1000  ORDER BY cu_id ASC LIMIT ${perPage}  OFFSET ${offset}`;
+      const sql =`SELECT * FROM coupon WHERE status="Order" AND price_pro >= 1000  ORDER BY cu_id ASC LIMIT ${perPage}  OFFSET ${offset}`;
 
 
       dbConnection.query('SELECT logo FROM logo ', (err, rowslogo) => {
@@ -1006,7 +1010,7 @@ router.get('/pointone', function (req, res, next) {
                   req.flash('message', 'กลับสู่หน้าหลัก');
                   res.redirect('/');
                 } else {
-                  dbConnection.query('SELECT COUNT(*) AS total FROM coupon WHERE status="Order" AND price_pro <= 1000 ', (err,total) => {
+                  dbConnection.query('SELECT COUNT(*) AS total FROM coupon WHERE status="Order" AND price_pro >= 1000 ', (err,total) => {
                     let totalcoupon = total[0].total;
                     if (err) {
                       req.flash('message', 'กลับสู่หน้าหลัก');

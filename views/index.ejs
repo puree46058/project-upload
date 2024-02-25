@@ -176,7 +176,7 @@
                         <div class="featured__item__text">
                             <p style="margin-bottom: 10px;"><a href="/DetailShop/<%=data[k].id_pro%>" style=" color: black;"><%= data[k].pro_name %></a></p>
                             
-                            <h5>ราคา : <%= parseFloat(data[k].pro_price).toFixed(2) %> พอยต์</h5>
+                            <h5>ราคา : <%= parseFloat(data[k].pro_price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })%> แต้ม</h5>
                         </div>
                     </div>
                 </div>

@@ -76,7 +76,7 @@
                             <thead>
                                 <tr>
                                     <th class="shoping__product">คูปอง</th>
-                                    <th>ราคาแต้ม</th>
+                                    <th>จำนวนแต้ม</th>
                                     <th>ประเภทคูปอง</th>
                                     <th></th>
                                 </tr>
@@ -114,7 +114,7 @@
                     <div class="shoping__checkout">
                         <h5>รวมทั้งหมด</h5>
                         <ul>
-                            <li>แต้มที่ต้องชำระทั้งหมด <span style="font-size: 20px;"><%=totalprice%></span></li>
+                            <li>แต้มที่ต้องชำระทั้งหมด <span style="font-size: 20px;"><%=totalprice%> แต้ม</span></li>
                         </ul>
                         <hr>
 
@@ -146,6 +146,30 @@
       const url = `/users/confirmCart?day=${encodeURIComponent(day)}&time=${encodeURIComponent(time)}`;
       window.location.href = url;
     }
+
+    document.addEventListener('DOMContentLoaded', function () {
+   // Get the current date
+   var today = new Date();
+ 
+   // Format the current date to 'YYYY-MM-DD'
+   var formattedDate = today.toISOString().split('T')[0];
+ 
+   // Set the minimum date attribute to the current date
+   document.getElementById('daybook').min = formattedDate;
+ 
+   // Add event listener to update max date based on selected date
+   document.getElementById('daybook').addEventListener('change', function () {
+     var selectedDate = new Date(this.value);
+     var selectedFormattedDate = selectedDate.toISOString().split('T')[0];
+     
+     // Set the maximum date attribute to the selected date
+     document.getElementById('daybook').max = selectedFormattedDate;
+   });
+ 
+ });
+
+
+
   </script>
 <script src="../stylesheetsUsers/js/jquery-3.3.1.min.js"></script>
 <script src="../stylesheetsUsers/js/bootstrap.min.js"></script>

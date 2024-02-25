@@ -230,37 +230,37 @@
                       <tr>
                         <td><i class="fab fa-bootstrap fa-lg text-primary"></i> <strong>65 แต้ม</strong></td>
                         <td>
-                          <i class="fab fa-bootstrap fa-lg text-primary"></i> <strong>50 บาท</strong>
+                          <i class="fab fa-bootstrap fa-lg text-primary"></i> <strong>50.00 บาท</strong>
                         </td>
                       </tr>
                       <tr>
                         <td><i class="fab fa-bootstrap fa-lg text-primary"></i> <strong>135 แต้ม</strong></td>
                         <td>
-                          <i class="fab fa-bootstrap fa-lg text-primary"></i> <strong>100 บาท</strong>
+                          <i class="fab fa-bootstrap fa-lg text-primary"></i> <strong>100.00 บาท</strong>
                         </td>
                       </tr>
                       <tr>
                         <td><i class="fab fa-bootstrap fa-lg text-primary"></i> <strong>425 แต้ม</strong></td>
                         <td>
-                          <i class="fab fa-bootstrap fa-lg text-primary"></i> <strong>300 บาท</strong>
+                          <i class="fab fa-bootstrap fa-lg text-primary"></i> <strong>300.00 บาท</strong>
                         </td>
                       </tr>
                       <tr>
                         <td><i class="fab fa-bootstrap fa-lg text-primary"></i> <strong>625 แต้ม</strong></td>
                         <td>
-                          <i class="fab fa-bootstrap fa-lg text-primary"></i> <strong>500 บาท</strong>
+                          <i class="fab fa-bootstrap fa-lg text-primary"></i> <strong>500.00 บาท</strong>
                         </td>
                       </tr>
                       <tr>
-                        <td><i class="fab fa-bootstrap fa-lg text-primary"></i> <strong>1250 แต้ม</strong></td>
+                        <td><i class="fab fa-bootstrap fa-lg text-primary"></i> <strong>1,250 แต้ม</strong></td>
                         <td>
-                          <i class="fab fa-bootstrap fa-lg text-primary"></i> <strong>1000 บาท</strong>
+                          <i class="fab fa-bootstrap fa-lg text-primary"></i> <strong>1,000.00 บาท</strong>
                         </td>
                       </tr>
                       <tr>
-                        <td><i class="fab fa-bootstrap fa-lg text-primary"></i> <strong>2250 แต้ม</strong></td>
+                        <td><i class="fab fa-bootstrap fa-lg text-primary"></i> <strong>2,250 แต้ม</strong></td>
                         <td>
-                          <i class="fab fa-bootstrap fa-lg text-primary"></i> <strong>2000 บาท</strong>
+                          <i class="fab fa-bootstrap fa-lg text-primary"></i> <strong>2,000.00 บาท</strong>
                         </td>
                       </tr>
                       <thead>
@@ -288,7 +288,7 @@
                     <form action="/resturant/addpoint" method="POST" enctype="multipart/form-data">
                       <div class="row">
                         <div class="mb-3 col-md-6">
-                          <label class="form-label" for="phoneNumber">อีเมล์ผู้ใช้งาน</label>
+                          <label class="form-label" for="phoneNumber"><h5>อีเมล์ผู้ใช้งาน</h5></label>
                           <input
                             class="form-control"
                             type="text"
@@ -299,7 +299,7 @@
                           />
                         </div>
                         <div class="mb-3 col-md-6">
-                          <label for="firstName" class="form-label">ชื่อผู้ใช้งาน</label>
+                          <label for="firstName" class="form-label"><h5>ชื่อผู้ใช้งาน</h5></label>
                           <input
                             class="form-control"
                             type="text"
@@ -310,29 +310,29 @@
                           />
                         </div>
                         <div class="mb-3 col-md-6">
-                          <label for="currency" class="form-label">เลือกเติมที่ต้องการเติม</label>
+                          <label for="currency" class="form-label"><h5>เลือกราคาที่ต้องการเติม</h5></label>
                           <br>  
                           <label>
-                            <input type="radio" name="pointoption" value="65"> 50 บาท | 
+                            <input type="radio" name="pointoption" value="65"> 50.00 บาท &nbsp;&nbsp;| 
                           </label>
                           <label>
-                            <input type="radio" name="pointoption" value="135"> 100 บาท | 
+                            <input type="radio" name="pointoption" value="135"> 100.00 บาท &nbsp;&nbsp;&nbsp;&nbsp;| 
                           </label>
                           <label>
-                            <input type="radio" name="pointoption" value="425"> 300 บาท | 
+                            <input type="radio" name="pointoption" value="425"> 300.00 บาท  
+                          </label><br>
+                          <label>
+                            <input type="radio" name="pointoption" value="625"> 500.00 บาท | 
                           </label>
                           <label>
-                            <input type="radio" name="pointoption" value="625"> 500 บาท | 
+                            <input type="radio" name="pointoption" value="1250"> 1,000.00 บาท | 
                           </label>
                           <label>
-                            <input type="radio" name="pointoption" value="1250"> 1000 บาท | 
-                          </label>
-                          <label>
-                            <input type="radio" name="pointoption" value="2250"> 2000 บาท
+                            <input type="radio" name="pointoption" value="2250"> 2,000.00 บาท
                           </label>
                         </div>
                         <div class="mb-3 col-md-6">
-                          <label class="form-label">ธนาคารที่โอน</label>
+                          <label class="form-label"><h5>ธนาคารที่โอน</h5></label>
                           <select name="bank_name" id="bank_name" class="select2 form-select form-control">
                             <option value="ธนาคารกรุงไทย">ธนาคารกรุงไทย</option>
                             <option value="ธนาคารกรุงเทพ">ธนาคารกรุงเทพ</option>
@@ -342,7 +342,7 @@
                           </select>
                         </div>
                         <div class="mb-3 col-md-6">
-                          <label class="form-label">อัปโหลดรูปภาพ : ขนาดไฟล์ภาพไม่เกิน 10 mb</label>
+                          <label class="form-label"><h5>อัปโหลดรูปภาพ : ขนาดไฟล์ภาพไม่เกิน 10 mb</h5></label>
                           
                           <div class="d-flex align-items-start align-items-sm-center gap-4 ">
                             

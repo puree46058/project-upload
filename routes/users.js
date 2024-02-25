@@ -570,11 +570,13 @@ router.get('/Detail_promotion/(:id_pro)', (req, res, next) => {
 
   dbConnection.query(' SELECT * FROM promotion WHERE id_pro = ?',[id], (err, rowsPromotion) => {
     let idres=rowsPromotion[0].id_restb;
+    let detail=rowsPromotion[0].pro_detail;
     if (err) {
       console.log(err);
       req.flash("error", err);
       res.render('User/Detail_promotion',{
         id_pro:'',
+        detail:'',
         namePromotion:'',
         picPromotion:'',
         idPromotion:'',
@@ -604,6 +606,7 @@ router.get('/Detail_promotion/(:id_pro)', (req, res, next) => {
           picPromotion:'',
           idPromotion:'',
           pricePromotion:'',
+          detail:'',
           dayStart:'',
           dayEnd:'',
           timeStart:'',
@@ -627,6 +630,7 @@ router.get('/Detail_promotion/(:id_pro)', (req, res, next) => {
               picPromotion:'',
               idPromotion:'',
               pricePromotion:'',
+              detail:'',
               dayStart:'',
               dayEnd:'',
               timeStart:'',
@@ -654,6 +658,7 @@ router.get('/Detail_promotion/(:id_pro)', (req, res, next) => {
               dataCoupon:rowsCoupon,
               address:address,
               resPhone:resPhone,
+              detail:detail,
               name: req.session.fname,
               img: req.session.profile,
               point:req.session.point,
@@ -1070,6 +1075,7 @@ router.get(
                 });
               }else{
                 let idpro = result[0].id_pro_coupon;
+                
                 dbConnection.query(
                   "SELECT * FROM promotion WHERE id_pro = ?",[idpro],
                   (err, rowspromotion) => {
@@ -1088,6 +1094,7 @@ router.get(
                           } else {
                             res.render("User/bookCoupon", {
                               data: result,
+                              
                               totalCoupon: total_coupons,
                               address: addressResturants,
                               name: req.session.fname,
@@ -1331,7 +1338,7 @@ router.get('/pointfive', function (req, res, next) {
 
 //น้อยกว่า 1000
 router.get('/pointone', function (req, res, next) {
-  dbConnection.query('SELECT * FROM promotion WHERE status="Order" AND pro_price <= 1000 ORDER BY boost DESC  ', (err, rowspromotion) => {
+  dbConnection.query('SELECT * FROM promotion WHERE status="Order" AND pro_price >= 1000 ORDER BY boost DESC  ', (err, rowspromotion) => {
     if (err) {
       req.flash('message', 'กลับสู่หน้าหลัก');
       res.redirect('/users/back');
@@ -1386,7 +1393,7 @@ router.get('/pointone', function (req, res, next) {
       const currentPage = req.query.page || 1; // หากไม่ได้รับค่าหน้ามาให้เป็นหน้าที่ 1
       const perPage = 6; // จำนวนข้อมูลต่อหน้า
       const offset = (currentPage - 1) * perPage;
-      const sql =`SELECT * FROM coupon WHERE status="Order" AND price_pro <= 1000  ORDER BY cu_id ASC LIMIT ${perPage}  OFFSET ${offset}`;
+      const sql =`SELECT * FROM coupon WHERE status="Order" AND price_pro >= 1000  ORDER BY cu_id ASC LIMIT ${perPage}  OFFSET ${offset}`;
 
 
       dbConnection.query(sql, (err, rowscoupon) => {
@@ -1394,7 +1401,7 @@ router.get('/pointone', function (req, res, next) {
           req.flash('message', 'กลับสู่หน้าหลัก');
           res.redirect('/users/back');
         } else {
-          dbConnection.query('SELECT COUNT(*) AS total FROM coupon WHERE status="Order" AND price_pro <= 1000', (err,total ) => {
+          dbConnection.query('SELECT COUNT(*) AS total FROM coupon WHERE status="Order" AND price_pro >= 1000', (err,total ) => {
             let totalcoupon = total[0].total;
             if (err) {
               req.flash('message', 'กลับสู่หน้าหลัก');

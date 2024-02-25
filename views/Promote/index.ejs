@@ -251,7 +251,7 @@
                           <i class="fab fa-bootstrap fa-lg text-primary"></i> <strong><%= data[i].id_restb %></strong>
                         </td>
                         <td style="font-size: 14px; padding-top: 5px; text-align: center;"><%= data[i].pro_name %></td>
-                        <td style="font-size: 14px; padding-top: 5px; text-align: center;"><%= data[i].pro_price %></td>
+                        <td style="font-size: 14px; padding-top: 5px; text-align: center;"><%= data[i].pro_price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></td>
                         <td style="font-size: 14px; padding-top: 5px; text-align: center;"><%= data[i].pro_amount %></td>
                         <td style="font-size: 14px; padding-top: 5px; text-align: center;">
                             <%if(data[i].status === 'Order'){%>

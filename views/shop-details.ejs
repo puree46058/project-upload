@@ -84,15 +84,25 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="product__details__text">
                         <h3><%= namePromotion %></h3>
-                        <div class="product__details__price">ราคา : <%= pricePromotion %></div>
+                        <div class="product__details__price">ราคา : <%= pricePromotion.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %> แต้ม </div>
                         <span class="heart-icon icon_heart_alt"></span>
                         <ul style="padding-top: 10px; display: block;">
-                            <li>รหัสโปรโมชัน : <%= idPromotion %> <span style="margin-left: 170px;">เวลาเริ่ม :  <%= timeStart %></span></li>
-                            <li>ชื่อโปรโมชัน : <%= namePromotion %> <span style="margin-left: 80px;">เวลาที่หมด :  <%= timeEnd %></span></li>
-                            <li>วันเริ่ม : <%= new Intl.DateTimeFormat('th-TH', { year: 'numeric', month: 'long', day: '2-digit'}).format(dayStart)%>
-                              <span style="margin-left: 105px;">วันที่หมดอายุ : <%= new Intl.DateTimeFormat('th-TH', { year: 'numeric', month: 'long', day: '2-digit'}).format(dayEnd)%></span>
-                            </li>
-                            <li>เบอร์โทรร้านอาหาร : <%=resPhone%></li>
+                          <table>
+                            <tr>
+                              <td><b>รหัสโปรโมชัน :</b> <%= idPromotion %> </td>
+                              <td><b>เวลาเริ่ม : </b> <%= timeStart %></td>
+                            </tr>
+                            <tr>
+                              <td><b>วันเริ่ม :</b> <%= new Intl.DateTimeFormat('th-TH', { year: 'numeric', month: 'long', day: '2-digit'}).format(dayStart)%></td>
+                              <td><b>วันที่หมดอายุ :</b> <%= new Intl.DateTimeFormat('th-TH', { year: 'numeric', month: 'long', day: '2-digit'}).format(dayEnd)%></td>
+                            </tr>
+                            <tr>
+                              <td><b>เบอร์โทรร้านอาหาร : </b><%=resPhone%> </td>
+                            </tr>
+                            <tr>
+                              <td colspan="2"><b>รายละเอียดโปรโมชัน</b><br><%=detail%></td>
+                            </tr>
+                           </table>
                         </ul>
                     </div>
                 </div>
@@ -166,7 +176,7 @@
                         </div>
                         <div class="product__item__text">
                           <h6><a href="/FormLogin" class="text-primary">จองคูปอง</a></h6>
-                            <h5>ราคา : <%= dataCoupon[i].price_pro %> แต้ม</h5>
+                            <h5>ราคา : <%= dataCoupon[i].price_pro.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %> แต้ม</h5>
                         </div>
                     </div>
                 </div>
