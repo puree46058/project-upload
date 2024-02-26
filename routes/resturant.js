@@ -393,6 +393,35 @@ router.get('/Promotion', isNotLogin, (req, res) => {
 })
 
 
+//search promotion
+router.post('/searchPromotion', (req, res, next) => {
+  const query = req.body.searchPromotion;
+  
+  const sql =`SELECT * FROM promotion WHERE pro_name LIKE ?`;
+    dbConnection.query(sql,['%'+ query + '%'],(error,result) => {
+      if (error) {
+        req.flash("error", 'ไม่สามารถแสดงโปรโมชันได้');
+        res.redirect('/resturant/back');
+      } else if(result.length<=0){
+        res.render('Promotion/searchPromotion',{
+          data:'',
+          name: req.session.nameResturant,
+          img: req.session.profileResturant,
+          point:req.session.point
+        });
+      }else {
+        res.render('Promotion/searchPromotion',{
+          data:result,
+          name: req.session.nameResturant,
+          img: req.session.profileResturant,
+          point:req.session.point
+        });
+      }
+    });
+});
+
+
+
 
 router.get('/tablePromotion', isNotLogin, (req, res) => {
 
@@ -1015,6 +1044,34 @@ router.get('/ListCustomer', (req, res, next) => {
     });
 });
 
+
+//search customer
+router.post('/search', (req, res, next) => {
+  const query = req.body.searchcode;
+  const sql =`SELECT coupon.*,user.*,coupon_user.* FROM coupon JOIN user ON coupon.id_user = user.id_user  JOIN coupon_user ON coupon.cu_id = coupon_user.coupon_id WHERE coupon.cu_code LIKE ?`;
+    dbConnection.query(sql,['%'+ query + '%'],(error,userdata) => {
+      if (error) {
+        req.flash("error", 'ไม่สามารถแสดงรายชื่อลูกค้าที่จองได้');
+        res.redirect('/resturant/back');
+      } else if(userdata.length<=0){
+        res.render('Resturant/searchList',{
+          dataUser:'',
+          name: req.session.nameResturant,
+          img: req.session.profileResturant,
+          point:req.session.point
+        });
+      }else {
+        res.render('Resturant/searchList',{
+          dataUser:userdata,
+          name: req.session.nameResturant,
+          img: req.session.profileResturant,
+          point:req.session.point
+        });
+      }
+    });
+});
+
+
 router.get('/ConfirmBook/(:id_user)/(:cu_id)', (req, res, next) => {
   let idUser= req.params.id_user;
   let couponid=req.params.cu_id;
@@ -1215,6 +1272,27 @@ router.get('/promote', (req, res, next) => {
   });
 });
 
+//checkpoint
+router.get('/checkpointPromote/:point', (req, res) => {
+  let id =req.session.id_res;
+  const { point } = req.params;
+
+  dbConnection.query('SELECT user_point FROM user WHERE id_restb = ? AND user_point= ? = 0 ', [id,point], (error, results) => {
+    if (error) {
+      req.flash('message', 'ไม่พบแต้มร้านอาหาร');
+      res.redirect("/users/back");
+      return;
+    }
+    if (results.length > 0) {
+      // ถ้ามี res_address ในฐานข้อมูลแล้ว
+      res.json({ exists: true });
+    } else {
+      // ถ้ายังไม่มี res_address ในฐานข้อมูล
+      res.json({ exists: false });
+    }
+  });
+});
+
 router.get('/promoteSelect/(:id_pro)', (req, res, next) => {
   let idpro=req.params.id_pro;
  
@@ -1260,6 +1338,9 @@ router.post('/boostpromote/(:id_pro)', (req, res, next) => {
     let pointuser=rowsuser[0].user_point;
     if(err){
       req.flash("error", "ไม่สามารถโปรโมทได้");
+      res.redirect('/resturant/back')
+    }else if(pointuser===0){
+      req.flash("error", "แต้มไม่พอในการโปรโมท");
       res.redirect('/resturant/back')
     }else{
       let cutpointtopromotion=pointuser/daypromote;

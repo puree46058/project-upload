@@ -96,6 +96,65 @@ router.get("/RegisResturant",isNotLogin,NOStatusResturant,function (req, res, ne
   }
 );
 
+
+//res-name
+router.get('/check-resturant/:res_name', (req, res) => {
+  const { res_name } = req.params;
+
+  dbConnection.query('SELECT res_name FROM restaurants WHERE res_name = ? ', [res_name], (error, results) => {
+    if (error) {
+      req.flash('message', 'มีร้านอาหารนี้ในระบบแล้ว');
+      res.redirect("/users/back");
+      return;
+    }
+    if (results.length > 0) {
+      // ถ้ามี username ในฐานข้อมูลแล้ว
+      res.json({ exists: true });
+    } else {
+      // ถ้ายังไม่มี username ในฐานข้อมูล
+      res.json({ exists: false });
+    }
+  });
+});
+//res-email
+router.get('/check-resturantemail/:res_email', (req, res) => {
+  const { res_email } = req.params;
+
+  dbConnection.query('SELECT res_email FROM restaurants WHERE res_email = ? ', [res_email], (error, results) => {
+    if (error) {
+      req.flash('message', 'มีร้านอาหารนี้ในระบบแล้ว');
+      res.redirect("/users/back");
+      return;
+    }
+    if (results.length > 0) {
+      // ถ้ามี res_email ในฐานข้อมูลแล้ว
+      res.json({ exists: true });
+    } else {
+      // ถ้ายังไม่มี res_email ในฐานข้อมูล
+      res.json({ exists: false });
+    }
+  });
+});
+//res-address
+router.get('/check-resturantphone/:phone', (req, res) => {
+  const { phone } = req.params;
+
+  dbConnection.query('SELECT res_phone FROM restaurants WHERE res_phone = ? ', [phone], (error, results) => {
+    if (error) {
+      req.flash('message', 'มีร้านอาหารนี้ในระบบแล้ว');
+      res.redirect("/users/back");
+      return;
+    }
+    if (results.length > 0) {
+      // ถ้ามี res_address ในฐานข้อมูลแล้ว
+      res.json({ exists: true });
+    } else {
+      // ถ้ายังไม่มี res_address ในฐานข้อมูล
+      res.json({ exists: false });
+    }
+  });
+});
+
 // Upload
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

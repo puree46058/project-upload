@@ -85,15 +85,18 @@ style="box-shadow: 0px 4px 9px 4px rgba(0, 0, 0, 0.25);
                 <div class="row">
                     <div class="mb-3 col-md-6">
                       <label>ชื่อร้านอาหาร</label>
-                      <input type="text" class="form-control w-100" name="res_name" placeholder="ชื่อร้านอาหาร" required>
+                      <input type="text" class="form-control w-100" name="res_name" id="res_name"placeholder="ชื่อร้านอาหาร" required>
+                      <span id="reserror" style="color: red;"></span>
                     </div>
                     <div class="mb-3 col-md-6">
                       <label>อีเมลร้านอาหาร</label>
-                      <input type="email" class="form-control w-100" name="res_email" placeholder="อีเมลร้านอาหาร" required>
+                      <input type="email" class="form-control w-100" name="res_email" id="res_email" placeholder="อีเมลร้านอาหาร" required>
+                      <span id="emailerror" style="color: red;"></span>
                     </div>
                     <div class="mb-3 col-md-6">
                       <label>เบอร์โทรร้านอาหาร</label>
-                      <input type="tel" class="form-control w-100" name="res_phone" placeholder="เบอร์โทรร้านอาหาร" required>
+                      <input type="tel" class="form-control w-100" id="phone" name="res_phone" placeholder="เบอร์โทรร้านอาหาร" required>
+                      <span id="phoneerror" style="color: red;"></span>
                     </div>
                     <div class="mb-3 col-md-6">
                       <label>ประเภทร้านอาหาร</label>
@@ -106,7 +109,8 @@ style="box-shadow: 0px 4px 9px 4px rgba(0, 0, 0, 0.25);
                     </div>
                     <div class="mb-3 col-md-6">
                       <label>ที่อยู่ร้านอาหาร</label>
-                      <textarea name="res_address" class="form-control w-100" cols="30" rows="35" placeholder="ที่อยู่ร้านอาหาร" required></textarea>
+                      
+                      <textarea id="res_address" name="res_address" class="form-control w-100" cols="30" rows="35" placeholder="ที่อยู่ร้านอาหาร" required></textarea>
                     </div>
                     <div class="mb-3 col-md-6">
                       <label>วิธีเพิ่มที่อยู่ร้านอาหาร<br>
@@ -176,5 +180,67 @@ style="box-shadow: 0px 4px 9px 4px rgba(0, 0, 0, 0.25);
 <script src="../stylesheetsUsers/js/mixitup.min.js"></script>
 <script src="../stylesheetsUsers/js/main.js"></script>
 
+<script>
+  const res_nameInput = document.getElementById('res_name');//resname
+  const resultElement = document.getElementById('reserror');
+  const res_emailInput = document.getElementById('res_email');//resemail
+  const res_emailElement = document.getElementById('emailerror');
+ 
+
+    res_nameInput.addEventListener('input', async function() {
+      const res_name = this.value.trim();
+      if (res_name === '') {
+        resultElement.innerText = '';
+        return;
+      }
+
+      const response = await fetch(`/users/check-resturant/${res_name}`);
+      const data = await response.json();
+
+      if (data.exists) {
+        resultElement.textContent = 'มีชื่อร้านนี้แล้ว';
+      } else {
+        resultElement.textContent = 'ไม่มีชื่อร้านนี้';
+      }
+    });
+
+    res_emailInput.addEventListener('input', async function() {
+      const res_email = this.value.trim();
+      if (res_email === '') {
+        res_emailElement.innerText = '';
+        return;
+      }
+
+      const response = await fetch(`/users/check-resturantemail/${res_email}`);
+      const data = await response.json();
+
+      if (data.exists) {
+        res_emailElement.textContent = 'มีอีเมลร้านนี้แล้ว';
+      } else {
+        res_emailElement.textContent = 'ไม่มีอีเมลร้านนี้';
+      }
+    });
+
+
+    const phoneInput = document.getElementById('phone');
+    const phoneerror = document.getElementById('phoneerror');
+
+    phoneInput.addEventListener('input', async function() { 
+      const phone = this.value.trim();
+      if (res_address === '') {
+        phoneerror.innerText = ''; 
+        return;
+      }
+
+      const response = await fetch(`/users/check-resturantphone/${phone}`);
+      const data = await response.json();
+
+      if (data.exists) {
+        phoneerror.textContent = 'มีเบอร์ร้านนี้แล้ว';
+      } else {
+        phoneerror.textContent = 'ไม่มีเบอร์ร้านนี้';
+      }
+    });
+</script>
 </body>
 </html>

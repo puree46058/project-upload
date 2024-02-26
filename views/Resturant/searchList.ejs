@@ -226,29 +226,22 @@
               <!-- Basic Bootstrap Table -->
               <div class="card mb-1">
                 <div class="row">
-                  <div class="col col-md-3">
-                    <h5 class="card-header">รายชื่อลูกค้าที่มาร้าน</h5>
-                   
+                    <div class="col col-md-3">
+                      <a href="../resturant/ListCustomer"><h5 class="card-header">รายชื่อลูกค้าที่มาร้าน</h5></a>
+                    </div>
+                    <div class="col"></div>
+                    <div class="col"></div>
+                    <div class="col"></div>
+                    <div class="col"></div>
+                    <div class="col col-md-3">
+                        <form id="searchForm" action="/resturant/search" method="POST"> <!-- ตั้งค่า action และ method ของฟอร์ม -->
+                            <input type="search" class="form-control rounded my-3" name="searchcode" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                        </form>
+                    </div>
+                    <div class="col right">
+                        <button type="submit" form="searchForm" class="btn btn-primary my-3" data-mdb-ripple-init>ค้นหา</button>
+                    </div>
                   </div>
-                  <div class="col"></div>
-                  <div class="col"></div>
-                  <div class="col"></div>
-                  <div class="col"></div>
-                  <div class="col col-md-3">
-                    <form id="searchForm" action="/resturant/search" method="POST"> <!-- ตั้งค่า action และ method ของฟอร์ม -->
-                        <input type="search" class="form-control rounded my-3" name="searchcode" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
-                    </form>
-                </div>
-                <div class="col right">
-                    <button type="submit" form="searchForm" class="btn btn-primary my-3" data-mdb-ripple-init>ค้นหา</button>
-                </div>
-                
-                
-                
-                
-
-
-              </div>
                 <div class="table-responsive text-nowrap">
                   <table class="table">
                     <thead>

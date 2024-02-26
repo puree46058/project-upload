@@ -220,7 +220,8 @@
                         <h4 class="px-4"><input type="radio" name="dayboost" value="7">&nbsp;&nbsp; 7 วัน </h4> 
                       </label>
                       <br><br>
-                      <input type="number" name="pointboost" class="form-control-sm px-4 mx-4"> <label style="font-size: 18px; font-weight: bold;">จำนวนพอยต์ที่ต้องการเพิ่มแข่ง</label>
+                      <input type="number"id="pointboost" name="pointboost" class="form-control-sm px-4 mx-4"> <label style="font-size: 18px; font-weight: bold;">จำนวนพอยต์ที่ต้องการโปรโมท</label><br>
+                      <span id="pointerror" style="color: red; font-size: 18px;" class="px-3 mx-3"></span>
                   </div>
                   <button type="submit" class="buttonlipro btn btn-success m-4">ยืนยัน</button>
                 </form>
@@ -263,7 +264,27 @@
 
     <!-- Page JS -->
     <script src="/stylesheetAdminandRes/js/dashboards-analytics.js"></script>
+    <script>
+      const pointInput = document.getElementById('pointboost');
+      const pointError = document.getElementById('pointerror');
 
+      pointInput.addEventListener('input', async function() {
+      const point = this.value.trim();
+      if (point === '') {
+        pointError.innerText = '';
+        return;
+      }
+
+      const response = await fetch(`/resturant/checkpointPromote/${point}`);
+      const data = await response.json();
+
+      if (data.exists) {
+        pointError.textContent = 'พอยต์ไม่พอในการโปรโมท';
+      } else {
+        pointError.textContent = ' ';
+      }
+    });
+    </script>
   </body>
 </html>
 
