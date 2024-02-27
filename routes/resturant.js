@@ -10,7 +10,7 @@ const fs = require('fs');
 const moment = require('moment');
 const { jsPDF } = require("jspdf");
 const autoTable = require("jspdf-autotable");
-const font = require("../public/Font/Sarabun-Regular-normal.js");
+const font = require("../public/Font/TH-Niramit-AS-Regular-pdf-normal.js");
 
 function isNotLogin(req, res, next) { //check session 
   if (!req.session.isLoggedIn) {
@@ -262,7 +262,7 @@ const maxSizeResturant = 10 * 1024 * 1024;
 let uploadProfileResturant = multer({ storage: storageResturant, fileFilter: fileFilterResturant, limits: { fileSize: maxSizeResturant }, });
 
 
-router.post('/update', uploadProfileResturant.single('Profile'), (req, res, next) => {
+router.post('/update', uploadProfileResturant.single('ProfileRes'), (req, res, next) => {
   let Name = req.body.res_name;
   let Email = req.body.res_email;
   let Address = req.body.res_address;
@@ -1175,6 +1175,8 @@ router.post("/report", (req, res, next) => {
       const formattedTotal = totalprice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 
       let nameResturant= results[0].res_name;//name Resturant
+      let startDateForpdf=moment(start).locale('th').format('D MMMM YYYY');
+      let endDateForpdf=moment(end).locale('th').format('D MMMM YYYY');
 
       let data = results.map(row => ({ 
         IDCoupon: row.coupon_id,
@@ -1198,10 +1200,12 @@ router.post("/report", (req, res, next) => {
 
       // สร้าง definition ของไฟล์ PDF
       let width = doc.internal.pageSize.getWidth();
-
+      doc.setFontSize(20);
       doc.text("รายงานคูปองของร้านอาหาร : "+nameResturant, width / 2, 10, { align: 'center' });
+      doc.text("รายงานวันที่ "+startDateForpdf+" ถึงวันที่ "+endDateForpdf, width / 2, 20, { align: 'center' });
+      doc.setFontSize(18);
       let dataTableForPDF = {
-        startY: 20,
+        startY: 30,
         head: [['รหัสคูปอง', 'ชื่อโปรโมชั่น', 'ราคาคูปอง', 'ชื่อลูกค้า', 'นามสกุล', 'วันที่จอง', 'เวลาที่จอง']],
         body: data.map(row => [
           row.IDCoupon,
@@ -1212,14 +1216,15 @@ router.post("/report", (req, res, next) => {
           row.Date,
           row.Time
       ]),
-        styles: { font: 'MyFont' }
+        styles: { font: 'MyFont',fontSize: 16 }
+        
       }
 
       doc.autoTable(dataTableForPDF);
       let totalPriceTextY = doc.autoTable.previous.finalY + 10; //ระยะห่างระหว่าง dataTable กับ ยอดรวม
-      
-      doc.text("ยอดรวมสุทธิ : " + formattedTotal, 190, totalPriceTextY, { align: 'right' });
-      doc.setFontSize(10);
+      doc.setFontSize(18);
+      doc.text("ยอดรวมสุทธิ : " + formattedTotal+" แต้ม", 190, totalPriceTextY, { align: 'right' });
+      doc.setFontSize(14);
       doc.text('© สะดวกจอง. All Rights Reserved. By มหาวิทยาลัยเทคโนโลยีราชมงคลล้านนา 128 ถ.ห้วยแก้ว ต.ช้างเผือก อ.เมือง จ.เชียงใหม่ 50300', 15, doc.internal.pageSize.getHeight() - 10, { align: 'left' }); //footer 
       doc.save("./public/pdf/Report.pdf");
       res.render('Resturant/ReportPaper', { bookings: results, totalprice: formattedTotal,nameResturant:nameResturant,name: req.session.nameResturant,img: req.session.profileResturant,point:req.session.point });
@@ -1340,6 +1345,9 @@ router.post('/boostpromote/(:id_pro)', (req, res, next) => {
       req.flash("error", "ไม่สามารถโปรโมทได้");
       res.redirect('/resturant/back')
     }else if(pointuser===0){
+      req.flash("error", "แต้มไม่พอในการโปรโมท");
+      res.redirect('/resturant/back')
+    }else if(pointuser<pointboost){
       req.flash("error", "แต้มไม่พอในการโปรโมท");
       res.redirect('/resturant/back')
     }else{

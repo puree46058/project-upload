@@ -231,7 +231,7 @@
                         <% } %>
                         <br>
                         <center>ขนาดไฟล์ภาพไม่เกิน 10 mb</center>
-                        <center><input type="file"  name="Profile" required></center>
+                        <center><input type="file"  name="ProfileRes" required></center>
                         <div class="row">
                           <div class="mb-3 col-md-6">
                             <label for="firstName" class="form-label">คำนำหน้า</label>
@@ -281,7 +281,7 @@
                             <input
                               type="tel"
                               class="form-control"
-                              placeholder="<%=phone%>" name="res_phone" required 
+                              placeholder="<%=phone%>" name="res_phone" maxlength="10"  required
                             />
                           </div>
                           <div class="mb-3 col-md-6">
@@ -290,7 +290,7 @@
                               <input
                                 class="form-control"
                                 type="tel"
-                                placeholder="<%=Owner_Phone%>" name="owner_phone" required 
+                                placeholder="<%=Owner_Phone%>" name="owner_phone" maxlength="10" required 
                               />
                             </div>
                           </div>

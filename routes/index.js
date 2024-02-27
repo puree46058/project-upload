@@ -335,7 +335,7 @@ router.get('/check-username/:username', (req, res) => {
            // ค้นหา username ในฐานข้อมูล
         dbConnection.query('SELECT username FROM user WHERE username = ? ', [username], (error, results) => {
           if (error) {
-            req.flash('message', 'มีรหัสผู้ใช้นี้ในฐานข้อมูลแล้ว');
+            req.flash('message', 'หาผู้ใช้นี้ในระบบไม่พบ');
             res.render('FormRegister',{ logo:logochange ,banner:bannerchange});
             return;
           }
@@ -372,10 +372,12 @@ router.post('/Register', (req, res, next) => {
   let id_restb = 0;
   let point = 0;
 
-  var containsNumber = /\d/;
-  var containsSpecialCharacter = /[!@#$%^&*(),.?":{}|<>]/;
-  var userthai =/[ก-๙]/;
-  var phoneRegex = /^[0-9]*$/;
+  console.log("phone :",phonetel);
+
+  let containsNumber = /\d/;
+  let containsSpecialCharacter = /[!@#$%^&*(),.?":{}|<>]/;
+  let userthai =/[ก-๙]/;
+  let phoneRegex = /^[0-9]*$/;
 
   console.log(username, Name, Lname, Email, PassWord, Confirmpassword,);
 
@@ -434,8 +436,8 @@ router.post('/Register', (req, res, next) => {
             }else if (userthai.test(Email)) { //check thai email
               req.flash('message', 'อีเมลไม่ถูกต้องหรือใช้ภาษาไทย');
               res.render('FormRegister',{ logo:logochange ,banner:bannerchange});
-            }else if (phoneRegex.test(phonetel)) { //check phone
-              req.flash('message', 'เบอร์โทรศัพท์ต้องประกอบด้วยตัวเลขเท่านั้น');
+            }else if (!phoneRegex.test(phonetel) || phonetel.length !== 10) {
+              req.flash('message', 'เบอร์โทรศัพท์ต้องประกอบด้วยตัวเลขและมีจำนวน 10 ตัว');
               res.render('FormRegister',{ logo:logochange ,banner:bannerchange});
             } else {
               dbConnection.query('SELECT MAX(id_user) AS max_id FROM user', (error, results, fields) => { // หาเลข max id_user ที่มากที่สุดเพื่อเพิ่มค่าให้อีกที

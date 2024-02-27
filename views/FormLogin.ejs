@@ -53,7 +53,7 @@
         <form class="login-form" action="/Login" method="post">
           <div class="form-group">
             <label for="username">ชื่อผู้ใช้งาน</label>
-            <input type="text" placeholder="กรุณาใส่รหัสสมาขิก" id="username" name="username" style="width: 530px;" onkeyup="validateUsername()" required>
+            <input type="text" placeholder="กรุณาใส่รหัสสมาชิก" id="username" name="username" style="width: 530px;" onkeyup="validateUsername()" required>
             <span id="usernameError" style="color: red; font-size: 16px;"></span>
             <p id="errorusername" style="color: red; font-size: 16px;" ></p>
           </div>
@@ -61,12 +61,12 @@
             <label for="psw">รหัสผ่าน</label>
             <input type="password" placeholder="กรุณาใส่รหัสผ่าน" name="psw" style="width: 530px;" required>
           </div>
-          <div class="saveid">
+          <!-- <div class="saveid">
             <input type="checkbox" class="mt-1">
             <label for="checkbox">จดจำฉัน</label>
-          </div>
+          </div> -->
          
-          <br><br>
+          <br>
           <div class="button">
             <center><button type="submit" class="btn btn-primary mr-4"><b>เข้าสู่ระบบ</b></button></center>
           </div>
@@ -109,7 +109,7 @@
       if (data.exists) {
         resultElement.textContent = '';
       } else {
-        resultElement.textContent = 'ไม่มีผู้ใช้นี้โปรดสมัคร';
+        resultElement.textContent = 'ไม่มีผู้ใช้นี้โปรดสมัครสมาชิก';
       }
     });
 

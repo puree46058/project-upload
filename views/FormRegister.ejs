@@ -94,12 +94,12 @@
             <form class="login-form" action="/Register" method="post">
               <div class="form-group">
                 <label for="name">ชื่อจริง</label>
-                <input type="text" class="form-control" id="name" name="name" placeholder="กรุณาใส่ชื่อจริง" onkeyup="checkName()" required>
+                <input type="text" class="form-control" id="name" name="name" maxlength="50" placeholder="กรุณาใส่ชื่อจริง" onkeyup="checkName()" required>
                 <span id="nameError" style="color: red;"></span>
               </div>
               <div class="form-group">
                 <label for="lastname">นามสกุล</label>
-                <input type="text" class="form-control" id="lname" name="lastname" placeholder="กรุณาใส่นามสกุล" onkeyup="checkLastName()" required>
+                <input type="text" class="form-control" id="lname" name="lastname" maxlength="50" placeholder="กรุณาใส่นามสกุล" onkeyup="checkLastName()" required>
                 <span id="lnameError" style="color: red;"></span>
               </div>
               <div class="form-group">
@@ -109,18 +109,18 @@
               </div>
               <div class="form-group">
                 <label for="username">ชื่อผู้ใช้</label>
-                <input type="text" class="form-control" id="username" name="username" placeholder="กรุณาใส่ชื่อผู้ใช้" onkeyup="validateUsername()" required>
+                <input type="text" class="form-control" id="username" name="username" maxlength="50" placeholder="กรุณาใส่ชื่อผู้ใช้" onkeyup="validateUsername()" required>
                 <span id="usernameError" style="color: red;"></span>
                 <p id="errorusername" style="color: red;"></p>
               </div>
               <div class="form-group">
                 <label for="psw">รหัสผ่าน</label>
-                <input type="password" class="form-control" id="psw" name="psw" placeholder="กรุณาใส่รหัสผ่าน"  onkeyup="checkPassword()"required>
+                <input type="password" class="form-control" id="psw" name="psw" maxlength="50" placeholder="กรุณาใส่รหัสผ่าน"  onkeyup="checkPassword()"required>
                 <span id="passwordError" style="color: red;"></span>
               </div>
               <div class="form-group">
                 <label for="confpsw">ยืนยันรหัสผ่าน</label>
-                <input type="password" class="form-control" id="psw2" name="confpsw" placeholder="กรุณาใส่ยืนยันรหัสผ่าน" onkeyup="validatePassword()" required>
+                <input type="password" class="form-control" id="confpsw" name="confpsw" maxlength="50" placeholder="กรุณาใส่ยืนยันรหัสผ่าน" onkeyup="validatePassword()" required>
                 <span id="passwordError2" style="color: red;"></span>
               </div>
               <div class="form-group">
@@ -282,7 +282,7 @@
       if (data.exists) {
         resultElement.textContent = 'มีผู้ใช้นี้แล้ว';
       } else {
-        resultElement.textContent = 'ไม่มีผู้ใช้นี้ ';
+        resultElement.textContent = 'ใช้ผู้ใช้นี้ได้ ';
       }
     });
 
@@ -340,20 +340,20 @@
       }
     function validatePassword() { //check psw
       var password1 = document.getElementById("psw").value;
-      var password2 = document.getElementById("psw2").value;
+      var password2 = document.getElementById("confpsw").value;
       var passwordError = document.getElementById("passwordError2");
 
       if (password1 === password2) {
-        passwordError.textContent  = "";
+        if(password2<6){
+          passwordError.textContent  = "รหัสห้ามน้อยกว่า 6 ตัว";
+        } else {
+          passwordError.textContent  = "";
+        }
       } else {
         passwordError.textContent  = "รหัสผ่านไม่ตรงกัน";
       }
 
-      if(password2<6){
-        passwordError.textContent  = "";
-      } else {
-        passwordError.textContent  = "รหัสห้ามน้อยกว่า 6 ตัว";
-      }
+      
     }
     
 

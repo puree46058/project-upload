@@ -263,9 +263,9 @@
                         <% for(let i = 0; i < dataUser.length; i++) { %>
                       <tr>
                         <td><% if (dataUser[i].Profile === 'NULL') {%>
-                            <center><img src="../images/profileNon.png" alt="No Image" style="height: 100px; width: 100px;"></center>
+                            <center><img src="../images/profileNon.png" alt="No Image" style="height: 100px; width: 100px; border-radius: 50%;"></center>
                             <%}else{%>
-                            <center><img src="../uploads/profile/<%=dataUser[i].Profile %>" alt="Coupon Image" style="height: 100px; width: 100px; "> </center>
+                            <center><img src="../uploads/profile/<%=dataUser[i].Profile %>" alt="Coupon Image" style="height: 100px; width: 100px;  border-radius: 50%;"> </center>
                             <% } %> </td>
                         <td>
                           <i class="fab fa-bootstrap fa-lg text-primary"></i> <strong><%= dataUser[i].name_pro_coupon %></strong>

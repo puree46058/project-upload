@@ -88,6 +88,8 @@
                                     <th>จำนวน</th>
                                     <th>สถานะการจอง</th>
                                     <th>รหัสที่จอง</th>
+                                    <th>วันที่จอง</th>
+                                    <th>เวลาที่จอง</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -120,6 +122,16 @@
                                     <td class="shoping__cart__quantity">
                                       <div class="quantity">
                                         <p style="color: black;"><%=data[i].cu_code%></p>
+                                      </div>
+                                    </td>
+                                    <td class="shoping__cart__quantity">
+                                      <div class="quantity">
+                                        <p style="color: black;"><%= new Intl.DateTimeFormat('th-TH', { year: 'numeric', month: 'long', day: '2-digit'}).format(data[i].datebook) %></p>
+                                      </div>
+                                    </td>
+                                    <td class="shoping__cart__quantity">
+                                      <div class="quantity">
+                                        <p style="color: black;"><%=data[i].timebook%></p>
                                       </div>
                                     </td>
                                 </tr>

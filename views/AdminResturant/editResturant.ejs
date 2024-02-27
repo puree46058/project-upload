@@ -220,21 +220,23 @@
                     <!-- Account -->
                     <div class="card-body">
                       <div class="d-flex align-items-start justify-content-center align-items-sm-center gap-4">
-                        <% if (img === 'NULL') {%>
+                        <% if (imgpro === 'NULL') {%>
                             <center><img src="/images/profileNon.png" alt="Nonprofile" style="height:  150px; width: 150px; border-radius: 50%;"></center>
                         <%}else{%>
-                            <center><img src="/uploads/profileRes/<%= img %>" alt="img" style="height:  150px; width: 150px; border-radius: 50%;"> </center>
+                            <center><img src="/uploads/profileRes/<%= imgpro %>" alt="img" style="height:  150px; width: 150px; border-radius: 50%;"> </center>
                         <% } %>
                         <br>
                         <center>ขนาดไฟล์ภาพไม่เกิน 10 mb</center>
-                        <center><input type="file"  name="Profile" required></center>
+                       
                       </div>
                     </div>
                     <hr class="my-0" />
                     <div class="card-body">
                       <form action="../updateResturant/<%= id %>" method="post" enctype="multipart/form-data">
                         <div class="row">
+                          <center><input type="file"  name="ProfileRes" required></center>
                           <div class="mb-3 col-md-6">
+                            
                             <label for="firstName" class="form-label">หมายเลขร้าน</label>
                             <input
                               class="form-control"
@@ -245,15 +247,15 @@
                           </div>
                           <div class="mb-3 col-md-6">
                             <label for="text" class="form-label">ชื่อร้านอาหาร</label>
-                            <input class="form-control" type="text" name="res_name" placeholder="ชื่อร้านอาหาร" required/>
+                            <input class="form-control" type="text" name="res_name" placeholder="ชื่อร้านอาหาร" value="<%=nameres%>" required/>
                           </div>
                           <div class="mb-3 col-md-6">
                             <label for="lastName" class="form-label">อีเมลร้านอาหาร</label>
-                            <input class="form-control" type="email" name="res_email" placeholder="อีเมลร้านอาหาร" required/>
+                            <input class="form-control" type="email" name="res_email" placeholder="อีเมลร้านอาหาร" value="<%=Email%>" required/>
                           </div>
                           <div class="mb-3 col-md-6">
                             <label for="exampleFormControlTextarea1" class="form-label">เบอร์โทรร้านอาหาร</label>
-                            <input class="form-control" type="tel" name="res_phone" placeholder="เบอร์โทรร้านอาหาร" required/>
+                            <input class="form-control" type="tel" name="res_phone" placeholder="เบอร์โทรร้านอาหาร" value="<%=Phone%>" required/>
                           </div>
                           <div class="mb-3 col-md-6">
                             <label class="form-label">ที่อยู่</label>
@@ -281,19 +283,19 @@
                           </div>
                           <div class="mb-3 col-md-6">
                             <label for="text" class="form-label">ชื่อเจ้าของร้าน</label>
-                            <input class="form-control" type="text" placeholder="ชื่อเจ้าของร้าน" name="owner_name" required/>
+                            <input class="form-control" type="text" placeholder="ชื่อเจ้าของร้าน" name="owner_name" value="<%=Owner_Name%>" required/>
                           </div>
                           <div class="mb-3 col-md-6">
                             <label for="text" class="form-label">นามสกุลเจ้าของร้าน</label>
-                            <input class="form-control" type="text" placeholder="นามสกุลเจ้าของร้าน" name="owner_lname" required/>
+                            <input class="form-control" type="text" placeholder="นามสกุลเจ้าของร้าน" name="owner_lname" value="<%=Owner_Lname%>" required/>
                           </div>
                           <div class="mb-3 col-md-6">
                             <label for="text" class="form-label">อีเมลเจ้าของร้าน</label>
-                            <input class="form-control" type="email" placeholder="อีเมลเจ้าของร้าน" name="owner_email" required/>
+                            <input class="form-control" type="email" placeholder="อีเมลเจ้าของร้าน" name="owner_email" value="<%=Owner_Email%>" required/>
                           </div>
                           <div class="mb-3 col-md-6">
                             <label for="text" class="form-label">เบอร์โทรเจ้าของร้าน</label>
-                            <input class="form-control" type="text" placeholder="เบอร์โทร" name="owner_phone" required/>
+                            <input class="form-control" type="text" placeholder="เบอร์โทร" name="owner_phone" value="<%=Owner_Phone%>" required/>
                           </div>
                         </div>
                         <div class="mt-4 text-center">

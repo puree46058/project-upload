@@ -10,7 +10,7 @@ const fs = require('fs');
 const moment = require('moment');
 const { jsPDF } = require("jspdf");
 const autoTable = require("jspdf-autotable");
-const font = require("../public/Font/Sarabun-Regular-normal.js");
+const font = require("../public/Font/TH-Niramit-AS-Regular-pdf-normal.js");
 
 function isNotLogin(req, res, next) { //check session 
     if (!req.session.isLoggedIn) {
@@ -430,7 +430,7 @@ const maxSizeProfile = 10 * 1024 * 1024;
 
 let uploadProfile = multer({ storage: storageProfile, fileFilter: fileFilterProfile, limits: { fileSize: maxSizeProfile }, });
 // Post update User page
-router.post('/update/:id', uploadProfile.single('image'), (req, res, next) => {
+router.post('/update/:id', uploadProfile.single('Profile'), (req, res, next) => {
     let id = req.params.id;
     let username = req.body.username;
     let password = req.body.password;
@@ -439,7 +439,7 @@ router.post('/update/:id', uploadProfile.single('image'), (req, res, next) => {
     let email = req.body.email;
     let phone = req.body.phonenumber;
     let profile = req.file.filename;
-    let level = 'U';
+    
     let errors = false;
 
     if (username.length === 0 || password.length === 0 || fname.length === 0 || lname.length === 0 || email.length === 0) {
@@ -467,7 +467,6 @@ router.post('/update/:id', uploadProfile.single('image'), (req, res, next) => {
                 email: email,
                 fname: fname,
                 lname: lname,
-                level: level,
                 Profile: 'NULL',
                 phone: phone,
                 Profile: profile
@@ -662,9 +661,15 @@ router.get('/editResturant/(:id_res)', isNotLogin, (req, res, next) => {
             res.render('AdminResturant/editResturant', {
                 nameres:rows[0].res_name,
                 id: rows[0].id_res,
-                img: rows[0].res_profile,
+                imgpro: rows[0].res_profile,
                 cer: rows[0].res_certificate,
                 id_pro: rows[0].id_pro,
+                Email: rows[0].res_email,
+                Phone: rows[0].res_phone,
+                Owner_Name: rows[0].res_owner_name,
+                Owner_Lname: rows[0].res_owner_lnam,
+                Owner_Email: rows[0].res_owner_email,
+                Owner_Phone: rows[0].res_owner_phone,
                 img: req.session.profile,
                 name: req.session.fname
             })
@@ -708,7 +713,7 @@ let uploadProfileResturant = multer({ storage: storageResturant, fileFilter: fil
 
 
 // Post update User page
-router.post('/updateResturant/:id_res', uploadProfileResturant.single('Profile'), (req, res, next) => {
+router.post('/updateResturant/:id_res', uploadProfileResturant.single('ProfileRes'), (req, res, next) => {
 
     let Name = req.body.res_name;
     let Email = req.body.res_email;
@@ -1525,9 +1530,9 @@ router.get('/ReportPoint', function (req, res, next) {
                 // สร้าง definition ของไฟล์ PDF
                 let width = doc.internal.pageSize.getWidth();
                 
-                doc.setFontSize(18);
+                doc.setFontSize(20);
                 doc.text("การเติมพอยต์ของวันที่ "+startDateForpdf+" ถึงวันที่ "+endDateForpdf, width / 2, 10, { align: 'center' });
-                doc.setFontSize(12);
+                doc.setFontSize(18);
                 let dataTableForPDF = {
                   startY: 20,
                   head: [['เลขการโอน', 'ชื่อผู้ใช้', 'พอยต์ที่เติม', 'ธนาคาร','สถานะการเติม', 'วันที่']],
@@ -1539,13 +1544,14 @@ router.get('/ReportPoint', function (req, res, next) {
                     row.Status,
                     row.Date
                 ]),
-                  styles: { font: 'MyFont' },
+                  styles: { font: 'MyFont',fontSize: 16 }
+                  
                 }
           
                 doc.autoTable(dataTableForPDF);
                 let totalPriceTextY = doc.autoTable.previous.finalY + 10; //ระยะห่างระหว่าง dataTable กับ ยอดรวม
                 doc.text("ยอดรวมสุทธิ : " + formattedTotal, 190, totalPriceTextY, { align: 'right' });
-                doc.setFontSize(10);
+                doc.setFontSize(14);
                 doc.text('© สะดวกจอง. All Rights Reserved. By มหาวิทยาลัยเทคโนโลยีราชมงคลล้านนา 128 ถ.ห้วยแก้ว ต.ช้างเผือก อ.เมือง จ.เชียงใหม่ 50300', 15, doc.internal.pageSize.getHeight() - 10, { align: 'left' }); //footer 
                 doc.setLineWidth(2);
                 doc.save("./public/pdf/ReportPoint.pdf");

@@ -230,9 +230,9 @@
                           <% for(let i = 0; i < data.length; i++) { %>
                             <tr>
                             <% if (data[i].Profile === 'NULL') {%>
-                              <td><img src="../images/profileNon.png" alt="img" style=" width: 90px; border-radius: 50%;"></td>
+                              <td><img src="../images/profileNon.png" alt="img" style=" width: 90px; height: 90px; border-radius: 50%;"></td>
                               <%}else{%>
-                                <td><img src="../uploads/profile/<%=data[i].Profile %>" alt="" style="width: 90px; border-radius: 50px;"></td>
+                                <td><img src="../uploads/profile/<%=data[i].Profile %>" alt="" style="width: 90px;height: 90px;  border-radius: 50px;"></td>
                               <% } %>
                               <td style="text-align: center;"><%=data[i].fname %></td>
                               <td style="text-align: center;">
