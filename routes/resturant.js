@@ -36,10 +36,21 @@ router.get('/', isNotLogin, (req, res, next) => {
   INNER JOIN coupon cp ON cu.coupon_id = cp.cu_id 
   INNER JOIN user u ON cu.user_id = u.id_user 
   INNER JOIN promotion pro ON cp.id_pro_coupon = pro.id_pro 
-  WHERE cu.status='Book' AND pro.id_restb=?
+  WHERE  pro.id_restb=?
   ORDER BY cu.datebook ASC`;
 
   dbConnection.query(querytime,[id],(err, result2) => {
+    if (err) {
+      req.flash('error', 'ไปหน้าร้านอาหารไม่สำเร็จ');
+      res.render('Resturant', { 
+        data: '',
+        data2:'',
+        name: req.session.nameResturant, 
+        role: req.session.level, 
+        img: req.session.profileResturant,
+        point:req.session.point
+      });
+    } else {
     dbConnection.query(query,[id],(err, result) => {
       if (err) {
         req.flash('error', 'ไปหน้าร้านอาหารไม่สำเร็จ');
@@ -62,6 +73,7 @@ router.get('/', isNotLogin, (req, res, next) => {
         });
       }
     });
+  }
   });
   
 });
@@ -81,10 +93,21 @@ router.get('/back', isNotLogin, (req, res, next) => {
   INNER JOIN coupon cp ON cu.coupon_id = cp.cu_id 
   INNER JOIN user u ON cu.user_id = u.id_user 
   INNER JOIN promotion pro ON cp.id_pro_coupon = pro.id_pro 
-  WHERE cu.status='Book' AND pro.id_restb=?
+  WHERE  pro.id_restb=?
   ORDER BY cu.datebook ASC`;
 
   dbConnection.query(querytime,[id], (err, result2) => {
+    if (err) {
+      req.flash('error', 'ไปหน้าร้านอาหารไม่สำเร็จ');
+      res.render('Resturant', { 
+        data: '',
+        data2:'',
+        name: req.session.nameResturant, 
+        role: req.session.level, 
+        img: req.session.profileResturant,
+        point:req.session.point
+      });
+    } else {
     dbConnection.query(query, [id],(err, result) => {
       if (err) {
         req.flash('error', 'ไปหน้าร้านอาหารไม่สำเร็จ');
@@ -107,6 +130,7 @@ router.get('/back', isNotLogin, (req, res, next) => {
         });
       }
     });
+  }
   });
 });
 
@@ -117,7 +141,7 @@ router.get('/calendar', isNotLogin, (req, res) => {
   INNER JOIN coupon cp ON cu.coupon_id = cp.cu_id 
   INNER JOIN user u ON cu.user_id = u.id_user 
   INNER JOIN restaurants res ON cp.id_res_coupon = res.id_res 
-  WHERE cu.status='Book' AND cp.id_res_coupon=?
+  WHERE cp.id_res_coupon=?
   ORDER BY datebook DESC `;
   dbConnection.query(query,[id], (err, result) => {
     if(err){
@@ -819,7 +843,11 @@ router.get('/openPromotion/(:id_pro)', isNotLogin, (req, res, next) => {
       req.flash("error", "แก้ไขสถานะโปรโมชันไม่สำเร็จ");
       res.redirect('/resturant/tablePromotion');
     } else { 
-      dbConnection.query(' UPDATE coupon SET status = "Order" WHERE id_pro_coupon= ?', [id], (err,rows) => {
+      let statuscoupon ={
+        status : "Order",
+        cu_amountcanused:1
+      }
+      dbConnection.query(' UPDATE coupon SET status ? WHERE id_pro_coupon= ?', [statuscoupon,id], (err,rows) => {
       if (err) {
         console.log(err);
         req.flash('success', 'แก้ไขสถานะคูปองไม่สำเร็จ');
@@ -1022,7 +1050,7 @@ router.post("/addpoint", uploadPoint.single("point"), (req, res, next) => {
 /*-------------------------------------------------------ListCustomer---------------------------------------------*/
 router.get('/ListCustomer', (req, res, next) => {
   let idRes= req.session.id_res;
-    dbConnection.query('SELECT coupon.*,user.*,coupon_user.* FROM coupon JOIN user ON coupon.id_user = user.id_user  JOIN coupon_user ON coupon.cu_id = coupon_user.coupon_id WHERE coupon.status = "Book" AND coupon.id_res_coupon =?',[idRes],(error,userdata) => {
+  dbConnection.query('SELECT coupon.*,user.*,coupon_user.* FROM coupon JOIN user ON coupon.id_user = user.id_user  JOIN coupon_user ON coupon.cu_id = coupon_user.coupon_id WHERE coupon.status = "Book" AND coupon.id_res_coupon =?',[idRes],(error,userdata) => {
       if (error) {
         req.flash("error", 'ไม่สามารถแสดงรายชื่อลูกค้าที่จองได้');
         res.redirect('/resturant/back');
@@ -1048,7 +1076,7 @@ router.get('/ListCustomer', (req, res, next) => {
 //search customer
 router.post('/search', (req, res, next) => {
   const query = req.body.searchcode;
-  const sql =`SELECT coupon.*,user.*,coupon_user.* FROM coupon JOIN user ON coupon.id_user = user.id_user  JOIN coupon_user ON coupon.cu_id = coupon_user.coupon_id WHERE coupon.cu_code LIKE ?`;
+  const sql =`SELECT coupon.*,user.*,coupon_user.* FROM coupon JOIN user ON coupon.id_user = user.id_user  JOIN coupon_user ON coupon.cu_id = coupon_user.coupon_id WHERE coupon.status = 'Book' AND coupon.cu_code LIKE ?`;
     dbConnection.query(sql,['%'+ query + '%'],(error,userdata) => {
       if (error) {
         req.flash("error", 'ไม่สามารถแสดงรายชื่อลูกค้าที่จองได้');
@@ -1101,14 +1129,14 @@ router.get('/ConfirmBook/(:id_user)/(:cu_id)', (req, res, next) => {
 router.get('/CancelBook/(:id_user)/(:cu_id)', (req, res, next) => {
   let idUser= req.params.id_user;
   let couponid=req.params.cu_id;
-  dbConnection.query('UPDATE coupon_user SET status="Cancel" WHERE coupon_id=? AND user_id=?',[couponid,idUser],(error, results) => {
+  dbConnection.query('DELETE FROM coupon_user WHERE coupon_id=? AND user_id=?',[couponid,idUser],(error, results) => {
     if (error) {
       req.flash("error", 'ไม่สามารถแก้ไขสถานะคูปองที่จองได้');
       res.redirect('/resturant/back');
     } else {
       let detailCancel={
-        status:"Cancel",
-        cu_amountcanused:0
+        status:"Order",
+        cu_amountcanused:1
       }
       dbConnection.query('UPDATE coupon SET ? WHERE cu_id=? AND id_user=?',[detailCancel,couponid,idUser],(error, results1) => {
      

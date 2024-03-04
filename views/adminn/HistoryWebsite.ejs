@@ -219,20 +219,20 @@
                   <table class="table">
                     <thead>
                       <tr>
-                        <th style="text-align: center;">ภาพ</th>
-                        <th style="text-align: center;">รหัสผู้ใช้งาน</th>
-                        <th style="text-align: center;">ชื่อผู้ใช้งาน</th>
-                        <th style="text-align: center;">อีเมล</th>
-                        <th style="text-align: center;">จำนวนแต้มที่เติม</th>
-                        <th style="text-align: center;">ธนาคาร</th>
-                        <th style="text-align: center;">สถานะการเติมแต้ม</th>
+                        <th style="text-align: center; font-size: 18px;">ภาพ</th>
+                        <th style="text-align: center; font-size: 18px;">รหัสผู้ใช้งาน</th>
+                        <th style="text-align: center; font-size: 18px;">ชื่อผู้ใช้งาน</th>
+                        <th style="text-align: center; font-size: 18px;">อีเมล</th>
+                        <th style="text-align: center; font-size: 18px;">จำนวนแต้มที่เติม</th>
+                        <th style="text-align: center; font-size: 18px;">ธนาคาร</th>
+                        <th style="text-align: center; font-size: 18px;">สถานะการเติมแต้ม</th>
                       </tr>
                     </thead>
                     <% if(data.length) { %>
                       <% for(let i = 0; i < data.length; i++) { %>
                     <tbody class="table-border-bottom-0">
                       <tr>
-                        <td style="text-align: center;"><img src="../uploads/point/<%=data[i].point_img%>" alt="img" style="height: 40px; width: 40px; border-radius: 50%;"></td>
+                        <td style="text-align: center;"><img src="../uploads/point/<%=data[i].point_img%>" alt="img" style="height: 150px; width: 150px; border-radius: 50%;"></td>
                         <td style="text-align: center;"><%=data[i].user_id%></td>
                         <td style="text-align: center;"><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong><%=data[i].name%></strong></td>
                        

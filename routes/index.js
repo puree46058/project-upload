@@ -351,8 +351,6 @@ router.get('/check-username/:username', (req, res) => {
       });
     }
   });
-
- 
 });
 
 /* Post Register listing. */
@@ -611,7 +609,7 @@ router.post('/Login', (req, res, next) => {
                   INNER JOIN coupon cp ON cu.coupon_id = cp.cu_id 
                   INNER JOIN user u ON cu.user_id = u.id_user 
                   INNER JOIN promotion pro ON cp.id_pro_coupon = pro.id_pro 
-                  WHERE cu.status='Book' AND pro.id_restb=?
+                  WHERE  pro.id_restb=?
                   ORDER BY cu.datebook ASC`;
         
         
@@ -631,7 +629,7 @@ router.post('/Login', (req, res, next) => {
                             errors = true;
                             res.render('Resturant', {
                               data: rows,
-                              datatime:rowtime,
+                              data2:rowtime,
                               name: req.session.nameResturant,
                               role: role,
                               img: req.session.profileResturant,
@@ -650,7 +648,7 @@ router.post('/Login', (req, res, next) => {
                             errors = true;
                             res.render('Resturant', {
                               data: rows,
-                              datatime:rowtime,
+                              data2:rowtime,
                               name: req.session.nameResturant,
                               role: role,
                               point:point,

@@ -230,36 +230,34 @@
                       <a href="../resturant/ListCustomer"><h5 class="card-header">รายชื่อลูกค้าที่มาร้าน</h5></a>
                     </div>
                     <div class="col"></div>
-                    <div class="col"></div>
-                    <div class="col"></div>
-                    <div class="col"></div>
-                    <div class="col col-md-3">
-                        <form id="searchForm" action="/resturant/search" method="POST"> <!-- ตั้งค่า action และ method ของฟอร์ม -->
-                            <input type="search" class="form-control rounded my-3" name="searchcode" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
-                        </form>
-                    </div>
-                    <div class="col right">
-                        <button type="submit" form="searchForm" class="btn btn-primary my-3" data-mdb-ripple-init>ค้นหา</button>
-                    </div>
+                    <div class="col col-md-3 my-4"><h5 style="text-align: right;">หาจากรหัสลูกค้า</h5></div>
+                  <div class="col col-md-3">
+                    <form id="searchForm" action="/resturant/search" method="POST"> <!-- ตั้งค่า action และ method ของฟอร์ม -->
+                        <input type="search" class="form-control rounded my-3" name="searchcode" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                    </form>
+                </div>
+                <div class="col right">
+                    <button type="submit" form="searchForm" class="btn btn-primary my-3" data-mdb-ripple-init>ค้นหา</button>
+                </div>
                   </div>
                 <div class="table-responsive text-nowrap">
                   <table class="table">
                     <thead>
                       <tr>
                         <th style="opacity: 0;">ภาพโปรไฟล์ลูกค้า</th>
-                        <th style="padding-left: 20px;">ชื่อคูปอง</th>
-                        <th style="padding-left: 27px;">ชื่อลูกค้า</th>
-                        <th>นามสกุลลูกค้า</th>
-                        <th>เบอร์โทรศัพท์</th>
-                        <th>วันที่จะมา</th>
-                        <th>เวลาที่จะมา</th>
-                        <th>รหัสของลูกค้า</th>
-                        <th><center>การจัดการ</center></th>
+                        <th style="padding-left: 20px; font-size: 18px;">ชื่อคูปอง</th>
+                        <th style="padding-left: 27px; font-size: 18px;">ชื่อลูกค้า</th>
+                        <th style="font-size: 18px;">นามสกุลลูกค้า</th>
+                        <th style="font-size: 18px;">เบอร์โทรศัพท์</th>
+                        <th style="font-size: 18px;">วันที่จะมา</th>
+                        <th style="font-size: 18px;">เวลาที่จะมา</th>
+                        <th style="font-size: 18px;">รหัสคูปอง</th>
+                        <th style="font-size: 18px;"><center>การจัดการ</center></th>
                       </tr>
                     </thead>
                     
                     <tbody class="table-border-bottom-0">
-                    <% if(dataUser.length) { %>
+                    <% if(dataUser.length > 0) { %>
                         <% for(let i = 0; i < dataUser.length; i++) { %>
                       <tr>
                         <td><% if (dataUser[i].Profile === 'NULL') {%>

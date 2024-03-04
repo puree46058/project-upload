@@ -399,14 +399,19 @@ const fileFilterProfile = function (req, file, cb) {
   // Set the filetypes, it is optional
   var filetypes = /jpeg|jpg|png/;
   var mimetype = filetypes.test(file.mimetype);
-
   var extname = filetypes.test(path.extname(file.originalname).toLowerCase());
 
   if (mimetype && extname) {
+    // Check file size
+    if (file.size > maxSizeProfile) {
+      req.fileValidationError = "ขนาดของไฟล์เกิน 10 MB";
+      return cb(new Error(req.fileValidationError));
+    }
     return cb(null, true);
+  } else {
+    req.fileValidationError = "รองรับเฉพาะไฟล์ jpeg, jpg หรือ png เท่านั้น";
+    return cb(new Error(req.fileValidationError));
   }
-
-  cb(new Error("ไม่รองรับไฟล์ " + "รองรับเฉพาะไฟล์- " + filetypes));
 };
 
 // ภาพไม่เกิน 1 MB
@@ -418,8 +423,15 @@ let uploadProfile = multer({
   limits: { fileSize: maxSizeProfile },
 });
 
+
 /* Post RegisterResturant listing. */
 router.post("/update", uploadProfile.single("Profile"), (req, res, next) => {
+
+  if (req.fileValidationError) {
+    req.flash("error",  "โปรดเลือกไฟล์รูปภาพ");
+    return res.redirect("/users/back");
+  }
+
   let Name = req.body.name;
   let Lname = req.body.lastname;
   let phone = req.body.phonenumber;
@@ -437,6 +449,10 @@ router.post("/update", uploadProfile.single("Profile"), (req, res, next) => {
   };
 
   let id = req.session.id_user;
+
+
+
+  
   dbConnection.query(
     "UPDATE user SET  ? WHERE id_user = ?",[updateProfileUser,id],
     (error, rows) => {

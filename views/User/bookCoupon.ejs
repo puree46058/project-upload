@@ -99,7 +99,7 @@
                                       <% if ( data[i].img_pro === 'NULL') {%>
                                         <img src="../images/noimg.png" alt="No Pic" style="height: 120px; width: 120px; border-radius: 50%; margin: 0; padding: 0;">
                                         <%}else{%>
-                                        <img src="../uploads/resturantimg/<%= data[i].img_pro %>" alt="img" style="height: 120px; width: 120px; border-radius: 50%;margin: 0; padding: 0;">
+                                        <a href="/users/Detail_promotion/<%=data[i].id_pro_coupon%>"><img src="../uploads/resturantimg/<%= data[i].img_pro %>" alt="img" style="height: 120px; width: 120px; border-radius: 50%;margin: 0; padding: 0;"></a>
                                       <% } %>
                                       
                                     </td>

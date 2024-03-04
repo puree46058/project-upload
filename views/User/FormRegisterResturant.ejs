@@ -95,7 +95,7 @@ style="box-shadow: 0px 4px 9px 4px rgba(0, 0, 0, 0.25);
                     </div>
                     <div class="mb-3 col-md-6">
                       <label>เบอร์โทรร้านอาหาร</label>
-                      <input type="tel" class="form-control w-100" id="phone" name="res_phone" placeholder="เบอร์โทรร้านอาหาร" required>
+                      <input type="tel" class="form-control w-100" id="phone" name="res_phone" placeholder="เบอร์โทรร้านอาหาร" maxlength="10" required>
                       <span id="phoneerror" style="color: red;"></span>
                     </div>
                     <div class="mb-3 col-md-6">
@@ -148,10 +148,11 @@ style="box-shadow: 0px 4px 9px 4px rgba(0, 0, 0, 0.25);
                     </div>
                     <div class="mb-3 col-md-6">
                       <label>เบอร์โทรเจ้าของร้าน</label>
-                      <input type="tel" class="form-control w-100" name="owner_phone" placeholder="เบอร์โทรเจ้าของร้าน" required>
+                      <input type="tel" class="form-control w-100" name="owner_phone" placeholder="เบอร์โทรเจ้าของร้าน" maxlength="10" required>
                     </div>
                     <div class="mb-3 col-md-6">
-                      <label>ใบประกอบกิจการ <br>*ขนาดไฟล์ภาพไม่เกิน 10 mb*</label>
+                  
+                   <label>ใบประกอบกิจการ <br>*ขนาดไฟล์ภาพไม่เกิน 10 mb* <br>*รองรับเฉพาะไฟล์ภาพ PNG JPG JPEG*</label>
                       
                       <input type="file"  name="image" class="mt-1" required>
                     </div>

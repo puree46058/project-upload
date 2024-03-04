@@ -106,6 +106,30 @@ router.get('/AdminUser', isNotLogin, (req, res, next) => {
 
     })
 })
+//searchUser
+router.post('/searchUser', (req, res, next) => {
+    const query = req.body.searchUser;
+    
+    const sql =`SELECT * FROM user WHERE fname LIKE ?`;
+      dbConnection.query(sql,['%'+ query + '%'],(error,result) => {
+        if (error) {
+          req.flash("error", 'ไม่สามารถแสดงโปรโมชันได้');
+          res.redirect('/admin/table');
+        } else if(result.length<=0){
+          res.render('AdminUser/searchUser',{
+            data:'',
+            img: req.session.profile, 
+            name: req.session.fname
+          });
+        }else {
+          res.render('AdminUser/searchUser',{
+            data:result,
+            img: req.session.profile, 
+            name: req.session.fname
+          });
+        }
+      });
+  });
 
 //display AdminResturant
 router.get('/AdminResturant', isNotLogin, (req, res, next) => {
@@ -120,6 +144,30 @@ router.get('/AdminResturant', isNotLogin, (req, res, next) => {
 
     })
 })
+//searchResturant 
+router.post('/searchResturant', (req, res, next) => {
+    const query = req.body.searchResturant;
+    
+    const sql =`SELECT * FROM restaurants WHERE res_name LIKE ?`;
+      dbConnection.query(sql,['%'+ query + '%'],(error,result) => {
+        if (error) {
+          req.flash("error", 'ไม่สามารถแสดงโปรโมชันได้');
+          res.redirect('/admin/tableResturant');
+        } else if(result.length<=0){
+          res.render('AdminResturant/searchResturant',{
+            data:'',
+            img: req.session.profile, 
+            name: req.session.fname
+          });
+        }else {
+          res.render('AdminResturant/searchResturant',{
+            data:result,
+            img: req.session.profile, 
+            name: req.session.fname
+          });
+        }
+      });
+  });
 
 /*----------------------------------------------ส่วนเช็คสถานะร้านอาหาร---------------------------------------------------------*/
 
@@ -386,12 +434,13 @@ router.get('/edit/(:id)', isNotLogin, (req, res, next) => {
                 title: 'Edit user',
                 id: rows[0].id,
                 username: rows[0].username,
-                password: rows[0].password,
+                address: rows[0].address,
                 fname: rows[0].fname,
                 lname: rows[0].lname,
                 email: rows[0].email,
-                img: rows[0].Profile,
+                imguser: rows[0].Profile,
                 phone: rows[0].phone,
+                img: req.session.profile, 
                 name: req.session.fname
             })
         }
@@ -454,6 +503,7 @@ router.post('/update/:id', uploadProfile.single('Profile'), (req, res, next) => 
             email: email,
             phone: phone,
             Profile: profile,
+            img: req.session.profile, 
             name: req.session.fname
         })
     }
@@ -482,7 +532,8 @@ router.post('/update/:id', uploadProfile.single('Profile'), (req, res, next) => 
                         lname: form_data.lname,
                         email: form_data.email,
                         phone: form_data.phone,
-                        img: form_data.Profile,
+                        imguser: form_data.Profile,
+                        img: req.session.profile, 
                         name: req.session.fname
                     });
                 } else {
@@ -507,23 +558,33 @@ router.get('/delete/(:id)', isNotLogin, (req, res, next) => {
 
     dbConnection.query('DELETE FROM user WHERE id_user = ?',[id], (err, result) => {
         if (err) {
-            req.flash('error', err),
+            req.flash('error', 'ลบไม่สำเร็จ'),
                 res.render('AdminUser', { 
-                    data: result,
+                    data: '',
                     img: req.session.profile,
                     name: req.session.fname
                  });
         } else {
-            
-            dbConnection.query('SELECT * FROM user ORDER BY id ', (err, rows) => {
+            dbConnection.query('DELETE FROM restaurants WHERE id_usertb = ?',[id], (err, result) => {
                 if (err) {
-                    req.flash('error', err);
-                    res.redirect('/admin/table');
+                    req.flash('error', 'ลบไม่สำเร็จ'),
+                        res.render('AdminUser', { 
+                            data: '',
+                            img: req.session.profile,
+                            name: req.session.fname
+                         });
                 } else {
-                    req.flash('success', 'ลบไอดีผู้ใช้ = ' + id+'สำเร็จ');
-                    res.redirect('/admin/table');
+                dbConnection.query('SELECT * FROM user ORDER BY id ', (err, rows) => {
+                    if (err) {
+                        req.flash('error', 'ลบไม่สำเร็จ');
+                        res.redirect('/admin/table');
+                    } else {
+                        req.flash('success', 'ลบไอดีผู้ใช้ = ' + id+'สำเร็จ');
+                        res.redirect('/admin/table');
+                    }
+                })
                 }
-            })
+             })
         }
     })
 })
@@ -848,13 +909,13 @@ router.get('/deleteResturant/(:id_res)', isNotLogin, (req, res, next) => {
                     error = true;
                     req.flash('error', error);
                 } else {
-                    req.flash('success', 'User Delete successfully! ID = ' + id);
+                  
                     dbConnection.query('SELECT * FROM restaurants ORDER BY res_id ', (err, rows) => {
                         if (err) {
                             req.flash('error', err);
                             res.redirect('/admin/tableResturant');
                         } else {
-                            req.flash('success', 'ลบสำเร็จ !');
+                            req.flash('success', 'ลบสำเร็จร้านอาหาร !');
                             res.redirect('/admin/tableResturant');
 
                         }
@@ -869,9 +930,26 @@ router.get('/deleteResturant/(:id_res)', isNotLogin, (req, res, next) => {
 
         if (err) {
             req.flash('error', err),
-                res.render('AdminResturant', { data: result });
+            res.redirect('/AdminResturant');
         } else {
-            req.flash('success', 'ลบสำเร็จ !');
+            dbConnection.query('DELETE FROM promotion WHERE id_restb = ?' ,[id], (err, result) => {
+
+                if (err) {
+                    req.flash('error', err),
+                    res.redirect('/AdminResturant');
+                } else {
+                    dbConnection.query('DELETE FROM coupon WHERE id_res_coupon = ?' ,[id], (err, result) => {
+
+                        if (err) {
+                            req.flash('error', err),
+                            res.redirect('/AdminResturant');
+                        } else {
+                            req.flash('success', 'ลบสำเร็จ !');
+                        }
+                    })
+                }
+            })
+        
         }
     })
 

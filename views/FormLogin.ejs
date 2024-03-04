@@ -52,14 +52,14 @@
       <% } %>
         <form class="login-form" action="/Login" method="post">
           <div class="form-group">
-            <label for="username">ชื่อผู้ใช้งาน</label>
-            <input type="text" placeholder="กรุณาใส่รหัสสมาชิก" id="username" name="username" style="width: 530px;" onkeyup="validateUsername()" required>
+            <label for="username">ชื่อผู้ใช้งาน</label><br>
+            <input type="text" class="form-control" placeholder="กรุณาใส่รหัสสมาชิก" id="username" name="username" style="width: 100%" onkeyup="validateUsername()" required>
             <span id="usernameError" style="color: red; font-size: 16px;"></span>
             <p id="errorusername" style="color: red; font-size: 16px;" ></p>
           </div>
           <div class="form-group">
-            <label for="psw">รหัสผ่าน</label>
-            <input type="password" placeholder="กรุณาใส่รหัสผ่าน" name="psw" style="width: 530px;" required>
+            <label for="psw">รหัสผ่าน</label><br>
+            <input type="password" class="form-control" placeholder="กรุณาใส่รหัสผ่าน" name="psw" style="width: 100%" required>
           </div>
           <!-- <div class="saveid">
             <input type="checkbox" class="mt-1">
@@ -68,7 +68,7 @@
          
           <br>
           <div class="button">
-            <center><button type="submit" class="btn btn-primary mr-4"><b>เข้าสู่ระบบ</b></button></center>
+            <center><button type="submit" class="btn btn-primary mr-4" style="width: 100%"><b>เข้าสู่ระบบ</b></button></center>
           </div>
           <div class="footerlogin">
             <center><p>คุณมีบัญชีแล้วหรือไม่ กดคลิ๊กที่นี่ > <a href="/FormRegister" style="color: black; font-weight: 900;">สมัครสมาชิก</a> < </p></center>

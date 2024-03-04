@@ -68,15 +68,13 @@
 
                 <div class="col-lg-6 col-md-6">
                     <div class="product__details__pic">
-                      <a href="#">
-                        <% if ( picPromotion === 'NULL') {%>
-                          <center><img src="../images/profileNon.png" alt="NOimg"  style="height: 300px; width: 300px; "></center>
-                        <%}else{%>
-                          <center><img src="/uploads/resturantimg/<%= picPromotion %> " 
-                            alt="img" 
-                            style="height: 450px; width: 100%; border-radius: 20px; box-shadow: 6px -4px 5px 3px rgba(0, 0, 0, 0.20);"></center>
-                        <% } %>
-                      </a>
+                      <% if ( picPromotion === 'NULL') {%>
+                        <center><img src="../images/profileNon.png" alt="NOimg"  style="height: 300px; width: 300px; "></center>
+                      <%}else{%>
+                        <center><img src="/uploads/resturantimg/<%= picPromotion %> " 
+                          alt="img" 
+                          style="height: 450px; width: 100%; border-radius: 20px; box-shadow: 6px -4px 5px 3px rgba(0, 0, 0, 0.20);"></center>
+                      <% } %>
                     </div>
                 </div>
                 
@@ -164,21 +162,19 @@
                 <div class="col-lg-3 col-md-4 col-sm-6">
                     <div class="product__item">
                         <div class="product__item__pic set-bg">
-                          <a href="#">
-                            <% if ( dataCoupon[i].img_pro === 'NULL') {%>
-                              <center><img src="../images/profileNon.png" alt="NOimg"  style="height: 300px; width: 300px; "></center>
-                            <%}else{%>
-                              <center><img src="/uploads/resturantimg/<%= dataCoupon[i].img_pro %> " 
-                                alt="img" 
-                                style="
-                                       width: 100%;  
-                                       border-radius: 20px; 
-                                       box-shadow: 6px -4px 5px 3px rgba(0, 0, 0, 0.20);
-                                       background-position: center;
-                                       background-repeat: no-repeat;
-                                       background-size: contain;"></center>
-                            <% } %>
-                          </a>
+                          <% if ( dataCoupon[i].img_pro === 'NULL') {%>
+                            <center><img src="../images/profileNon.png" alt="NOimg"  style="height: 300px; width: 300px; "></center>
+                          <%}else{%>
+                            <center><img src="/uploads/resturantimg/<%= dataCoupon[i].img_pro %> " 
+                              alt="img" 
+                              style="
+                                     width: 100%;  
+                                     border-radius: 20px; 
+                                     box-shadow: 6px -4px 5px 3px rgba(0, 0, 0, 0.20);
+                                     background-position: center;
+                                     background-repeat: no-repeat;
+                                     background-size: contain;"></center>
+                          <% } %>
                         </div>
                         <div class="product__item__text">
                           <h6><a href="/users/cart_add/<%= dataCoupon[i].cu_id %>" class="text-primary">จองคูปอง</a></h6>

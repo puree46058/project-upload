@@ -226,13 +226,14 @@
                       <form action="../update/<%= id %>" method="post" enctype="multipart/form-data">
                         <div class="card-body">
                             <div class="d-flex align-items-start justify-content-center align-items-sm-center gap-4">
-                              <% if ( img === 'NULL') {%>
+                              <% if ( imguser === 'NULL') {%>
                                   <center><img src="/images/profileNon.png" alt="Non Profile" style="height: 150px; width: 150px; border-radius: 50%; margin: 0; padding: 0;" required></center>
                                   <%}else{%>
-                                  <center><img src="/uploads/profile/<%= img %>" alt="img" style="height: 150px; width: 150px; border-radius: 50%;margin: 0; padding: 0;" required></center>
+                                  <center><img src="/uploads/profile/<%= imguser %>" alt="img" style="height: 150px; width: 150px; border-radius: 50%;margin: 0; padding: 0;" required></center>
                                 <% } %>
                               <div class="button-wrapper">
                                   <input type="file"  name="Profile" style="width: 200px;" required>
+                                  <center>ขนาดไฟล์ภาพไม่เกิน 10 mb <br> รองรับเฉพาะไฟล์ภาพ PNG JPG JPEG</center>
                               </div>
                             </div>
                           </div>
@@ -248,11 +249,18 @@
                                 required
                               />
                             </div>
-                            <div class="mb-3 col-md-6">
-                              <label for="password" class="form-label">รหัสผ่าน</label>
-                              <input class="form-control" type="password" name="password" value="<%= password %>" required/>
+                          
+                            <% if (address === 'NULL') {%>
+                              <div class="mb-3 col-md-6">
+                                <label for="" class="form-label">ที่อยู่</label>
+                              <textarea name="address" id="address" class="form-control w-100" style="width: 100%;" required>โปรดเพิ่มที่อยู่</textarea>
                             </div>
-  
+                            <%}else{%>
+                              <div class="mb-3 col-md-6">
+                                <label for="" class="form-label">ที่อยู่</label>
+                            <textarea name="address" id="address" class="form-control w-100" style="width: 100%;" required><%=address%></textarea>
+                              </div>
+                            <%}%>
                             <hr>
                             <div class="mb-3 col-md-6">
                               <label for="firstname" class="form-label">ชื่อจริง</label>

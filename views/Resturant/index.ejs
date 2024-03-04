@@ -286,26 +286,26 @@
                     </thead>
                     <tbody class="table-border-bottom-0">
                       
-                      <% if(data.length > 0) { %>
-                          <% for(let i = 0; i < data.length; i++) { %>
+                      <% if(data2.length > 0) { %>
+                          <% for(let i = 0; i < data2.length; i++) { %>
                             <tr>
-                            <% if (data[i].Profile === 'NULL') {%>
+                            <% if (data2[i].Profile === 'NULL') {%>
                               <td><img src="../images/profileNon.png" alt="img" style=" width: 90px; height: 90px;border-radius: 50%;"></td>
                               <%}else{%>
-                                <td><img src="../uploads/profile/<%=data[i].Profile %>" alt="" style=" width: 90px;height: 90px; border-radius: 50px;"></td>
+                                <td><img src="../uploads/profile/<%=data2[i].Profile %>" alt="" style=" width: 90px;height: 90px; border-radius: 50px;"></td>
                               <% } %>
-                              <td style="text-align: center;"><%=data[i].fname %></td>
+                              <td style="text-align: center;"><%=data2[i].fname %></td>
                               <td style="text-align: center;">
-                                <%= new Intl.DateTimeFormat('th-TH', { year: 'numeric', month: 'long', day: '2-digit'}).format(data[i].datebook) %>
+                                <%= new Intl.DateTimeFormat('th-TH', { year: 'numeric', month: 'long', day: '2-digit'}).format(data2[i].datebook) %>
                               </td>
-                              <td style="text-align: center;"><span><%=data[i].timebook %></span></td>
-                              <td style="text-align: center;"><span><%=data[i].name_pro_coupon%></span></td>
-                              <td style="text-align: center;"><span class="badge bg-label-success me-1"><strong><%=data[i].status%></strong></span></td>
+                              <td style="text-align: center;"><span><%=data2[i].timebook %></span></td>
+                              <td style="text-align: center;"><span><%=data2[i].name_pro_coupon%></span></td>
+                              <td style="text-align: center;"><span class="badge bg-label-success me-1"><strong><%=data2[i].status%></strong></span></td>
                             </tr>
-                            <% } %>
-                            <% } else {%>
+                          <% } %>
+                      <% } else {%>
                               <td style="text-align: center;" colspan="8"><span>ไม่มีชื่อลูกค้าที่จะมา</span></td>
-                            <% } %> 
+                      <% } %> 
                     
                     
                     </tbody>
