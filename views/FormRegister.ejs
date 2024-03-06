@@ -359,22 +359,16 @@
 
     function checkEmail() { //email
       var emailInput = document.getElementById("email").value;
-    
+      var emailError =  document.getElementById("emailError");
       var emailRegex = /[ก-๙]/;
     
-      if (emailInput.includes('@')) {
-        document.getElementById("emailError").textContent = ""; // ลบข้อความแสดงผลทิ้งหากมี @
-      } else {
-        document.getElementById("emailError").textContent = "โปรดกรอกอีเมล์ที่ถูกต้อง"; // แสดงข้อความเตือน
-      }
-
-     
-
       if (emailRegex.test(emailInput)) {
-        document.getElementById("emailError").textContent = "อีเมลไม่ถูกต้องหรือใช้ภาษาไทย";
+        emailError.textContent = "อีเมลไม่ถูกต้องหรือใช้ภาษาไทย";
       } else {
-        document.getElementById("emailError").textContent = "";
+        emailError.textContent = ""; // ลบข้อความแสดงผลทิ้ง
       }
+
+      
     }
 
     function validatePhone() { //phone

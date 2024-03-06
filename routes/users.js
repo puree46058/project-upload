@@ -979,7 +979,7 @@ router.get("/confirmCart",  (req, res, next) => {
 // รับ request ล้างตะกร้า
 router.get("/clear-cart", (req, res) => {
   delete req.session.promotion;
-  req.flash("message", "ในตะกร้าไม่มีคูปอง");
+  req.flash("message", "ลบโปรโมชันในตะกร้าทั้งหมดสำเร็จ");
   res.redirect("/users/back");
 });
 

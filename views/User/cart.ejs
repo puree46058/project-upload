@@ -89,7 +89,7 @@
                                       <a href="/users/Detail_promotion/<%= coupons[i].cu_id %>"><h5 class="ml-4"><%= coupons[i].name_pro_coupon %></h5></a>
                                     </td>
                                     <td class="shoping__cart__price">
-                                      <%= coupons[i].price_pro %>
+                                      <%= coupons[i].price_pro.toLocaleString('en-US') %>
                                     </td>
                                     <td class="shoping__cart__quantity">
                                         <%=coupons[i].type_pro_coupon%>
@@ -114,7 +114,7 @@
                     <div class="shoping__checkout">
                         <h5>รวมทั้งหมด</h5>
                         <ul>
-                            <li>แต้มที่ต้องชำระทั้งหมด <span style="font-size: 20px;"><%=totalprice%> แต้ม</span></li>
+                            <li>แต้มที่ต้องชำระทั้งหมด <span style="font-size: 20px;"><%=totalprice.toLocaleString('en-US')%> แต้ม</span></li>
                         </ul>
                         <hr>
 

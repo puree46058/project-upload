@@ -1589,7 +1589,7 @@ router.get('/ReportPoint', function (req, res, next) {
                 let data = results.map(row => ({ 
                   TranId: row.tran_id,
                   Username: row.username,
-                  Point: parseFloat(row.point_earn).toFixed(2),
+                  Point: parseFloat(row.point_earn).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
                   Bank: row.bank_name,
                   Status:row.status,
                   Date: moment(row.tran_date).locale('th').format('D MMMM YYYY')
@@ -1609,7 +1609,7 @@ router.get('/ReportPoint', function (req, res, next) {
                 let width = doc.internal.pageSize.getWidth();
                 
                 doc.setFontSize(20);
-                doc.text("การเติมพอยต์ของวันที่ "+startDateForpdf+" ถึงวันที่ "+endDateForpdf, width / 2, 10, { align: 'center' });
+                doc.text("การเติมพอยต์ตั้งแต่วันที่ "+startDateForpdf+" ถึงวันที่ "+endDateForpdf, width / 2, 10, { align: 'center' });
                 doc.setFontSize(18);
                 let dataTableForPDF = {
                   startY: 20,
@@ -1628,7 +1628,7 @@ router.get('/ReportPoint', function (req, res, next) {
           
                 doc.autoTable(dataTableForPDF);
                 let totalPriceTextY = doc.autoTable.previous.finalY + 10; //ระยะห่างระหว่าง dataTable กับ ยอดรวม
-                doc.text("ยอดรวมสุทธิ : " + formattedTotal, 190, totalPriceTextY, { align: 'right' });
+                doc.text("ยอดรวมสุทธิ : " + formattedTotal+" แต้ม", 190, totalPriceTextY, { align: 'right' });
                 doc.setFontSize(14);
                 doc.text('© สะดวกจอง. All Rights Reserved. By มหาวิทยาลัยเทคโนโลยีราชมงคลล้านนา 128 ถ.ห้วยแก้ว ต.ช้างเผือก อ.เมือง จ.เชียงใหม่ 50300', 15, doc.internal.pageSize.getHeight() - 10, { align: 'left' }); //footer 
                 doc.setLineWidth(2);

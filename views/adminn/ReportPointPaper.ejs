@@ -263,7 +263,7 @@
                           <tr>
                             <td style="text-align: center;"><%= pdf.tran_id %></td>
                             <td style="text-align: center;"><%= pdf.username %></td>    
-                            <td style="text-align: center;"><%= parseFloat(pdf.point_earn).toFixed(2) %></td>
+                            <td style="text-align: center;"><%= parseFloat(pdf.point_earn).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></td>
                             <td style="text-align: center;"><%= pdf.bank_name %></td>
                             <td style="text-align: center;"><%= pdf.status %></td>
                             <td style="text-align: center;"> <%= new Intl.DateTimeFormat('th-TH', { year: 'numeric', month: 'long', day: '2-digit'}).format(pdf.tran_date) %></td>
@@ -282,13 +282,8 @@
                   
                   <ul class="pagination mx-5 p-0" style="display: inline-block;">
                     <caption class="ms-4" style="align-items: center;"><b>รวมพอยต์ที่มีการเติมทั้งหมด : 
-                      <% 
-                      const PointEarnWithoutComma = totalPointEarn.replace(/,/g, '');
-                      const parsedPointEarn = parseFloat(PointEarnWithoutComma);
-                      const formattedPointEarn= isNaN(parsedPointEarn) ? "0000000.00" : parsedPointEarn.toFixed(2);
-                      const displayPointEarn= formattedPointEarn === "0000000.00" ? "0" : formattedPointEarn;
-                      %>
-                      <%= displayPointEarn%>  แต้ม</b></caption>
+                  
+                      <%= totalPointEarn.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })%>  แต้ม</b></caption>
                       
                   </ul>
                 </nav>

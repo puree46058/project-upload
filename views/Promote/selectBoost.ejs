@@ -150,7 +150,7 @@
                   class="btn btn-danger"
                   data-show-count="true"
                   style="height: 30px; padding-top: 3px; color: white; text-align: center;"
-                  ><%=point%><i class="bx bxs-parking" style="vertical-align: sub;"></i></a
+                  ><%=point.toLocaleString('en-US')%><i class="bx bxs-parking" style="vertical-align: sub;"></i></a
                 >
               </li>
              <!-- User -->
@@ -279,7 +279,7 @@
       const data = await response.json();
 
       if (data.exists) {
-        pointError.textContent = 'พอยต์ไม่พอในการโปรโมท';
+        pointError.textContent = 'พอยต์ไม่พอในการโปรโมท'; 
       } else {
         pointError.textContent = ' ';
       }

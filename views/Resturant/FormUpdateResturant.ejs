@@ -150,7 +150,7 @@
                   class="btn btn-danger"
                   data-show-count="true"
                   style="height: 30px; padding-top: 3px; color: white; text-align: center;"
-                  ><%=point%><i class="bx bxs-parking" style="vertical-align: sub;"></i></a
+                  ><%=point.toLocaleString('en-US')%><i class="bx bxs-parking" style="vertical-align: sub;"></i></a
                 >
               </li>
               <!-- User -->
@@ -243,11 +243,11 @@
                           </div>
                           <div class="mb-3 col-md-6">
                             <label for="text" class="form-label">ชื่อร้านอาหาร</label>
-                            <input class="form-control" type="text" placeholder="<%=nameres%>" name="res_name"/>
+                            <input class="form-control" type="text" value="<%=nameres%>" name="res_name" required/>
                           </div>
                           <div class="mb-3 col-md-6">
                             <label for="lastName" class="form-label">ชื่อเจ้าของร้าน</label>
-                            <input class="form-control" type="text" placeholder="<%=Owner_Name%>" name="owner_name" required/>
+                            <input class="form-control" type="text" value="<%=Owner_Name%>" name="owner_name" required/>
                           </div>
                           <div class="mb-3 col-md-6">
                             <label for="state" class="form-label">อีเมล์ร้านอาหาร</label>
@@ -255,7 +255,7 @@
                               <input
                                 class="form-control"
                                 type="email"
-                                placeholder="<%=email%>" name="res_email" required 
+                                value="<%=email%>" name="res_email" required 
                               />
                             </div>
                           </div>
@@ -264,7 +264,7 @@
                             <input
                               class="form-control"
                               type="text"
-                              placeholder="<%=Owner_Lname%>" name="owner_lname" required 
+                              value="<%=Owner_Lname%>" name="owner_lname" required 
                             />
                           </div>
                           <div class="mb-3 col-md-6">
@@ -273,7 +273,7 @@
                           </div>
                           <div class="mb-3 col-md-6">
                             <label for="password" class="form-label">อีเมลเจ้าของร้าน</label>
-                            <input type="email" class="form-control" placeholder="<%=Owner_Email%>" name="owner_email" required/>
+                            <input type="email" class="form-control" value="<%=Owner_Email%>" name="owner_email" required/>
                           </div>
                           
                           <div class="mb-3 col-md-6">
@@ -281,7 +281,7 @@
                             <input
                               type="tel"
                               class="form-control"
-                              placeholder="<%=phone%>" name="res_phone" maxlength="10"  required
+                              value="<%=phone%>" name="res_phone" maxlength="10"  required
                             />
                           </div>
                           <div class="mb-3 col-md-6">
@@ -290,7 +290,7 @@
                               <input
                                 class="form-control"
                                 type="tel"
-                                placeholder="<%=Owner_Phone%>" name="owner_phone" maxlength="10" required 
+                                value="<%=Owner_Phone%>" name="owner_phone" maxlength="10" required 
                               />
                             </div>
                           </div>

@@ -150,7 +150,7 @@
                 class="btn btn-danger"
                 data-show-count="true"
                 style="height: 30px; padding-top: 3px; color: white; text-align: center;"
-                ><%=point%><i class="bx bxs-parking" style="vertical-align: sub;"></i></a
+                ><%=point.toLocaleString('en-US')%><i class="bx bxs-parking" style="vertical-align: sub;"></i></a
               >
             </li>
              <!-- User -->
@@ -241,7 +241,13 @@
                               <td style="text-align: center;"><span><%=data[i].timebook%></span></td>
                               <td style="text-align: center;"><span><%=data[i].name_pro_coupon%></span></td>
                               
-                              <td style="text-align: center;"><span class="badge bg-label-success me-1"><strong><%=data[i].status%></strong></span></td>
+                              <td style="text-align: center;">
+                                <% if (data[i].status === 'Book') {%>
+                                <span class="badge bg-label-primary me-1"><strong><%=data[i].status%></strong></span>
+                                <%}else{%>
+                                <span class="badge bg-label-success me-1"><strong><%=data[i].status%></strong></span>
+                                <% } %>  
+                              </td>
                             </tr>
                             <% } %>  
                       <% } else {%>

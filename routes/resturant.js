@@ -1209,7 +1209,7 @@ router.post("/report", (req, res, next) => {
       let data = results.map(row => ({ 
         IDCoupon: row.coupon_id,
         PromotionName: row.name_pro_coupon,
-        CouponPrice: parseFloat(row.price_pro).toFixed(2),
+        CouponPrice: parseFloat(row.price_pro).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
         NameUser: row.fname,
         LastName: row.lname,
         Date: moment(row.datebook).locale('th').format('D MMMM YYYY'),
@@ -1229,7 +1229,7 @@ router.post("/report", (req, res, next) => {
       // สร้าง definition ของไฟล์ PDF
       let width = doc.internal.pageSize.getWidth();
       doc.setFontSize(20);
-      doc.text("รายงานคูปองของร้านอาหาร : "+nameResturant, width / 2, 10, { align: 'center' });
+      doc.text("รายงานการจองโปรโมชั่นของร้าน : "+nameResturant, width / 2, 10, { align: 'center' });
       doc.text("รายงานวันที่ "+startDateForpdf+" ถึงวันที่ "+endDateForpdf, width / 2, 20, { align: 'center' });
       doc.setFontSize(18);
       let dataTableForPDF = {
@@ -1310,18 +1310,22 @@ router.get('/checkpointPromote/:point', (req, res) => {
   let id =req.session.id_res;
   const { point } = req.params;
 
-  dbConnection.query('SELECT user_point FROM user WHERE id_restb = ? AND user_point= ? = 0 ', [id,point], (error, results) => {
+  dbConnection.query('SELECT * FROM user WHERE id_restb = ?', [id], (error, results) => {
     if (error) {
       req.flash('message', 'ไม่พบแต้มร้านอาหาร');
       res.redirect("/users/back");
       return;
     }
-    if (results.length > 0) {
-      // ถ้ามี res_address ในฐานข้อมูลแล้ว
-      res.json({ exists: true });
+    if (results.length > 0 ) {
+      const userPoint = results[0].user_point;
+      if (userPoint < point ) {
+        res.json({ exists: true });
+      } else {
+        res.json({ exists: false });
+      }
     } else {
-      // ถ้ายังไม่มี res_address ในฐานข้อมูล
-      res.json({ exists: false });
+      req.flash('message', 'ไม่พบแต้มร้านอาหาร');
+      res.redirect("/users/back");
     }
   });
 });
