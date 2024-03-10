@@ -483,6 +483,7 @@ router.post('/update/:id', uploadProfile.single('Profile'), (req, res, next) => 
     let id = req.params.id;
     let username = req.body.username;
     let password = req.body.password;
+    let address = req.body.address;
     let fname = req.body.fname;
     let lname = req.body.lname;
     let email = req.body.email;
@@ -491,13 +492,13 @@ router.post('/update/:id', uploadProfile.single('Profile'), (req, res, next) => 
     
     let errors = false;
 
-    if (username.length === 0 || password.length === 0 || fname.length === 0 || lname.length === 0 || email.length === 0) {
+    if (username.length === 0 || address.length === 0 || fname.length === 0 || lname.length === 0 || email.length === 0) {
         errors = true;
         req.flash('error', 'โปรดกรอกข้อมูลให้ครบ');
         res.render('AdminUser/edit', {
             id: req.params.id,
             username: username,
-            password: password,
+            address: address,
             fname: fname,
             lname: lname,
             email: email,
@@ -517,9 +518,9 @@ router.post('/update/:id', uploadProfile.single('Profile'), (req, res, next) => 
                 email: email,
                 fname: fname,
                 lname: lname,
-                Profile: 'NULL',
                 phone: phone,
-                Profile: profile
+                Profile: profile,
+                address:address
             };
 
             dbConnection.query('UPDATE user SET ? WHERE id = ?', [form_data,id], (error, results) => {
@@ -528,6 +529,7 @@ router.post('/update/:id', uploadProfile.single('Profile'), (req, res, next) => 
                     res.render('AdminUser/edit', {
                         username: form_data.username,
                         password: form_data.password,
+                        address:form_data.address,
                         fname: form_data.fname,
                         lname: form_data.lname,
                         email: form_data.email,
@@ -1278,7 +1280,7 @@ router.get('/deletePromotion/(:id_pro)', isNotLogin, (req, res, next) => {
             req.flash('error', err),
             res.render('AdminUser', { data: result });
           } else {
-            req.flash('success', 'Promotion Delete successfully! ID = ' + id);
+            req.flash('success', 'ลบโปรโมชัน' + id+'สำเร็จ');
             res.redirect('/admin/tableResturant');
           }
         })
@@ -1826,6 +1828,30 @@ router.get('/promoteSelect/(:id_pro)/(:id_res)', (req, res, next) => {
     });
   });
 
+  //checkpoint
+router.get('/checkpointPromote/:point/:idres', (req, res) => {
+    const id = req.params.idres;
+    const { point } = req.params;
+  
+    dbConnection.query('SELECT * FROM user WHERE id_restb = ?', [id], (error, results) => {
+      if (error) {
+        req.flash('message', 'ไม่พบแต้มร้านอาหาร');
+        res.redirect('/admin/tableResturant');
+        return;
+      }
+      if (results.length > 0 ) {
+        const userPoint = results[0].user_point;
+        if (userPoint < point ) {
+          res.json({ exists: true });
+        } else {
+          res.json({ exists: false });
+        }
+      } else {
+        req.flash('message', 'ไม่พบแต้มร้านอาหาร');
+        res.redirect('/admin/tableResturant');
+      }
+    });
+  });
 
   router.post('/boostpromote/(:id_pro)/(:id_res)', (req, res, next) => {
     let idpro=req.params.id_pro;
@@ -1852,7 +1878,7 @@ router.get('/promoteSelect/(:id_pro)/(:id_res)', (req, res, next) => {
         req.flash("error", "ไม่สามารถโปรโมทได้");
         res.redirect('/admin/tableResturant');
       }else{
-        let cutpointtopromotion=pointuser/daypromote;
+        let cutpointtopromotion=pointboost/daypromote;
   
         let cutpointtoRes=pointuser-pointboost;
   

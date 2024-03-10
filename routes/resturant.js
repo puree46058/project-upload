@@ -205,6 +205,8 @@ router.get('/FormUpdateResturant', isNotLogin, (req, res) => {
         img: rows[0].res_profile,
         nameres:rows[0].res_name,
         address:rows[0].res_address,
+        StatusResturant: rows[0].res_status_resturant,
+        Profile: rows[0].res_owner_profile,
         email:rows[0].res_email,
         phone:rows[0].res_phone,
         Owner_Name: rows[0].res_owner_name,
@@ -806,15 +808,15 @@ router.post('/updateResturant/:id_pro', uploadimgResturant.single('imageFood'), 
 router.get('/deletePromotion/(:id_pro)', isNotLogin, (req, res, next) => {
   let id = req.params.id_pro;
 
-  dbConnection.query('DELETE FROM promotion WHERE pro_id =?' , [id], (err, result) => {
+  dbConnection.query('DELETE FROM promotion WHERE id_pro =?' , [id], (err, result) => {
     if (err) {
       req.flash('error', 'ลบโปรโมชันไม่สำเร็จ'),
-        res.render('Promotion', { data: result });
+      res.redirect('/resturant/tablePromotion');
     } else {
       dbConnection.query('DELETE FROM coupon WHERE id_pro_coupon = ?' ,[id], (err, result) => {
         if (err) {
           req.flash('error', 'ลบคูปองไม่สำเร็จ'),
-          res.render('Promotion', { data: result });
+          res.redirect('/resturant/tablePromotion');
         } else {
           req.flash('success', 'ลบโปรโมชันของ ID = ' + id+'สำเร็จ');
           dbConnection.query('SELECT * FROM promotion ORDER BY pro_id ', (err, rows) => {
@@ -847,7 +849,7 @@ router.get('/openPromotion/(:id_pro)', isNotLogin, (req, res, next) => {
         status : "Order",
         cu_amountcanused:1
       }
-      dbConnection.query(' UPDATE coupon SET status ? WHERE id_pro_coupon= ?', [statuscoupon,id], (err,rows) => {
+      dbConnection.query(' UPDATE coupon SET ? WHERE id_pro_coupon= ?', [statuscoupon,id], (err,rows) => {
       if (err) {
         console.log(err);
         req.flash('success', 'แก้ไขสถานะคูปองไม่สำเร็จ');
@@ -898,15 +900,19 @@ router.get('/openPromotion/(:id_pro)', isNotLogin, (req, res, next) => {
         } else {
           // ไม่พบ id_user ในตาราง coupon_user
           // ทำการอัปเดตสถานะเป็น 'Order' หรือดำเนินการตามที่ต้องการ
-          dbConnection.query('UPDATE coupon SET status = ?', ['Order'], (updateError, updateResults) => {
+          let statuscoupon ={
+            status : "Order",
+            cu_amountcanused:1
+          }
+          dbConnection.query('UPDATE coupon SET  ?', [statuscoupon], (updateError, updateResults) => {
             if (updateError) {
               req.flash('error', 'แก้ไขสถานะคูปองไม่สำเร็จ');
               console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล: ', updateError);
-              res.redirect('/resturant/tablePromotion');
+              return res.redirect('/resturant/tablePromotion');
             } else {
               req.flash('success', 'แก้ไขสถานะข้อมูลสำเร็จเฉพาะ Book');
               console.log('อัปเดตข้อมูลสำเร็จ Order ทั้งหมด');
-              res.redirect('/resturant/tablePromotion');
+              return res.redirect('/resturant/tablePromotion');
             }
 
           });
@@ -1383,7 +1389,7 @@ router.post('/boostpromote/(:id_pro)', (req, res, next) => {
       req.flash("error", "แต้มไม่พอในการโปรโมท");
       res.redirect('/resturant/back')
     }else{
-      let cutpointtopromotion=pointuser/daypromote;
+      let cutpointtopromotion=pointboost/daypromote;
 
       let cutpointtoRes=pointuser-pointboost;
 

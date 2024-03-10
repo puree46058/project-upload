@@ -223,6 +223,7 @@
                         </label>
                         <br><br>
                         <input type="number" name="pointboost" class="form-control-sm px-4 mx-4"> <label style="font-size: 18px; font-weight: bold;">จำนวนพอยต์ที่ต้องการเพิ่มแข่ง</label>
+                        <span id="pointerror" style="color: red; font-size: 18px;" class="px-3 mx-3"></span>
                     </div>
                     <button type="submit" class="buttonlipro btn btn-success m-4">ยืนยัน</button>
                 </form>
@@ -265,7 +266,34 @@
 
     <!-- Page JS -->
     <script src="/stylesheetAdminandRes/js/dashboards-analytics.js"></script>
+    <script>
+      const pointInput = document.getElementById('pointboost');
+      const pointError = document.getElementById('pointerror');
+      // เรียกฟังก์ชั่นเมื่อหน้าเว็บโหลดเสร็จ
+  document.addEventListener("DOMContentLoaded", function() {
+    // ดึงค่า idres จาก URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const idres = urlParams.get('idres');
 
+    pointInput.addEventListener('input', async function() {
+      const point = this.value.trim();
+      if (point === '') {
+        pointError.innerText = '';
+        return;
+      }
+
+      // สร้าง URL สำหรับ fetch โดยรวม idres ที่ดึงมาจาก URL
+      const response = await fetch(`/admin/checkpointPromote/${point}/${idres}`);
+      const data = await response.json();
+
+      if (data.exists) {
+        pointError.textContent = 'พอยต์ไม่พอในการโปรโมท'; 
+      } else {
+        pointError.textContent = ' ';
+      }
+    });
+  });
+    </script>
   </body>
 </html>
 

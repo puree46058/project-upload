@@ -238,9 +238,13 @@
                           <div class="mb-3 col-md-6">
                             <label for="firstName" class="form-label">คำนำหน้า</label>
                             <select class="select2 form-select form-control" name="owner_profile" id="owner_profile" value="<%= Profile %>" disabled>
+                              <% if(Profile==='นาย') {%>
                               <option value="นาย">นาย</option>
+                              <%}else if(Profile==='นาง'){%>
                               <option value="นาง">นาง</option>
+                              <%}else if(Profile==='นางสาว'){%>
                               <option value="นางสาว">นางสาว</option>
+                              <% } %>
                             </select>
                           </div>
                           <div class="mb-3 col-md-6">
@@ -304,11 +308,17 @@
                           <div class="mb-3 col-md-6">
                             <label for="currency" class="form-label">ประเภทร้านอาหาร</label>
                             <select name="res_status" id="res_status" value="<%= StatusResturant %>" class="select2 form-select form-control" disabled>
-                              <option value="" >ประเภทร้านอาหาร</option>
-                              <option value="ร้านอาหารตามสั่ง">ร้านอาหารตามสั่ง</option>
-                              <option value="ร้านบุฟเฟต์">ร้านบุฟเฟต์</option>
-                              <option value="ร้านหมูกระทะ">ร้านหมูกระทะ</option>
-                              <option value="ร้านหมูจุ่ม">ร้านหมูจุ่ม</option>
+                              <% if(StatusResturant==='ร้านอาหารตามสั่ง') {%>
+                                <option value="ร้านอาหารตามสั่ง">ร้านอาหารตามสั่ง</option>
+                                <%}else if(StatusResturant==='ร้านบุฟเฟต์'){%>
+                                <option value="ร้านบุฟเฟต์">ร้านบุฟเฟต์</option>
+                                <%}else if(StatusResturant==='ร้านหมูกระทะ'){%>
+                                <option value="ร้านหมูกระทะ">ร้านหมูกระทะ</option>
+                                <%}else if(StatusResturant==='ร้านหมูจุ่ม'){%>
+                                  <option value="ร้านหมูจุ่ม">ร้านหมูจุ่ม</option>
+                                <% } %>
+
+                             
                             </select>
                           </div>
                           <div class="mb-3 col-md-6">

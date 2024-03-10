@@ -282,7 +282,7 @@
                                      คูปอง</a>
                                   <a class="dropdown-item" href="editPromotion/<%= data[i].id_pro %>">
                                      แก้ไข</a>
-                                    <a class="dropdown-item" href="deletePromotion/<%= data[i].id_pro %>">
+                                    <a class="dropdown-item" href="deletePromotion/<%= data[i].id_pro %>" onclick="return confirm('คุณต้องการลบโปรโมชัน <%= data[i].pro_name %> ใช่หรือไม่?')">
                                      ลบ</a>
                                 </div>
                               </div>
