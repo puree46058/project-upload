@@ -240,7 +240,7 @@
                         <th style="opacity: 0; width: 140px;">Project</th>
                         <th style="padding-left: 17px; font-size: 14px; text-align: center;">รหัสร้านอาหาร</th>
                         <th style="font-size: 14px; text-align: center;">ชื่อโปรโมชั่น</th>
-                        <th style="font-size: 14px; text-align: center;">ราคาโปรโมชั่น</th>
+                        <th style="font-size: 14px; text-align: center;">จำนวนแต้ม</th>
                         <th style="font-size: 14px; text-align: center;">จำนวนคูปอง</th>
                         <th style="font-size: 14px; text-align: center;">สถานะคูปอง</th>
                         <th style="font-size: 14px; text-align: center;">ดูเพิ่มเติม</th>
@@ -256,7 +256,7 @@
                           <i class="fab fa-bootstrap fa-lg text-primary"></i> <strong><%= data[i].id_restb %></strong>
                         </td>
                         <td style="font-size: 14px; padding-top: 5px; text-align: center;"><%= data[i].pro_name %></td>
-                        <td style="font-size: 14px; padding-top: 5px; text-align: center;"><%= data[i].pro_price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></td>
+                        <td style="font-size: 14px; padding-top: 5px; text-align: center;"><%= data[i].pro_price.toLocaleString('en-US') %></td>
                         <td style="font-size: 14px; padding-top: 5px; text-align: center;"><%= data[i].pro_amount %></td>
                         <td style="font-size: 14px; padding-top: 5px; text-align: center;">
                             <%if(data[i].status === 'Order'){%>

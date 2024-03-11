@@ -7,7 +7,7 @@
     <meta name="keywords" content="Ogani, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>โปรโมชันราคา 1000</title>
+    <title>โปรโมชันราคา 1,000 แต้ม</title>
 
     <link rel="icon" type="image/x-icon" href="../stylesheetsUsers/img/logotitle-removebg-preview.png" />
 
@@ -69,9 +69,7 @@
                 </div>
                 <div class="col-lg-9 col-md-7" style="margin-top: 0;">
                     <div class="product__discount">
-                        <div class="section-title product__discount__title">
-                            <h2>โปรโมชันพิเศษ</h2>
-                        </div>
+                       
                         <div class="row">
                             <div class="product__discount__slider owl-carousel">
                                 <% if(data.length) { %>
@@ -85,7 +83,7 @@
                                                 <div class="product__discount__item__text">
                                                     <span><%= data[i].pro_type %></span>
                                                     <h5><a href="/DetailShop/<%=data[i].id_pro%>"><%= data[i].pro_name %></a></h5>
-                                                    <div class="product__item__price"><%= data[i].pro_price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %> แต้ม</div>
+                                                    <div class="product__item__price"><%= data[i].pro_price.toLocaleString('en-US') %> แต้ม</div>
                                                 </div>
                                             </div>
                                         </div>

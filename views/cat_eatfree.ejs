@@ -85,7 +85,7 @@
                                                 <div class="product__discount__item__text">
                                                     <span><%= data[i].pro_type %></span>
                                                     <h5><a href="/DetailShop/<%=data[i].id_pro%>"><%= data[i].pro_name %></a></h5>
-                                                    <div class="product__item__price"><%= data[i].pro_price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %> แต้ม</div>
+                                                    <div class="product__item__price"><%= data[i].pro_price.toLocaleString('en-US') %> แต้ม</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -120,7 +120,7 @@
                                         <div class="product__discount__item__text">
                                             <h5><a href="/DetailShop/<%=dataCoupon[i].id_pro_coupon%>"><%=dataCoupon[i].name_pro_coupon%></a></h5>
                                             <h6><%= dataCoupon[i].type_pro_coupon %></h6>
-                                            <h5 class="mt-2"><%= dataCoupon[i].price_pro.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %> แต้ม</h5>
+                                            <h5 class="mt-2"><%= dataCoupon[i].price_pro.toLocaleString('en-US') %> แต้ม</h5>
                                         </div>
                                     </div>
                                 </div>

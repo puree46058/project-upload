@@ -145,7 +145,7 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="categories__item set-bg" style="box-shadow: 6px -4px 5px 3px rgba(0, 0, 0, 0.14); background-size: 290px; background-position: center;" data-setbg="../images/point.png">
-                        <h5><a href="/pointone" style="font-size: 25px;">1000 แต้ม</a></h5>
+                        <h5><a href="/pointone" style="font-size: 25px;">1,000 แต้ม</a></h5>
                     </div>
                 </div>
         </div>
@@ -176,7 +176,7 @@
                         <div class="featured__item__text">
                             <p style="margin-bottom: 10px;"><a href="/DetailShop/<%=data[k].id_pro%>" style=" color: black;"><%= data[k].pro_name %></a></p>
                             
-                            <h5>ราคา : <%= parseFloat(data[k].pro_price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })%> แต้ม</h5>
+                            <h5>จำนวน : <%= data[k].pro_price.toLocaleString('en-US')%> แต้ม</h5>
                         </div>
                     </div>
                 </div>

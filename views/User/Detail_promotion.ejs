@@ -81,7 +81,7 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="product__details__text">
                         <h3><%= namePromotion %></h3>
-                        <div class="product__details__price">ราคา : <%= parseFloat(pricePromotion).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %> แต้ม</div>
+                        <div class="product__details__price">จำนวน : <%= pricePromotion.toLocaleString('en-US') %> แต้ม</div>
 
                         <form action="/users/like_count/<%=id_pro%>" method="POST">
                           <button  class="heart-icon"><span class="icon_heart_alt"></span> <%= like %></button>
@@ -178,7 +178,7 @@
                         </div>
                         <div class="product__item__text">
                           <h6><a href="/users/cart_add/<%= dataCoupon[i].cu_id %>" class="text-primary">จองคูปอง</a></h6>
-                            <h5>ราคา : <%= parseFloat(dataCoupon[i].price_pro).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %> แต้ม</h5>
+                            <h5>จำนวน : <%= dataCoupon[i].price_pro.toLocaleString('en-US') %> แต้ม</h5>
                         </div>
                     </div>
                 </div>

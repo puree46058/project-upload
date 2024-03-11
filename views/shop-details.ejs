@@ -84,7 +84,7 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="product__details__text">
                         <h3><%= namePromotion %></h3>
-                        <div class="product__details__price">ราคา : <%= pricePromotion.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %> แต้ม </div>
+                        <div class="product__details__price">จำนวน : <%= pricePromotion %> แต้ม </div>
                         <span class="heart-icon icon_heart_alt"></span>
                         <ul style="padding-top: 10px; display: block;">
                           <table>
@@ -176,7 +176,7 @@
                         </div>
                         <div class="product__item__text">
                           <h6><a href="/FormLogin" class="text-primary">จองคูปอง</a></h6>
-                            <h5>ราคา : <%= dataCoupon[i].price_pro.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %> แต้ม</h5>
+                            <h5>จำนวน : <%= dataCoupon[i].price_pro.toLocaleString('en-US') %> แต้ม</h5>
                         </div>
                     </div>
                 </div>
