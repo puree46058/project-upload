@@ -287,7 +287,7 @@
                         <td><%= data[i].phone %></td>
                         <td><span><%= data[i].email %></span></td>
                         <td><%= data[i].level %></td>
-                        <td><%=data[i].user_point%></td>
+                        <td><%=data[i].user_point.toLocaleString('en-US')%></td>
                         <td>
                           <form action="AddPointUser/<%= data[i].id_user %>" method="post">
                             <label for="addPoints">เพิ่มพอยต์:</label>

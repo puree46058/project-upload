@@ -1206,7 +1206,7 @@ router.post("/report", (req, res, next) => {
       results.forEach((coupon) => {
         totalprice += parseFloat(coupon.price_pro);
       });//pont total
-      const formattedTotal = totalprice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+      const formattedTotal = totalprice.toLocaleString('en-US')
 
       let nameResturant= results[0].res_name;//name Resturant
       let startDateForpdf=moment(start).locale('th').format('D MMMM YYYY');
@@ -1215,7 +1215,7 @@ router.post("/report", (req, res, next) => {
       let data = results.map(row => ({ 
         IDCoupon: row.coupon_id,
         PromotionName: row.name_pro_coupon,
-        CouponPrice: parseFloat(row.price_pro).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+        CouponPrice: parseFloat(row.price_pro).toLocaleString('en-US'),
         NameUser: row.fname,
         LastName: row.lname,
         Date: moment(row.datebook).locale('th').format('D MMMM YYYY'),

@@ -1583,7 +1583,7 @@ router.get('/ReportPoint', function (req, res, next) {
                 results.forEach((tran) => {
                     totalPointEarn += parseFloat(tran.point_earn);
                 });//pont total
-                const formattedTotal =totalPointEarn.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+                const formattedTotal =totalPointEarn.toLocaleString('en-US')
 
                 let startDateForpdf=moment(start).locale('th').format('D MMMM YYYY');
                 let endDateForpdf=moment(end).locale('th').format('D MMMM YYYY');
@@ -1591,7 +1591,7 @@ router.get('/ReportPoint', function (req, res, next) {
                 let data = results.map(row => ({ 
                   TranId: row.tran_id,
                   Username: row.username,
-                  Point: parseFloat(row.point_earn).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+                  Point: parseFloat(row.point_earn).toLocaleString('en-US'),
                   Bank: row.bank_name,
                   Status:row.status,
                   Date: moment(row.tran_date).locale('th').format('D MMMM YYYY')

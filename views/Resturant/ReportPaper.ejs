@@ -263,7 +263,7 @@
                           <tr>
                             <td style="text-align: center;"><%= booking.coupon_id %></td>
                             <td style="text-align: center;"><%= booking.name_pro_coupon %></td>
-                            <td style="text-align: right;"><%= parseFloat(booking.price_pro).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })%></td>
+                            <td style="text-align: right;"><%= parseFloat(booking.price_pro).toLocaleString('en-US')%></td>
                             <td style="text-align: center;"><%= booking.status %></td>
                             <td style="text-align: center;"><%= booking.fname %></td>
                             <td style="text-align: center;"><%= booking.lname %></td>
@@ -284,7 +284,7 @@
                   <ul class="pagination mx-5 p-0" style="display: inline-block;">
                     <caption class="ms-4" style="align-items: center;"><b>รวมพอยต์ที่ได้ทั้งหมด :   
                       
-                      <%= totalprice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })%> แต้ม
+                      <%= totalprice.toLocaleString('en-US')%> แต้ม
                     </b></caption>
                       
                   </ul>

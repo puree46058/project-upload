@@ -2,9 +2,9 @@ const mysql = require('mysql2');
 // const dbConnection = mysql.createConnection({
 //   host: 'localhost',
 //   user: 'saduak_project',
-//   password: '#nx3E8!1q7',
+//   password: '9KVj@uw29Irmqzk@',
 //   port:3306,
-//   database: 'project'
+//   database: 'saduak_project'
 // });
 
 const dbConnection = mysql.createConnection({
